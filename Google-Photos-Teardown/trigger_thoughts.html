@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Triggers & Thoughts</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Inter:wght@400;500;600&display=swap');
+
+        body {
+            background-color: #F4F2EC; /* Warm parchment/editorial background */
+            color: #2C2C2C;
+            font-family: 'Inter', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .editorial-container {
+            max-width: 700px;
+            width: 100%;
+            background: #FFFFFF;
+            padding: 40px 50px;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.04);
+            position: relative;
+        }
+
+        /* Elegant gold top accent */
+        .editorial-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: #C4A77D; 
+        }
+
+        .header {
+            margin-bottom: 30px;
+            text-align: center;
+            border-bottom: 1px solid #EAEAEA;
+            padding-bottom: 24px;
+        }
+
+        .header h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin: 0 0 8px 0;
+            color: #111;
+        }
+
+        .header p {
+            font-size: 0.95rem;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: #888;
+            margin: 0;
+        }
+
+        .table-list {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .row {
+            display: flex;
+            padding: 24px 0;
+            border-bottom: 1px solid #EAEAEA;
+            align-items: center;
+        }
+
+        .row:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        .col-trigger {
+            flex: 1;
+            padding-right: 40px;
+            position: relative;
+        }
+
+        .col-trigger h4 {
+            font-family: 'Inter', sans-serif;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            letter-spacing: 2px;
+            font-weight: 600;
+            color: #555;
+            margin: 0;
+        }
+        
+        .trigger-label {
+            font-size: 0.7rem;
+            color: #C4A77D;
+            margin-bottom: 8px;
+            display: block;
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+
+        .col-thought {
+            flex: 2;
+            font-family: 'Playfair Display', serif;
+            font-size: 1.4rem;
+            font-style: italic;
+            color: #111;
+            line-height: 1.3;
+            position: relative;
+            padding-left: 24px;
+            border-left: 1px solid #EAEAEA;
+        }
+
+        /* Beautiful drop quote marks */
+        .col-thought::before {
+            content: '“';
+            font-family: 'Playfair Display', serif;
+            font-size: 2.8rem;
+            color: #C4A77D;
+            position: absolute;
+            left: -2px;
+            top: -12px;
+            opacity: 0.4;
+            font-style: normal;
+        }
+
+        @media (max-width: 768px) {
+            .editorial-container {
+                padding: 40px 30px;
+            }
+            .row {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 20px;
+                padding: 30px 0;
+            }
+            .col-trigger {
+                padding-right: 0;
+            }
+            .col-thought {
+                padding-left: 0;
+                border-left: none;
+                font-size: 1.6rem;
+            }
+            .col-thought::before {
+                left: -20px;
+                top: -15px;
+                font-size: 3rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="editorial-container">
+        <div class="header">
+            <h2>Triggers & Thoughts</h2>
+            <p>The Psychology of Backup</p>
+        </div>
+
+        <div class="table-list">
+            
+            <div class="row">
+                <div class="col-trigger">
+                    <span class="trigger-label">Trigger</span>
+                    <h4>New phone purchase</h4>
+                </div>
+                <div class="col-thought">
+                    I need my old photos back.
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-trigger">
+                    <span class="trigger-label">Trigger</span>
+                    <h4>Low storage warning</h4>
+                </div>
+                <div class="col-thought">
+                    My phone is running out of space.
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-trigger">
+                    <span class="trigger-label">Trigger</span>
+                    <h4>Device damage / loss</h4>
+                </div>
+                <div class="col-thought">
+                    I hope my photos are safe.
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-trigger">
+                    <span class="trigger-label">Trigger</span>
+                    <h4>Sharing moments</h4>
+                </div>
+                <div class="col-thought">
+                    How do I send these pictures easily?
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</body>
+</html>

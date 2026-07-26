@@ -1,0 +1,11 @@
+{
+  "hosting": {
+    "site": "ai-pricing-strategy-visuals",
+    "public": "public",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ]
+  }
+}

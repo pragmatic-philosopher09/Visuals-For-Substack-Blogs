@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Metric Tree</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
+
+        body {
+            background-color: #0A0A0A;
+            color: #EDEDED;
+            font-family: 'Inter', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 40px;
+        }
+
+        .tree-container {
+            width: 100%;
+            max-width: 1000px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+        }
+
+        /* Sleek root node */
+        .root-node {
+            background: linear-gradient(145deg, #1A1A1A, #111);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            padding: 24px 40px;
+            border-radius: 12px;
+            font-size: 1.4rem;
+            font-weight: 600;
+            letter-spacing: -0.5px;
+            box-shadow: 0 0 40px rgba(255, 255, 255, 0.03), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+            text-align: center;
+            z-index: 2;
+            position: relative;
+        }
+
+        /* Tree Connections */
+        .branch-stem {
+            width: 1px;
+            height: 40px;
+            background: linear-gradient(to bottom, rgba(255,255,255,0.2), rgba(255,255,255,0.2));
+            margin: 0 auto;
+        }
+
+        .branch-horizontal {
+            display: flex;
+            justify-content: space-between;
+            margin: 0 auto;
+            width: 66.66%; /* Mathematically spans exactly from the center of left node to center of right node */
+            border-top: 1px solid rgba(255,255,255,0.2);
+            position: relative;
+        }
+
+        .drop-line {
+            width: 1px;
+            height: 40px;
+            background: rgba(255,255,255,0.2);
+        }
+
+        .leaves {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            gap: 20px;
+        }
+
+        .leaf-group {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .leaf-node {
+            background: #111;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 16px 30px;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 500;
+            width: 100%;
+            max-width: 260px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+            transition: border-color 0.3s, transform 0.3s, box-shadow 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Subtle glow hover effect */
+        .leaf-node:hover {
+            border-color: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.7), 0 0 20px rgba(255,255,255,0.05);
+        }
+
+        .leaf-node::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .leaf-node:hover::before {
+            opacity: 1;
+        }
+
+        .question {
+            margin-top: 24px;
+            font-size: 0.95rem;
+            color: #888;
+            font-weight: 400;
+            font-style: italic;
+            max-width: 220px;
+            position: relative;
+        }
+
+        /* Tiny dot to connect node to question visually */
+        .question::before {
+            content: '';
+            position: absolute;
+            top: -14px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 4px;
+            height: 4px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        /* Accent glows */
+        .glow-blue { box-shadow: 0 0 30px rgba(59, 130, 246, 0.1); border-top: 1px solid rgba(59, 130, 246, 0.3); }
+        .glow-green { box-shadow: 0 0 30px rgba(16, 185, 129, 0.1); border-top: 1px solid rgba(16, 185, 129, 0.3); }
+        .glow-purple { box-shadow: 0 0 30px rgba(139, 92, 246, 0.1); border-top: 1px solid rgba(139, 92, 246, 0.3); }
+
+        @media (max-width: 768px) {
+            .branch-horizontal {
+                display: none;
+            }
+            .leaves {
+                flex-direction: column;
+                gap: 40px;
+                margin-top: 20px;
+            }
+            .branch-stem {
+                height: 20px;
+            }
+            .drop-line {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="tree-container">
+        
+        <!-- Root Node -->
+        <div class="root-node">
+            Meaningful Memory Interactions
+        </div>
+
+        <!-- Tree Lines -->
+        <div class="branch-stem"></div>
+        <div class="branch-horizontal">
+            <div class="drop-line"></div>
+            <div class="drop-line"></div>
+            <div class="drop-line"></div>
+        </div>
+
+        <!-- Child Nodes -->
+        <div class="leaves">
+            
+            <div class="leaf-group">
+                <div class="leaf-node glow-blue">
+                    Preservation
+                </div>
+                <div class="question">
+                    "Are memories safe?"
+                </div>
+            </div>
+
+            <div class="leaf-group">
+                <div class="leaf-node glow-green">
+                    Retrieval
+                </div>
+                <div class="question">
+                    "Can users find them?"
+                </div>
+            </div>
+
+            <div class="leaf-group">
+                <div class="leaf-node glow-purple">
+                    Creation
+                </div>
+                <div class="question">
+                    "Can users improve/share?"
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</body>
+</html>

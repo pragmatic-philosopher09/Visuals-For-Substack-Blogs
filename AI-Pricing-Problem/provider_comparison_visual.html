@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enterprise Cost Fencing Strategies (2026)</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        :root {
+            --bg-light: #f8fafc;
+            --card-bg: rgba(255, 255, 255, 0.85);
+            --card-border: rgba(0, 0, 0, 0.08);
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            
+            --openai: #10a37f;
+            --openai-bg: rgba(16, 163, 127, 0.05);
+            --openai-border: rgba(16, 163, 127, 0.2);
+            
+            --anthropic: #d97757;
+            --anthropic-bg: rgba(217, 119, 87, 0.05);
+            --anthropic-border: rgba(217, 119, 87, 0.2);
+            
+            --google: #4285f4;
+            --google-bg: rgba(66, 133, 244, 0.05);
+            --google-border: rgba(66, 133, 244, 0.2);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-light);
+            background-image: 
+                radial-gradient(circle at 10% 10%, rgba(16, 163, 127, 0.05) 0%, transparent 40%),
+                radial-gradient(circle at 50% 90%, rgba(217, 119, 87, 0.05) 0%, transparent 40%),
+                radial-gradient(circle at 90% 10%, rgba(66, 133, 244, 0.05) 0%, transparent 40%);
+            color: var(--text-main);
+            font-family: 'Inter', sans-serif;
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 1rem;
+            line-height: 1.5;
+        }
+
+        .container {
+            max-width: 1400px;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 0.5rem;
+            flex-shrink: 0;
+        }
+
+        .title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 2rem;
+            font-weight: 700;
+            letter-spacing: -0.03em;
+            background: linear-gradient(to right, #0f172a, #475569);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.25rem;
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            flex: 1;
+            min-height: 0;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 20px;
+            padding: 1.25rem;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03);
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.06);
+        }
+
+        /* Provider Specific Accents */
+        .card.openai:hover { border-color: var(--openai-border); }
+        .card.anthropic:hover { border-color: var(--anthropic-border); }
+        .card.google:hover { border-color: var(--google-border); }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .card-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            background: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            border: 1px solid var(--card-border);
+        }
+        
+        .openai .card-icon { color: var(--openai); }
+        .anthropic .card-icon { color: var(--anthropic); }
+        .google .card-icon { color: var(--google); }
+
+        .card-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.2rem;
+            font-weight: 700;
+            display: flex;
+            flex-direction: column;
+            line-height: 1.2;
+        }
+
+        .card-title span {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            font-weight: 400;
+            font-family: 'Inter', sans-serif;
+            margin-top: 0.15rem;
+        }
+
+        .section {
+            margin-bottom: 1rem;
+        }
+
+        .section-label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            font-weight: 600;
+        }
+
+        .section-label i {
+            width: 14px;
+            height: 14px;
+        }
+
+        .pricing-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .pricing-list li {
+            background: rgba(0,0,0,0.02);
+            padding: 0.5rem 0.75rem;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            border: 1px solid rgba(0,0,0,0.03);
+        }
+
+        .pricing-list strong {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 600;
+            color: var(--text-main);
+            min-width: 80px;
+        }
+
+        .badge {
+            font-size: 0.7rem;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            background: rgba(0,0,0,0.05);
+            color: var(--text-muted);
+            margin-left: auto;
+        }
+
+        .section-text {
+            font-size: 0.95rem;
+            color: #334155;
+            line-height: 1.6;
+            background: rgba(255,255,255,0.5);
+            padding: 1rem;
+            border-radius: 8px;
+            border: 1px dashed rgba(0,0,0,0.1);
+        }
+
+        .implication {
+            margin-top: auto;
+            border-radius: 12px;
+            padding: 1rem;
+            font-size: 0.85rem;
+            color: #1e293b;
+            line-height: 1.4;
+            position: relative;
+        }
+
+        .openai .implication { background: var(--openai-bg); border-left: 3px solid var(--openai); }
+        .anthropic .implication { background: var(--anthropic-bg); border-left: 3px solid var(--anthropic); }
+        .google .implication { background: var(--google-bg); border-left: 3px solid var(--google); }
+
+        .implication-header {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .openai .implication-header { color: var(--openai); }
+        .anthropic .implication-header { color: var(--anthropic); }
+        .google .implication-header { color: var(--google); }
+
+        @media (max-width: 1024px) {
+            body {
+                height: auto;
+                overflow: auto;
+            }
+            .grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header class="header">
+            <h1 class="title">Enterprise Cost Fencing Strategies</h1>
+            <p class="subtitle">How leading AI providers are restructuring their 2026 pricing tiers to mitigate the volatile costs of persistent inference and heavy agentic workflows.</p>
+        </header>
+
+        <div class="grid">
+            
+            <!-- OpenAI -->
+            <div class="card openai">
+                <div class="card-header">
+                    <div class="card-icon"><i data-lucide="cpu"></i></div>
+                    <div class="card-title">
+                        OpenAI
+                        <span>ChatGPT Business & Enterprise</span>
+                    </div>
+                </div>
+                
+                <div class="section">
+                    <div class="section-label"><i data-lucide="credit-card"></i> Core Pricing Tiers (2026)</div>
+                    <ul class="pricing-list">
+                        <li><strong>Business:</strong> $20 – $25 / seat / mo</li>
+                        <li><strong>Enterprise:</strong> Custom (~$60 / seat / mo) <span class="badge">150 seat min</span></li>
+                    </ul>
+                </div>
+
+                <div class="section">
+                    <div class="section-label"><i data-lucide="shield-check"></i> Model Access & Guardrails</div>
+                    <p class="section-text">Auto-switching between Instant and Thinking modes. Features Custom internal GPT marketplaces.</p>
+                </div>
+
+                <div class="implication">
+                    <div class="implication-header"><i data-lucide="lock" style="width: 16px; height: 16px;"></i> Cost Fencing Strategy</div>
+                    Business tier enforces a 40 messages/user/month cap on advanced reasoning. Enterprise un-caps messaging but separates heavy agentic workflows (Codex/Operator) via variable workspace credits.
+                </div>
+            </div>
+
+            <!-- Anthropic -->
+            <div class="card anthropic">
+                <div class="card-header">
+                    <div class="card-icon"><i data-lucide="brain"></i></div>
+                    <div class="card-title">
+                        Anthropic
+                        <span>Claude Workspace Suite</span>
+                    </div>
+                </div>
+                
+                <div class="section">
+                    <div class="section-label"><i data-lucide="credit-card"></i> Core Pricing Tiers (2026)</div>
+                    <ul class="pricing-list">
+                        <li><strong>Team Standard:</strong> $25 / seat / mo</li>
+                        <li><strong>Team Premium:</strong> $125 / seat / mo</li>
+                        <li><strong>Enterprise:</strong> Custom tiers</li>
+                    </ul>
+                </div>
+
+                <div class="section">
+                    <div class="section-label"><i data-lucide="shield-check"></i> Model Access & Guardrails</div>
+                    <p class="section-text">Access to Sonnet 4.6 and Opus 4.7 with massive up to 1M token context windows.</p>
+                </div>
+
+                <div class="implication">
+                    <div class="implication-header"><i data-lucide="lock" style="width: 16px; height: 16px;"></i> Cost Fencing Strategy</div>
+                    Implements a fluid "Conversation Budget." Rather than flat caps, context-heavy inputs consume the monthly budget faster. Premium tiers shift heavy multi-agent loops to usage-based chargebacks.
+                </div>
+            </div>
+
+            <!-- Google -->
+            <div class="card google">
+                <div class="card-header">
+                    <div class="card-icon"><i data-lucide="sparkles"></i></div>
+                    <div class="card-title">
+                        Google
+                        <span>Gemini for Workspace</span>
+                    </div>
+                </div>
+                
+                <div class="section">
+                    <div class="section-label"><i data-lucide="credit-card"></i> Core Pricing Tiers (2026)</div>
+                    <ul class="pricing-list">
+                        <li><strong>Business Std:</strong> $14 / user / mo</li>
+                        <li><strong>Enterprise Std:</strong> $23 / user / mo</li>
+                        <li><strong>Enterprise Plus:</strong> $30 / user / mo</li>
+                    </ul>
+                </div>
+
+                <div class="section">
+                    <div class="section-label"><i data-lucide="shield-check"></i> Model Access & Guardrails</div>
+                    <p class="section-text">Full Gemini suite native embedding across Gmail, Docs, Sheets, Drive + NotebookLM integration.</p>
+                </div>
+
+                <div class="implication">
+                    <div class="implication-header"><i data-lucide="lock" style="width: 16px; height: 16px;"></i> Cost Fencing Strategy</div>
+                    Mitigates costs by bundling AI directly into baseline core productivity seats, offloading compute to hyper-scale data centers while charging separate premiums (AI Ultra) for agent layers.
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>

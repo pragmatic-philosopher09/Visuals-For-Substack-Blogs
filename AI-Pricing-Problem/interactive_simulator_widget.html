@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Gross Margin Simulator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Lora:ital,wght@0,400;0,500;0,600;1,400&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Lora', 'serif'],
+                        mono: ['Fira Code', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-[#faf9f6] text-[#1a1a1a] font-sans antialiased p-6 flex items-center justify-center min-h-screen">
+
+    <div class="max-w-4xl w-full">
+        <div class="bg-white border border-gray-200 rounded-2xl p-6 md:p-8 shadow-sm">
+            <div class="border-b border-gray-100 pb-4 mb-6">
+                <span class="text-xs font-bold text-blue-600 uppercase tracking-widest">Interactive Simulator</span>
+                <h3 class="text-xl font-bold text-gray-900 mt-1">AI Gross Margin & Unit Economics Engine</h3>
+                <p class="text-sm text-gray-500 mt-1">Adjust parameters to see how token volumes and pricing structure alter your margin thresholds. (Illustrative hypothetical model)</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Sliders & Inputs -->
+                <div class="space-y-5">
+                    <div>
+                        <div class="flex justify-between text-sm font-semibold text-gray-700 mb-1">
+                            <label for="subFee">Monthly Subscription Fee ($)</label>
+                            <span class="font-mono text-gray-900" id="subFeeVal">$80</span>
+                        </div>
+                        <input type="range" id="subFee" min="10" max="250" value="80" class="w-full accent-blue-600 h-2 bg-gray-200 rounded-lg cursor-pointer" oninput="calculateMargins()">
+                    </div>
+
+                    <div>
+                        <div class="flex justify-between text-sm font-semibold text-gray-700 mb-1">
+                            <label for="inputTokens">Monthly Input Tokens (Millions)</label>
+                            <span class="font-mono text-orange-600" id="inputTokensVal">1.0M</span>
+                        </div>
+                        <input type="range" id="inputTokens" min="0.1" max="15.0" step="0.1" value="1.0" class="w-full accent-blue-600 h-2 bg-gray-200 rounded-lg cursor-pointer" oninput="calculateMargins()">
+                    </div>
+
+                    <div>
+                        <div class="flex justify-between text-sm font-semibold text-gray-700 mb-1">
+                            <label for="outputTokens">Monthly Output Tokens (Millions)</label>
+                            <span class="font-mono text-orange-600" id="outputTokensVal">0.2M</span>
+                        </div>
+                        <input type="range" id="outputTokens" min="0.05" max="5.0" step="0.05" value="0.2" class="w-full accent-blue-600 h-2 bg-gray-200 rounded-lg cursor-pointer" oninput="calculateMargins()">
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label for="inputPrice" class="block text-xs font-bold text-gray-500 uppercase mb-1">Input Price / M ($)</label>
+                            <input type="number" id="inputPrice" value="3.00" step="0.5" class="w-full bg-gray-50 border border-gray-200 rounded-lg px-3 py-1.5 text-sm font-mono focus:outline-none focus:ring-2 focus:ring-blue-500" oninput="calculateMargins()">
+                        </div>
+                        <div>
+                            <label for="outputPrice" class="block text-xs font-bold text-gray-500 uppercase mb-1">Output Price / M ($)</label>
+                            <input type="number" id="outputPrice" value="15.00" step="1.0" class="w-full bg-gray-50 border border-gray-200 rounded-lg px-3 py-1.5 text-sm font-mono focus:outline-none focus:ring-2 focus:ring-blue-500" oninput="calculateMargins()">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Margin Output Results -->
+                <div class="flex flex-col justify-between bg-gray-50 border border-gray-100 rounded-xl p-5">
+                    <div class="text-center py-4">
+                        <span class="text-xs font-bold text-gray-400 uppercase tracking-widest">Gross Margin Percentage</span>
+                        <div class="text-4xl md:text-5xl font-extrabold font-serif my-2 tracking-tight transition" id="marginDisplay">
+                            71.2%
+                        </div>
+                        <div class="text-xs font-semibold px-3 py-1 rounded-full inline-block mt-1" id="statusBadge">
+                            Healthy Margin
+                        </div>
+                    </div>
+
+                    <!-- Dynamic Alert Box -->
+                    <div id="statusAlert" class="bg-blue-50 border border-blue-200 rounded-lg p-3 text-sm text-blue-800 text-center transition">
+                        Model performance fits safe unit parameters.
+                    </div>
+
+                    <!-- Mini P&L Breakdown -->
+                    <div class="border-t border-gray-200 pt-4 mt-4 space-y-2 text-xs">
+                        <div class="flex justify-between">
+                            <span class="text-gray-500">Subscription Revenue:</span>
+                            <span class="font-mono text-gray-900 font-semibold" id="plRevenue">$80.00</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-500">Variable Compute Costs:</span>
+                            <span class="font-mono text-red-600 font-semibold" id="plVariable">-$6.00</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-500">Base Infrastructure Costs:</span>
+                            <span class="font-mono text-gray-600 font-semibold">-$11.00</span>
+                        </div>
+                        <div class="flex justify-between border-t border-dashed border-gray-200 pt-2 font-bold">
+                            <span class="text-gray-900">Estimated Gross Profit:</span>
+                            <span class="font-mono text-emerald-600" id="plNet">$63.00</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function calculateMargins() {
+            const subFee = parseFloat(document.getElementById('subFee').value);
+            const inputTokens = parseFloat(document.getElementById('inputTokens').value);
+            const outputTokens = parseFloat(document.getElementById('outputTokens').value);
+            const inputPrice = parseFloat(document.getElementById('inputPrice').value);
+            const outputPrice = parseFloat(document.getElementById('outputPrice').value);
+
+            document.getElementById('subFeeVal').textContent = `$${subFee}`;
+            document.getElementById('inputTokensVal').textContent = `${inputTokens.toFixed(1)}M`;
+            document.getElementById('outputTokensVal').textContent = `${outputTokens.toFixed(2)}M`;
+
+            const fixedInfra = 11.0; 
+            const varInputCost = inputTokens * inputPrice;
+            const varOutputCost = outputTokens * outputPrice;
+            const variableCompute = varInputCost + varOutputCost;
+            
+            const totalCOGS = fixedInfra + variableCompute;
+            const grossProfit = subFee - totalCOGS;
+            const marginPercentage = (grossProfit / subFee) * 100;
+
+            const marginDisplay = document.getElementById('marginDisplay');
+            const statusBadge = document.getElementById('statusBadge');
+            const statusAlert = document.getElementById('statusAlert');
+            
+            const plRevenue = document.getElementById('plRevenue');
+            const plVariable = document.getElementById('plVariable');
+            const plNet = document.getElementById('plNet');
+
+            plRevenue.textContent = `$${subFee.toFixed(2)}`;
+            plVariable.textContent = `-$${variableCompute.toFixed(2)}`;
+            plNet.textContent = `${grossProfit < 0 ? '-' : ''}$$${Math.abs(grossProfit).toFixed(2)}`;
+            
+            if (grossProfit < 0) {
+                plNet.className = 'font-mono text-red-600 font-bold';
+            } else {
+                plNet.className = 'font-mono text-emerald-600 font-bold';
+            }
+
+            marginDisplay.textContent = `${marginPercentage.toFixed(1)}%`;
+
+            if (marginPercentage < 0) {
+                marginDisplay.className = "text-4xl md:text-5xl font-extrabold font-serif my-2 tracking-tight text-red-600";
+                statusBadge.textContent = "Negative Margin (Critical)";
+                statusBadge.className = "text-xs font-semibold px-3 py-1 rounded-full inline-block mt-1 bg-red-100 text-red-800";
+                statusAlert.textContent = "Warning: Usage is actively destroying capital! High-usage loops have outrun the unmetered subscription fee.";
+                statusAlert.className = "bg-red-50 border border-red-200 rounded-lg p-3 text-sm text-red-800 text-center";
+            } else if (marginPercentage < 50) {
+                marginDisplay.className = "text-4xl md:text-5xl font-extrabold font-serif my-2 tracking-tight text-amber-500";
+                statusBadge.textContent = "Low Margin Warning";
+                statusBadge.className = "text-xs font-semibold px-3 py-1 rounded-full inline-block mt-1 bg-amber-100 text-amber-800";
+                statusAlert.textContent = "Caution: Your gross margins are significantly below the target software envelope of 75-80%.";
+                statusAlert.className = "bg-amber-50 border border-amber-200 rounded-lg p-3 text-sm text-amber-800 text-center";
+            } else {
+                marginDisplay.className = "text-4xl md:text-5xl font-extrabold font-serif my-2 tracking-tight text-emerald-600";
+                statusBadge.textContent = "Healthy Margin";
+                statusBadge.className = "text-xs font-semibold px-3 py-1 rounded-full inline-block mt-1 bg-emerald-100 text-emerald-800";
+                statusAlert.textContent = "Model parameters are healthy. Your architecture is maintaining acceptable software margins.";
+                statusAlert.className = "bg-blue-50 border border-blue-200 rounded-lg p-3 text-sm text-blue-800 text-center";
+            }
+        }
+
+        calculateMargins();
+    </script>
+</body>
+</html>

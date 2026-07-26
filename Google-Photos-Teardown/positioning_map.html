@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Positioning Map</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+        body {
+            background-color: #111111;
+            color: #ffffff;
+            font-family: 'Inter', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 40px;
+        }
+
+        .map-wrapper {
+            width: 100%;
+            max-width: 800px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .header-text {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .header-text h2 {
+            font-size: 1.6rem;
+            font-weight: 700;
+            margin: 0 0 8px 0;
+            background: linear-gradient(to right, #ffffff, #a1a1aa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .header-text p {
+            color: #8b949e;
+            font-size: 0.95rem;
+            margin: 0;
+        }
+
+        .chart-container {
+            position: relative;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle at center, rgba(255,255,255,0.03) 0%, transparent 70%);
+            border-radius: 20px;
+        }
+
+        /* Axes */
+        .axis {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .axis-x {
+            top: 50%;
+            left: 5%;
+            width: 90%;
+            height: 2px;
+            transform: translateY(-50%);
+        }
+
+        .axis-y {
+            left: 50%;
+            top: 5%;
+            height: 90%;
+            width: 2px;
+            transform: translateX(-50%);
+        }
+
+        /* Axis Labels */
+        .axis-label {
+            position: absolute;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #94a3b8;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            background: #111111; /* mask out axis lines */
+            padding: 4px 8px;
+            border-radius: 4px;
+        }
+
+        .label-top {
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .label-bottom {
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .label-left {
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .label-right {
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        /* Data Points */
+        .point {
+            position: absolute;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transform: translate(-50%, -50%);
+            transition: transform 0.3s ease;
+            cursor: default;
+        }
+
+        .point:hover {
+            transform: translate(-50%, -55%);
+            z-index: 10;
+        }
+
+        .dot {
+            width: 48px;
+            height: 48px;
+            border-radius: 14px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.4rem;
+            margin-bottom: 12px;
+            border: 1px solid rgba(255,255,255,0.1);
+            background: rgba(255,255,255,0.05);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.4);
+            position: relative;
+        }
+
+        .dot::after {
+            content: '';
+            position: absolute;
+            inset: -1px;
+            border-radius: inherit;
+            padding: 1px;
+            background: linear-gradient(135deg, rgba(255,255,255,0.4), transparent);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            pointer-events: none;
+        }
+
+        .point-label {
+            background: rgba(0,0,0,0.6);
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #f8fafc;
+            border: 1px solid rgba(255,255,255,0.1);
+            white-space: nowrap;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+
+        .point-subtext {
+            font-size: 0.7rem;
+            color: #94a3b8;
+            margin-top: 4px;
+            text-align: center;
+            font-weight: 500;
+        }
+
+        /* Specific Placements & Styles */
+        
+        /* Hard Drives: Utility (left) + Manual (bottom) */
+        .hard-drives {
+            left: 25%;
+            top: 75%;
+        }
+        .hard-drives .dot { box-shadow: 0 0 20px rgba(100, 116, 139, 0.3); }
+
+        /* Cloud Drives: Utility (left) + Semi-Automated (mid-bottom) */
+        .cloud-drives {
+            left: 25%;
+            top: 25%;
+        }
+        .cloud-drives .dot { box-shadow: 0 0 20px rgba(56, 189, 248, 0.3); }
+
+        /* Social Media: Emotional (right) + Curated/Manual (mid-bottom) */
+        .social-media {
+            left: 75%;
+            top: 75%;
+        }
+        .social-media .dot { box-shadow: 0 0 20px rgba(236, 72, 153, 0.3); }
+
+        /* Google Photos: Emotional (right) + Intelligent (top) */
+        .google-photos {
+            left: 75%;
+            top: 25%;
+        }
+        .google-photos .dot { 
+            box-shadow: 0 0 30px rgba(16, 185, 129, 0.4); 
+            background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(16, 185, 129, 0.1));
+            border-color: rgba(16, 185, 129, 0.3);
+        }
+        .google-photos .point-label {
+            background: linear-gradient(to right, rgba(16, 185, 129, 0.15), rgba(59, 130, 246, 0.15));
+            border-color: rgba(16, 185, 129, 0.3);
+            color: #10b981;
+            text-shadow: 0 0 10px rgba(16, 185, 129, 0.2);
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="map-wrapper">
+        <div class="header-text">
+            <h2>The Photo Storage Landscape</h2>
+            <p>From cold storage to intelligent companions</p>
+        </div>
+
+        <div class="chart-container">
+            <!-- Axes Lines -->
+            <div class="axis axis-x"></div>
+            <div class="axis axis-y"></div>
+
+            <!-- Axis Labels -->
+            <div class="axis-label label-top">AI Intelligence</div>
+            <div class="axis-label label-bottom">Manual Organization</div>
+            <div class="axis-label label-left">Utility</div>
+            <div class="axis-label label-right">Emotional Value</div>
+
+            <!-- Data Points -->
+            <div class="point hard-drives">
+                <div class="dot">💾</div>
+                <div class="point-label">Hard Drives</div>
+                <div class="point-subtext">Utility + Manual</div>
+            </div>
+
+            <div class="point cloud-drives">
+                <div class="dot">☁️</div>
+                <div class="point-label">Cloud Drives</div>
+                <div class="point-subtext">Utility + Semi-Automated</div>
+            </div>
+
+            <div class="point social-media">
+                <div class="dot"><img src="https://upload.wikimedia.org/wikipedia/commons/e/e7/Instagram_logo_2016.svg" width="24" height="24" alt="Social Media" style="border-radius: 6px;"></div>
+                <div class="point-label">Social Media</div>
+                <div class="point-subtext">Emotional + Curated</div>
+            </div>
+
+            <div class="point google-photos">
+                <div class="dot"><img src="https://www.gstatic.com/images/branding/product/1x/photos_64dp.png" width="30" height="30" alt="Google Photos"></div>
+                <div class="point-label">Google Photos</div>
+                <div class="point-subtext">Emotional + Intelligent</div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

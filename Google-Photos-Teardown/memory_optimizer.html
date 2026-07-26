@@ -1,0 +1,857 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Google Photos — Memory Optimizer Concept Teardown</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,500;1,400&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #0c0d12;
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(37, 99, 235, 0.08) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(99, 102, 241, 0.08) 0px, transparent 50%),
+                radial-gradient(at 50% 50%, #0d0f17 0px, #07080c 100%);
+            font-family: 'Inter', sans-serif;
+            color: #f1f5f9;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 40px 20px 60px;
+            overflow-x: hidden;
+        }
+
+        /* Presentation Title Header */
+        .presentation-header {
+            text-align: center;
+            margin-bottom: 40px;
+            max-width: 800px;
+        }
+
+        .presentation-header h1 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 2.2rem;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            background: linear-gradient(135deg, #ffffff 30%, #94a3b8 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 12px;
+        }
+
+        .presentation-header p {
+            color: #64748b;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            letter-spacing: 0.2px;
+        }
+
+        .presentation-header span {
+            color: #60a5fa;
+            font-weight: 600;
+        }
+
+        /* Main Dashboard container */
+        .dashboard {
+            display: flex;
+            gap: 60px;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 50px;
+            position: relative;
+        }
+
+        .frame-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+        }
+
+        .frame-label {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .frame-label h3 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 6px;
+        }
+
+        .frame-label p {
+            font-size: 0.7rem;
+            color: #475569;
+            margin: 0;
+            font-style: italic;
+        }
+
+        .label-current h3 { color: #f87171; }
+        .label-proposed h3 { color: #60a5fa; }
+
+        /* Phone Frames */
+        .phone {
+            width: 290px;
+            height: 610px;
+            background: #12131a;
+            border-radius: 42px;
+            box-shadow: 
+                0 0 0 10px #1e2030,
+                0 0 0 12px #2d314d,
+                0 25px 60px rgba(0,0,0,0.8),
+                0 0 100px rgba(99, 102, 241, 0.05);
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .phone:hover {
+            transform: translateY(-5px);
+            box-shadow: 
+                0 0 0 10px #1e2030,
+                0 0 0 12px #3b3f61,
+                0 30px 70px rgba(0,0,0,0.9),
+                0 0 120px rgba(99, 102, 241, 0.1);
+        }
+
+        .screen {
+            width: 100%;
+            height: 100%;
+            border-radius: 34px;
+            overflow: hidden;
+            position: relative;
+            background: #111218;
+            color: #e2e8f0;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Status Bar */
+        .status-bar {
+            height: 38px;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 24px;
+            font-size: 0.72rem;
+            font-weight: 600;
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 10;
+            color: #94a3b8;
+        }
+
+        .status-icons {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .status-icons svg {
+            width: 12px;
+            height: 12px;
+            fill: #94a3b8;
+        }
+
+        .notch {
+            position: absolute;
+            top: 6px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 95px;
+            height: 22px;
+            background: #000;
+            border-radius: 11px;
+            z-index: 20;
+        }
+
+        .home-indicator {
+            position: absolute;
+            bottom: 8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 110px;
+            height: 4px;
+            border-radius: 2px;
+            z-index: 15;
+            background: rgba(255, 255, 255, 0.25);
+        }
+
+        /* Screen Labels */
+        .screen-label-bottom {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: #475569;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+        }
+
+        /* Transition Linker */
+        .transition-arrow {
+            display: flex;
+            align-items: center;
+            align-self: center;
+            flex-shrink: 0;
+        }
+
+        .arrow-line {
+            width: 50px;
+            height: 2px;
+            background: linear-gradient(90deg, #f87171, #60a5fa);
+            border-radius: 1px;
+        }
+
+        .arrow-tip {
+            width: 0;
+            height: 0;
+            border-top: 7px solid transparent;
+            border-bottom: 7px solid transparent;
+            border-left: 10px solid #60a5fa;
+            margin-left: -1px;
+        }
+
+        /* Core Google App Bar */
+        .app-bar {
+            height: 56px;
+            margin-top: 34px;
+            display: flex;
+            align-items: center;
+            padding: 0 16px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .app-bar-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.05rem;
+            font-weight: 600;
+            color: #f1f5f9;
+            flex: 1;
+        }
+
+        .back-btn {
+            font-size: 1.2rem;
+            color: #94a3b8;
+            margin-right: 14px;
+            cursor: pointer;
+        }
+
+        /* Content Areas */
+        .content {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+        }
+
+        /* LEFT SCREEN: Storage-Focused */
+        .storage-visual-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 24px;
+            position: relative;
+        }
+
+        .circular-meter-wrapper {
+            position: relative;
+            width: 146px;
+            height: 146px;
+            margin-bottom: 16px;
+        }
+
+        .circular-meter {
+            width: 146px;
+            height: 146px;
+            transform: rotate(-90deg);
+        }
+
+        .meter-bg {
+            fill: none;
+            stroke: #1e293b;
+            stroke-width: 10;
+        }
+
+        .meter-fill {
+            fill: none;
+            stroke: #ef4444; /* Alert color */
+            stroke-width: 10;
+            stroke-dasharray: 427.25; /* 2 * PI * r (r=68) */
+            stroke-dashoffset: 17.09; /* 96% full, 4% remaining offset */
+            stroke-linecap: round;
+        }
+
+        .meter-center-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+        }
+
+        .meter-used {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.45rem;
+            font-weight: 800;
+            color: #ef4444;
+            line-height: 1;
+        }
+
+        .meter-label {
+            font-size: 0.6rem;
+            color: #94a3b8;
+            margin-top: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .meter-total {
+            font-size: 0.65rem;
+            color: #64748b;
+            font-weight: 500;
+        }
+
+        /* Categories breakdown */
+        .categories-title {
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: #64748b;
+            letter-spacing: 1px;
+            align-self: flex-start;
+            margin-bottom: 12px;
+        }
+
+        .category-row {
+            display: flex;
+            align-items: center;
+            width: 100%;
+            margin-bottom: 14px;
+            background: #181922;
+            padding: 10px 12px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.02);
+        }
+
+        .category-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            background: rgba(239, 68, 68, 0.1);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: 12px;
+        }
+
+        .category-icon.other {
+            background: rgba(148, 163, 184, 0.1);
+        }
+
+        .category-icon svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        .category-info {
+            flex: 1;
+        }
+
+        .category-name {
+            font-size: 0.72rem;
+            font-weight: 600;
+            color: #e2e8f0;
+            margin-bottom: 3px;
+        }
+
+        .category-bar-bg {
+            width: 100%;
+            height: 4px;
+            background: #1e293b;
+            border-radius: 2px;
+        }
+
+        .category-bar-fill {
+            height: 100%;
+            border-radius: 2px;
+        }
+
+        .photos-fill {
+            width: 75%;
+            background: #ef4444;
+        }
+
+        .other-fill {
+            width: 25%;
+            background: #94a3b8;
+        }
+
+        .category-val {
+            font-size: 0.65rem;
+            font-weight: 700;
+            color: #94a3b8;
+            margin-left: 12px;
+        }
+
+        .button-group-left {
+            margin-top: auto;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .btn-upgrade-left {
+            background: #1e3a8a;
+            color: #93c5fd;
+            border: 1px solid #3b82f6;
+            padding: 13px;
+            border-radius: 14px;
+            text-align: center;
+            font-size: 0.8rem;
+            font-weight: 700;
+            cursor: pointer;
+            letter-spacing: 0.3px;
+            transition: background 0.2s;
+        }
+
+        .btn-upgrade-left:hover {
+            background: #1d4ed8;
+            color: #ffffff;
+        }
+
+        .storage-warning-footer {
+            text-align: center;
+            font-size: 0.62rem;
+            color: #64748b;
+            line-height: 1.4;
+        }
+
+        /* RIGHT SCREEN: Memory-first Experience */
+        .right-header {
+            margin-bottom: 18px;
+        }
+
+        .right-header h2 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 4px;
+        }
+
+        .right-header p {
+            font-size: 0.65rem;
+            color: #94a3b8;
+        }
+
+        /* Timeline Box */
+        .timeline-card {
+            background: linear-gradient(135deg, rgba(37, 99, 235, 0.1) 0%, rgba(99, 102, 241, 0.03) 100%);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            border-radius: 16px;
+            padding: 14px;
+            margin-bottom: 18px;
+            position: relative;
+        }
+
+        .timeline-axis {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            position: relative;
+            padding: 0 4px;
+        }
+
+        .timeline-line {
+            position: absolute;
+            left: 20px;
+            right: 20px;
+            height: 2px;
+            background: linear-gradient(90deg, #3b82f6, #818cf8);
+            z-index: 1;
+        }
+
+        .timeline-year {
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.65rem;
+            font-weight: 800;
+            color: #93c5fd;
+            background: #12131a;
+            padding: 2px 6px;
+            border-radius: 4px;
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            position: relative;
+            z-index: 2;
+        }
+
+        .timeline-preserved-text {
+            text-align: center;
+            font-size: 0.72rem;
+            font-weight: 600;
+            color: #f1f5f9;
+        }
+
+        /* Cleanup cards */
+        .suggestions-container {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            flex: 1;
+            overflow-y: auto;
+            margin-bottom: 16px;
+        }
+
+        .suggestion-card {
+            background: #181a24;
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            border-radius: 14px;
+            padding: 12px 14px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: border-color 0.2s;
+            cursor: pointer;
+        }
+
+        .suggestion-card:hover {
+            border-color: rgba(96, 165, 250, 0.3);
+        }
+
+        .suggestion-icon {
+            width: 34px;
+            height: 34px;
+            border-radius: 10px;
+            background: rgba(96, 165, 250, 0.1);
+            color: #60a5fa;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1rem;
+            flex-shrink: 0;
+        }
+
+        .suggestion-details {
+            flex: 1;
+        }
+
+        .suggestion-name {
+            font-size: 0.72rem;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 2px;
+        }
+
+        .suggestion-desc {
+            font-size: 0.62rem;
+            color: #94a3b8;
+        }
+
+        .free-pill {
+            font-size: 0.58rem;
+            font-weight: 700;
+            color: #34d399;
+            background: rgba(52, 211, 153, 0.08);
+            border: 1px solid rgba(52, 211, 153, 0.2);
+            padding: 2px 6px;
+            border-radius: 6px;
+            text-transform: uppercase;
+        }
+
+        /* Bottom Action Panel Right */
+        .button-group-right {
+            margin-top: auto;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .btn-primary-right {
+            width: 100%;
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            color: #ffffff;
+            border: none;
+            padding: 13px;
+            border-radius: 14px;
+            text-align: center;
+            font-size: 0.8rem;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+            transition: opacity 0.2s;
+        }
+
+        .btn-primary-right:hover {
+            opacity: 0.95;
+        }
+
+        .btn-secondary-right {
+            font-size: 0.68rem;
+            font-weight: 600;
+            color: #94a3b8;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            padding: 6px;
+            transition: color 0.2s;
+        }
+
+        .btn-secondary-right:hover {
+            color: #60a5fa;
+            text-decoration: underline;
+        }
+
+        /* caption block */
+        .caption-container {
+            margin-top: 35px;
+            text-align: center;
+            max-width: 800px;
+        }
+
+        .caption-container blockquote {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.15rem;
+            font-style: italic;
+            color: #94a3b8;
+            line-height: 1.5;
+            position: relative;
+            padding: 0 30px;
+        }
+
+        .caption-container blockquote::before {
+            content: '“';
+            font-size: 3.8rem;
+            color: #1e293b;
+            position: absolute;
+            top: -24px;
+            left: -4px;
+            font-style: normal;
+        }
+
+        .caption-container blockquote em {
+            color: #f1f5f9;
+            font-style: normal;
+            font-weight: 500;
+            border-bottom: 1px dashed rgba(96, 165, 250, 0.4);
+            padding-bottom: 2px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header presentation -->
+    <div class="presentation-header">
+        <h1>Google Photos — Memory Optimizer</h1>
+        <p>Concept teardown mapping a transition from <span>utility storage management</span> to emotional, <span>memory-first assurance</span>.</p>
+    </div>
+
+    <!-- Dashboard area -->
+    <div class="dashboard">
+
+        <!-- CURRENT EXPERIENCE -->
+        <div class="frame-wrapper">
+            <div class="frame-label label-current">
+                <h3>Current Experience</h3>
+                <p>Storage-centric & transactional</p>
+            </div>
+
+            <div class="phone">
+                <div class="notch"></div>
+                <div class="screen">
+                    <div class="status-bar">
+                        <span>9:41</span>
+                        <div class="status-icons">
+                            <svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+                            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.53c-.26-.81-1-1.4-1.9-1.4h-1v-3c0-.55-.45-1-1-1h-6v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.4z"/></svg>
+                            <span>🔋</span>
+                        </div>
+                    </div>
+
+                    <div class="app-bar">
+                        <span class="back-btn">←</span>
+                        <span class="app-bar-title">Storage Almost Full</span>
+                    </div>
+
+                    <div class="content">
+                        <!-- Storage visual meter -->
+                        <div class="storage-visual-container">
+                            <div class="circular-meter-wrapper">
+                                <svg class="circular-meter" viewBox="0 0 146 146">
+                                    <circle class="meter-bg" cx="73" cy="73" r="68"></circle>
+                                    <circle class="meter-fill" cx="73" cy="73" r="68"></circle>
+                                </svg>
+                                <div class="meter-center-text">
+                                    <div class="meter-used">14.6</div>
+                                    <div class="meter-total">of 15 GB</div>
+                                    <div class="meter-label">Used</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Categories breakdown list -->
+                        <div class="categories-title">Storage Breakdown</div>
+                        
+                        <div class="category-row">
+                            <div class="category-icon">
+                                <svg viewBox="0 0 24 24" fill="#ef4444">
+                                    <path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/>
+                                </svg>
+                            </div>
+                            <div class="category-info">
+                                <div class="category-name">Photos & Videos</div>
+                                <div class="category-bar-bg"><div class="category-bar-fill photos-fill"></div></div>
+                            </div>
+                            <div class="category-val">11.2 GB</div>
+                        </div>
+
+                        <div class="category-row">
+                            <div class="category-icon other">
+                                <svg viewBox="0 0 24 24" fill="#94a3b8">
+                                    <path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/>
+                                </svg>
+                            </div>
+                            <div class="category-info">
+                                <div class="category-name">Other files</div>
+                                <div class="category-bar-bg"><div class="category-bar-fill other-fill"></div></div>
+                            </div>
+                            <div class="category-val">3.4 GB</div>
+                        </div>
+
+                        <!-- Button Upgrade storage -->
+                        <div class="button-group-left">
+                            <div class="btn-upgrade-left">Upgrade storage</div>
+                            <div class="storage-warning-footer">
+                                Upgrade to Google One for additional account storage space.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="home-indicator"></div>
+                </div>
+            </div>
+            <div class="screen-label-bottom">Utility Space Meter</div>
+        </div>
+
+        <!-- Transitions Line -->
+        <div class="transition-arrow">
+            <div class="arrow-line"></div>
+            <div class="arrow-tip"></div>
+        </div>
+
+        <!-- PROPOSED EXPERIENCE -->
+        <div class="frame-wrapper">
+            <div class="frame-label label-proposed">
+                <h3>Proposed Experience</h3>
+                <p>Memory-first & protective</p>
+            </div>
+
+            <div class="phone">
+                <div class="notch"></div>
+                <div class="screen">
+                    <div class="status-bar">
+                        <span>9:41</span>
+                        <div class="status-icons">
+                            <svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+                            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.53c-.26-.81-1-1.4-1.9-1.4h-1v-3c0-.55-.45-1-1-1h-6v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.4z"/></svg>
+                            <span>🔋</span>
+                        </div>
+                    </div>
+
+                    <div class="app-bar">
+                        <span class="back-btn">←</span>
+                        <span class="app-bar-title">Memory Optimizer</span>
+                    </div>
+
+                    <div class="content">
+                        <!-- Header text -->
+                        <div class="right-header">
+                            <h2>Protect what matters</h2>
+                            <p>Optimizing your gallery keeps your timeline safe.</p>
+                        </div>
+
+                        <!-- Timeline representation -->
+                        <div class="timeline-card">
+                            <div class="timeline-axis">
+                                <div class="timeline-line"></div>
+                                <span class="timeline-year">2018</span>
+                                <span class="timeline-year">2026</span>
+                            </div>
+                            <div class="timeline-preserved-text">8 years of memories preserved</div>
+                        </div>
+
+                        <!-- Suggestions Cards -->
+                        <div class="suggestions-container">
+                            
+                            <div class="suggestion-card">
+                                <div class="suggestion-icon">📸</div>
+                                <div class="suggestion-details">
+                                    <div class="suggestion-name">Duplicate moments</div>
+                                    <div class="suggestion-desc">1,248 similar photos</div>
+                                </div>
+                                <div class="free-pill">Free 3.2GB</div>
+                            </div>
+
+                            <div class="suggestion-card">
+                                <div class="suggestion-icon">📱</div>
+                                <div class="suggestion-details">
+                                    <div class="suggestion-name">Temporary screenshots</div>
+                                    <div class="suggestion-desc">864 items</div>
+                                </div>
+                                <div class="free-pill">Free 1.1GB</div>
+                            </div>
+
+                            <div class="suggestion-card">
+                                <div class="suggestion-icon">🎬</div>
+                                <div class="suggestion-details">
+                                    <div class="suggestion-name">Large videos rarely viewed</div>
+                                    <div class="suggestion-desc">Large files safely archived</div>
+                                </div>
+                                <div class="free-pill">Free 4.8GB</div>
+                            </div>
+
+                        </div>
+
+                        <!-- Button Group Right -->
+                        <div class="button-group-right">
+                            <button class="btn-primary-right">Review suggestions</button>
+                            <button class="btn-secondary-right">Upgrade for more memories</button>
+                        </div>
+                    </div>
+
+                    <div class="home-indicator"></div>
+                </div>
+            </div>
+            <div class="screen-label-bottom">Memory Timeline & Cleanup</div>
+        </div>
+
+    </div>
+
+    <!-- Quote caption block -->
+    <div class="caption-container">
+        <blockquote>
+            Users don’t want to manage storage. They want <em>confidence that their memories are protected.</em>
+        </blockquote>
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Camera Evolution Timeline</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+        /* 
+          Body background is set to match typical dark mode (like Substack dark).
+          You can change this to 'transparent' if embedding directly.
+        */
+        body {
+            background-color: #111111; 
+            color: #ffffff;
+            font-family: 'Inter', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 40px 20px;
+        }
+
+        .timeline-container {
+            width: 100%;
+            max-width: 900px; /* Wider to accommodate horizontal layout */
+            /* Removed the heavy background box to blend with the blog's dark theme */
+            padding: 20px 0;
+        }
+
+        .header-text {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .header-text h2 {
+            font-size: 1.5rem; /* Slightly smaller */
+            font-weight: 700;
+            margin: 0 0 8px 0;
+            background: linear-gradient(to right, #ffffff, #a1a1aa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .header-text p {
+            color: #8b949e;
+            font-size: 0.95rem;
+            margin: 0;
+        }
+
+        .timeline {
+            position: relative;
+            display: flex;
+            justify-content: space-between;
+            align-items: stretch;
+            padding-top: 24px; /* Space for the horizontal line and dots */
+        }
+
+        /* Horizontal Line */
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(to right, #3b82f6, #8b5cf6, #ec4899, #f43f5e);
+            border-radius: 3px;
+        }
+
+        .timeline-item {
+            position: relative;
+            flex: 1;
+            padding: 0 10px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .timeline-dot {
+            position: absolute;
+            top: -24px; /* Centers dot exactly on the 3px line (24px padding-top - 8px dot center offset = 16px. Wait, top is relative to timeline-item. The timeline-item is below the line. */
+        }
+        
+        /* Let's reposition the dot so it's perfectly on the line */
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            top: -31px; /* Adjust based on padding to hit the line */
+            left: 50%;
+            transform: translateX(-50%);
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: #111111;
+            border: 3px solid #ffffff;
+            z-index: 2;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .timeline-item:nth-child(1)::before { border-color: #3b82f6; box-shadow: 0 0 10px rgba(59, 130, 246, 0.6); }
+        .timeline-item:nth-child(2)::before { border-color: #8b5cf6; box-shadow: 0 0 10px rgba(139, 92, 246, 0.6); }
+        .timeline-item:nth-child(3)::before { border-color: #ec4899; box-shadow: 0 0 10px rgba(236, 72, 153, 0.6); }
+        .timeline-item:nth-child(4)::before { border-color: #f43f5e; box-shadow: 0 0 10px rgba(244, 63, 94, 0.6); }
+
+        .timeline-content {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            padding: 20px;
+            width: 100%;
+            height: 100%;
+            box-sizing: border-box;
+            transition: transform 0.3s ease, background 0.3s ease, border-color 0.3s ease;
+            backdrop-filter: blur(10px);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            gap: 12px;
+            position: relative;
+        }
+
+        /* Small connecting line from dot to card */
+        .timeline-item::after {
+            content: '';
+            position: absolute;
+            top: -16px;
+            left: 50%;
+            width: 2px;
+            height: 16px;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .timeline-content:hover {
+            transform: translateY(-4px);
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(255, 255, 255, 0.15);
+        }
+
+        .icon-box {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            background: rgba(255,255,255,0.05);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.25rem;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .title {
+            font-size: 1.05rem;
+            font-weight: 600;
+            margin: 0;
+            color: #f8fafc;
+        }
+
+        .problem-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            margin-top: 4px;
+        }
+
+        .problem-badge {
+            background: rgba(244, 63, 94, 0.15);
+            color: #fb7185;
+            padding: 3px 8px;
+            border-radius: 20px;
+            font-size: 0.65rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border: 1px solid rgba(244, 63, 94, 0.25);
+        }
+
+        .problem-text {
+            font-size: 0.85rem;
+            color: #cbd5e1;
+            margin: 0;
+        }
+
+        /* Responsive adjustments for smaller screens */
+        @media (max-width: 768px) {
+            .timeline {
+                flex-direction: column;
+                padding-top: 0;
+                padding-left: 24px; /* Switch back to vertical for mobile */
+            }
+            .timeline::before {
+                width: 3px;
+                height: 100%;
+                left: 0;
+                top: 0;
+                background: linear-gradient(to bottom, #3b82f6, #8b5cf6, #ec4899, #f43f5e);
+            }
+            .timeline-item {
+                width: 100%;
+                margin-bottom: 30px;
+                padding: 0 0 0 20px;
+                align-items: flex-start;
+            }
+            .timeline-item::before {
+                top: 20px;
+                left: -32px;
+            }
+            .timeline-item::after {
+                top: 26px;
+                left: -16px;
+                width: 16px;
+                height: 2px;
+            }
+            .timeline-content {
+                flex-direction: row;
+                text-align: left;
+                justify-content: flex-start;
+            }
+            .problem-wrapper {
+                flex-direction: row;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="timeline-container">
+        <div class="header-text">
+            <h2>The Evolution of Photography</h2>
+            <p>A shifting landscape of technological friction</p>
+        </div>
+        
+        <div class="timeline">
+            <!-- Era 1 -->
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <div class="icon-box">🎞️</div>
+                    <h3 class="title">Film Camera</h3>
+                    <div class="problem-wrapper">
+                        <span class="problem-badge">Problem</span>
+                        <p class="problem-text">Capture</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Era 2 -->
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <div class="icon-box">📷</div>
+                    <h3 class="title">Digital Camera</h3>
+                    <div class="problem-wrapper">
+                        <span class="problem-badge">Problem</span>
+                        <p class="problem-text">Storage</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Era 3 -->
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <div class="icon-box">📱</div>
+                    <h3 class="title">Smartphone</h3>
+                    <div class="problem-wrapper">
+                        <span class="problem-badge">Problem</span>
+                        <p class="problem-text">Organization</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Era 4 -->
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <div class="icon-box">✨</div>
+                    <h3 class="title">AI Photos</h3>
+                    <div class="problem-wrapper">
+                        <span class="problem-badge">Problem</span>
+                        <p class="problem-text">Understanding &amp; Retrieval</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

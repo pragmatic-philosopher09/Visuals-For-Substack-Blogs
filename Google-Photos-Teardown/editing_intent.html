@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editing Intent Spectrum</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,600;1,400;1,600&display=swap');
+
+        body {
+            background-color: #0A0A0A;
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 50px 20px 60px;
+            color: #FFF;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 50px;
+            max-width: 700px;
+        }
+        .page-header h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            font-weight: 600;
+            font-style: italic;
+            color: #F8FAFC;
+            letter-spacing: -0.3px;
+            margin: 0 0 12px 0;
+            line-height: 1.3;
+        }
+        .page-header .accent-line {
+            width: 60px;
+            height: 3px;
+            background: linear-gradient(90deg, #818CF8, #E879F9);
+            margin: 0 auto;
+            border-radius: 2px;
+        }
+
+        .dashboard {
+            display: flex;
+            gap: 80px;
+            justify-content: center;
+            align-items: flex-start;
+            position: relative;
+        }
+
+        /* Frame wrapper */
+        .frame-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .frame-label {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .frame-label h3 {
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2.5px;
+            margin: 0 0 6px 0;
+        }
+        .label-ai h3 { color: #818CF8; }
+        .label-manual h3 { color: #F59E0B; }
+
+        .frame-label p {
+            font-size: 0.7rem;
+            color: #64748B;
+            margin: 0;
+            letter-spacing: 0.5px;
+        }
+
+        .phone {
+            width: 280px;
+            height: 600px;
+            background: #000;
+            border-radius: 40px;
+            box-shadow: 0 0 0 8px #1E1E1E, 0 0 0 10px #333, 0 30px 60px rgba(0,0,0,0.6);
+            position: relative;
+            overflow: visible;
+        }
+
+        .screen {
+            width: 100%;
+            height: 100%;
+            border-radius: 32px;
+            overflow: hidden;
+            background: #000;
+            color: #FFF;
+            position: relative;
+        }
+
+        .status-bar {
+            height: 40px;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 22px;
+            box-sizing: border-box;
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: #FFF;
+            z-index: 10;
+            position: absolute;
+            top: 0; left: 0; right: 0;
+        }
+
+        .notch {
+            position: absolute;
+            top: 8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90px;
+            height: 24px;
+            background: #000;
+            border-radius: 12px;
+            z-index: 20;
+        }
+
+        .home-indicator {
+            position: absolute;
+            bottom: 8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: #FFF;
+            border-radius: 2px;
+            z-index: 15;
+            opacity: 0.2;
+        }
+
+        .screen-label-bottom {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #475569;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+        }
+
+        /* ======================== */
+        /*  FRAME 1: MAGIC EDITOR   */
+        /* ======================== */
+        .f1-image {
+            width: 100%;
+            height: 55%;
+            background: url('https://picsum.photos/id/1015/600/900') center/cover;
+            position: relative;
+        }
+        .f1-header {
+            position: absolute;
+            top: 48px; left: 16px; right: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 10;
+        }
+        .f1-icon {
+            width: 32px; height: 32px;
+            background: rgba(0,0,0,0.45);
+            border-radius: 50%;
+            display: flex; justify-content: center; align-items: center;
+            color: #FFF; font-size: 0.8rem;
+            backdrop-filter: blur(8px);
+        }
+        .f1-icon svg { width: 16px; height: 16px; fill: #FFF; }
+
+        .f1-bottom {
+            position: absolute;
+            bottom: 0; left: 0; right: 0;
+            height: 48%;
+            background: #111;
+            border-top-left-radius: 24px;
+            border-top-right-radius: 24px;
+            padding: 20px 16px;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .ai-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: linear-gradient(135deg, #818CF8, #C084FC);
+            color: #FFF;
+            padding: 6px 12px;
+            border-radius: 16px;
+            font-size: 0.65rem;
+            font-weight: 700;
+            margin-bottom: 16px;
+            align-self: flex-start;
+            letter-spacing: 0.5px;
+        }
+
+        .suggestion-cards {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            flex: 1;
+        }
+
+        .suggestion-card {
+            background: #1A1A1A;
+            border: 1px solid #2A2A2A;
+            border-radius: 14px;
+            padding: 14px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: border-color 0.2s;
+        }
+        .suggestion-card:hover { border-color: #818CF8; }
+
+        .sug-icon {
+            width: 36px; height: 36px;
+            border-radius: 10px;
+            display: flex; justify-content: center; align-items: center;
+            flex-shrink: 0;
+            font-size: 1.1rem;
+        }
+        .sug-icon.eraser { background: rgba(129, 140, 248, 0.15); }
+        .sug-icon.sky { background: rgba(56, 189, 248, 0.15); }
+        .sug-icon.enhance { background: rgba(52, 211, 153, 0.15); }
+
+        .sug-text h4 {
+            font-size: 0.8rem; font-weight: 600; margin: 0 0 3px 0; color: #F1F5F9;
+        }
+        .sug-text p {
+            font-size: 0.6rem; margin: 0; color: #64748B; line-height: 1.3;
+        }
+
+        .f1-done {
+            margin-top: 12px;
+            padding: 12px 0;
+            background: linear-gradient(135deg, #818CF8, #C084FC);
+            text-align: center;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            color: #FFF;
+        }
+
+        /* ======================== */
+        /*  FRAME 2: MANUAL EDIT    */
+        /* ======================== */
+        .f2-image {
+            width: 100%;
+            height: 45%;
+            background: url('https://picsum.photos/id/1015/600/900') center/cover;
+            position: relative;
+        }
+        .f2-header {
+            position: absolute;
+            top: 48px; left: 16px; right: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 10;
+        }
+        .f2-icon {
+            width: 32px; height: 32px;
+            background: rgba(0,0,0,0.45);
+            border-radius: 50%;
+            display: flex; justify-content: center; align-items: center;
+            color: #FFF; font-size: 0.8rem;
+            backdrop-filter: blur(8px);
+        }
+        .f2-icon svg { width: 16px; height: 16px; fill: #FFF; }
+
+        .f2-bottom {
+            position: absolute;
+            bottom: 0; left: 0; right: 0;
+            height: 58%;
+            background: #111;
+            border-top-left-radius: 24px;
+            border-top-right-radius: 24px;
+            padding: 20px 16px;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .tab-row {
+            display: flex;
+            gap: 0;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #2A2A2A;
+        }
+        .tab {
+            flex: 1;
+            text-align: center;
+            padding: 8px 0 10px;
+            font-size: 0.65rem;
+            font-weight: 600;
+            color: #64748B;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            position: relative;
+        }
+        .tab.active {
+            color: #F59E0B;
+        }
+        .tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: -1px; left: 20%; right: 20%;
+            height: 2px;
+            background: #F59E0B;
+            border-radius: 1px;
+        }
+
+        .sliders-area {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+            flex: 1;
+        }
+
+        .slider-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .slider-label {
+            font-size: 0.65rem;
+            font-weight: 500;
+            color: #94A3B8;
+            width: 72px;
+            flex-shrink: 0;
+        }
+        .slider-track-manual {
+            flex: 1;
+            height: 3px;
+            background: #2A2A2A;
+            border-radius: 2px;
+            position: relative;
+        }
+        .slider-fill {
+            height: 100%;
+            border-radius: 2px;
+            position: absolute;
+            top: 0; left: 0;
+            background: #F59E0B;
+        }
+
+        .slider-thumb-manual {
+            width: 14px; height: 14px;
+            background: #FFF;
+            border-radius: 50%;
+            position: absolute;
+            top: -6px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.5);
+        }
+
+        .slider-value {
+            font-size: 0.6rem;
+            font-weight: 600;
+            color: #F59E0B;
+            width: 30px;
+            text-align: right;
+            flex-shrink: 0;
+        }
+
+        .f2-done {
+            margin-top: 14px;
+            padding: 12px 0;
+            background: #FFF;
+            color: #000;
+            text-align: center;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 0.85rem;
+        }
+
+        /* ======================== */
+        /*       OVERLAY QUOTE      */
+        /* ======================== */
+        .overlay-quote {
+            margin-top: 50px;
+            text-align: center;
+            max-width: 800px;
+        }
+        .overlay-quote blockquote {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.1rem;
+            font-style: italic;
+            color: #CBD5E1;
+            line-height: 1.5;
+            margin: 0;
+            position: relative;
+            padding: 0 20px;
+        }
+        .overlay-quote blockquote::before {
+            content: '"';
+            font-size: 4rem;
+            color: #334155;
+            position: absolute;
+            top: -20px;
+            left: -10px;
+            font-style: normal;
+        }
+
+        /* Transition arrow between phones */
+        .transition-arrow {
+            display: flex;
+            align-items: center;
+            align-self: center;
+            flex-shrink: 0;
+        }
+        .arrow-line {
+            width: 50px;
+            height: 2px;
+            background: linear-gradient(90deg, #818CF8, #E879F9, #F59E0B);
+            border-radius: 1px;
+        }
+        .arrow-tip {
+            width: 0; height: 0;
+            border-top: 7px solid transparent;
+            border-bottom: 7px solid transparent;
+            border-left: 10px solid #F59E0B;
+            margin-left: -1px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="dashboard">
+
+        <!-- ===== FRAME 1: AI / MAGIC EDITOR ===== -->
+        <div class="frame-wrapper">
+            <div class="frame-label label-ai">
+                <h3>AI Suggestions</h3>
+                <p>"Help me get there faster"</p>
+            </div>
+
+            <div class="phone">
+                <div class="notch"></div>
+                <div class="screen">
+                    <div class="status-bar"><span>9:41</span><span style="display:flex;align-items:center;gap:4px;"><svg viewBox="0 0 24 24" width="12" height="12" fill="#FFF"><path d="M1 9l2 2c4.97-4.97 13.03-4.97 18 0l2-2C16.93 2.93 7.08 2.93 1 9zm8 8l3 3 3-3c-1.65-1.66-4.34-1.66-6 0zm-4-4l2 2c2.76-2.76 7.24-2.76 10 0l2-2C15.14 9.14 8.87 9.14 5 13z"/></svg> 5G 🔋</span></div>
+
+                    <div class="f1-image">
+                        <div class="f1-header">
+                            <div class="f1-icon">←</div>
+                            <div class="f1-icon">
+                                <svg viewBox="0 0 24 24"><path d="M12.5 8c-2.65 0-5.05.99-6.9 2.6L2 7v9h9l-3.62-3.62c1.39-1.16 3.16-1.88 5.12-1.88 3.54 0 6.55 2.31 7.6 5.5l2.37-.78C20.76 10.34 16.95 8 12.5 8z"/></svg>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="f1-bottom">
+                        <div class="ai-badge">
+                            ✨ AI Suggestions
+                        </div>
+
+                        <div class="suggestion-cards">
+                            <div class="suggestion-card">
+                                <div class="sug-icon eraser">✨</div>
+                                <div class="sug-text">
+                                    <h4>Magic Eraser</h4>
+                                    <p>Remove distracting objects automatically</p>
+                                </div>
+                            </div>
+                            <div class="suggestion-card">
+                                <div class="sug-icon sky">🌤️</div>
+                                <div class="sug-text">
+                                    <h4>Sky Replacement</h4>
+                                    <p>Enhance the sky with golden hour tones</p>
+                                </div>
+                            </div>
+                            <div class="suggestion-card">
+                                <div class="sug-icon enhance">🎨</div>
+                                <div class="sug-text">
+                                    <h4>Auto Enhance</h4>
+                                    <p>One-tap color and lighting correction</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="f1-done">Apply All ✨</div>
+                    </div>
+
+                    <div class="home-indicator"></div>
+                </div>
+            </div>
+            <div class="screen-label-bottom">Outcome First Intent</div>
+        </div>
+
+        <!-- Transition Arrow -->
+        <div class="transition-arrow">
+            <div class="arrow-line"></div>
+            <div class="arrow-tip"></div>
+        </div>
+
+        <!-- ===== FRAME 2: MANUAL CONTROLS ===== -->
+        <div class="frame-wrapper">
+            <div class="frame-label label-manual">
+                <h3>Manual Controls</h3>
+                <p>"Let me shape the outcome"</p>
+            </div>
+
+            <div class="phone">
+                <div class="notch"></div>
+                <div class="screen">
+                    <div class="status-bar"><span>9:41</span><span style="display:flex;align-items:center;gap:4px;"><svg viewBox="0 0 24 24" width="12" height="12" fill="#FFF"><path d="M1 9l2 2c4.97-4.97 13.03-4.97 18 0l2-2C16.93 2.93 7.08 2.93 1 9zm8 8l3 3 3-3c-1.65-1.66-4.34-1.66-6 0zm-4-4l2 2c2.76-2.76 7.24-2.76 10 0l2-2C15.14 9.14 8.87 9.14 5 13z"/></svg> 5G 🔋</span></div>
+
+                    <div class="f2-image">
+                        <div class="f2-header">
+                            <div class="f2-icon">←</div>
+                            <div class="f2-icon">
+                                <svg viewBox="0 0 24 24"><path d="M12.5 8c-2.65 0-5.05.99-6.9 2.6L2 7v9h9l-3.62-3.62c1.39-1.16 3.16-1.88 5.12-1.88 3.54 0 6.55 2.31 7.6 5.5l2.37-.78C20.76 10.34 16.95 8 12.5 8z"/></svg>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="f2-bottom">
+                        <div class="tab-row">
+                            <div class="tab">Light</div>
+                            <div class="tab active">Color</div>
+                            <div class="tab">Pop</div>
+                        </div>
+
+                        <div class="sliders-area">
+                            <div class="slider-row">
+                                <div class="slider-label">Brightness</div>
+                                <div class="slider-track-manual">
+                                    <div class="slider-fill" style="width: 55%;"></div>
+                                    <div class="slider-thumb-manual" style="left: calc(55% - 7px);"></div>
+                                </div>
+                                <div class="slider-value">+12</div>
+                            </div>
+                            <div class="slider-row">
+                                <div class="slider-label">Contrast</div>
+                                <div class="slider-track-manual">
+                                    <div class="slider-fill" style="width: 40%;"></div>
+                                    <div class="slider-thumb-manual" style="left: calc(40% - 7px);"></div>
+                                </div>
+                                <div class="slider-value">−8</div>
+                            </div>
+                            <div class="slider-row">
+                                <div class="slider-label">Saturation</div>
+                                <div class="slider-track-manual">
+                                    <div class="slider-fill" style="width: 72%;"></div>
+                                    <div class="slider-thumb-manual" style="left: calc(72% - 7px);"></div>
+                                </div>
+                                <div class="slider-value">+24</div>
+                            </div>
+                            <div class="slider-row">
+                                <div class="slider-label">Warmth</div>
+                                <div class="slider-track-manual">
+                                    <div class="slider-fill" style="width: 65%;"></div>
+                                    <div class="slider-thumb-manual" style="left: calc(65% - 7px);"></div>
+                                </div>
+                                <div class="slider-value">+18</div>
+                            </div>
+                            <div class="slider-row">
+                                <div class="slider-label">Sharpness</div>
+                                <div class="slider-track-manual">
+                                    <div class="slider-fill" style="width: 30%;"></div>
+                                    <div class="slider-thumb-manual" style="left: calc(30% - 7px);"></div>
+                                </div>
+                                <div class="slider-value">−4</div>
+                            </div>
+                        </div>
+
+                        <div class="f2-done">Done</div>
+                    </div>
+
+                    <div class="home-indicator"></div>
+                </div>
+            </div>
+            <div class="screen-label-bottom">Control First Intent</div>
+        </div>
+
+    </div>
+
+    <!-- Overlay Quote -->
+    <div class="overlay-quote">
+        <blockquote>
+            The challenge isn't removing effort — it's knowing when effort represents <em style="color:#E2E8F0;">ownership.</em>
+        </blockquote>
+    </div>
+
+</body>
+</html>

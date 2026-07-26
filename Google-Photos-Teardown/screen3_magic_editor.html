@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Google Photos - Magic Editor</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+        body {
+            background-color: #F8FAFC;
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .phone {
+            width: 340px;
+            height: 720px;
+            background: #000000;
+            border-radius: 44px;
+            box-shadow: 0 0 0 10px #E2E8F0, 0 25px 50px rgba(0,0,0,0.15);
+            position: relative;
+            overflow: visible; 
+            margin: 60px 200px;
+        }
+
+        .screen {
+            width: 100%;
+            height: 100%;
+            border-radius: 34px;
+            overflow: hidden;
+            background: #000;
+            color: #FFF;
+            position: relative;
+            border: 1px solid #E2E8F0;
+        }
+
+        .status-bar {
+            height: 44px;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 24px;
+            box-sizing: border-box;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #FFF;
+            z-index: 10;
+            position: absolute;
+            top: 0; left: 0; right: 0;
+        }
+
+        .notch {
+            position: absolute;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 110px;
+            height: 28px;
+            background: #000;
+            border-radius: 14px;
+            z-index: 20;
+        }
+
+        /* --- UI ELEMENTS --- */
+        .editor-image {
+            width: 100%;
+            height: 75%;
+            background: url('https://picsum.photos/id/1018/800/1200') center/cover;
+            position: relative;
+        }
+        
+        .editor-header {
+            position: absolute;
+            top: 54px; left: 20px; right: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 10;
+        }
+        
+        .action-icon {
+            width: 36px; height: 36px;
+            background: rgba(0,0,0,0.4);
+            border-radius: 50%;
+            display: flex; justify-content: center; align-items: center;
+            color: #FFF;
+            backdrop-filter: blur(8px);
+        }
+        
+        .action-icon svg { width: 18px; height: 18px; fill: #FFF; }
+
+        .bottom-sheet {
+            position: absolute;
+            bottom: 0; left: 0; right: 0;
+            height: 28%;
+            background: #111;
+            border-top-left-radius: 24px;
+            border-top-right-radius: 24px;
+            padding: 24px;
+            box-sizing: border-box;
+        }
+        
+        .tools-row {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 24px;
+            overflow: hidden;
+        }
+        
+        .tool-pill {
+            padding: 10px 18px;
+            background: #333;
+            border-radius: 24px;
+            font-size: 0.85rem;
+            white-space: nowrap;
+            color: #FFF;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .tool-pill.active {
+            background: #FFF; color: #000; font-weight: 600;
+        }
+
+        /* Sparkle icon for active magic eraser */
+        .tool-pill.active svg { fill: #000; width: 14px; height: 14px; }
+
+        .slider-track {
+            width: 100%; height: 4px; background: #333; border-radius: 2px; margin-bottom: 30px; position: relative;
+        }
+        .slider-thumb {
+            width: 24px; height: 24px; background: #FFF; border-radius: 50%; position: absolute; top: -10px; left: 35%;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.5);
+        }
+
+        .done-btn {
+            width: 100%;
+            padding: 16px 0;
+            background: #FFF;
+            color: #000;
+            text-align: center;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 1.05rem;
+        }
+
+        /* iOS Home Indicator */
+        .home-indicator {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 120px;
+            height: 5px;
+            background: #FFF;
+            border-radius: 3px;
+            z-index: 15;
+            opacity: 0.25;
+        }
+
+        /* --- ANNOTATIONS --- */
+        .annotation {
+            position: absolute; background: #E11D48; color: #FFF;
+            padding: 8px 14px; border-radius: 8px; font-size: 0.8rem; font-weight: 700;
+            box-shadow: 0 4px 12px rgba(225, 29, 72, 0.3); white-space: nowrap;
+            z-index: 100; letter-spacing: 0.5px; text-transform: uppercase;
+        }
+
+        .annotation.top::after {
+            content: ''; position: absolute; bottom: 100%; left: 50%; 
+            width: 2px; height: 30px; background: #E11D48; transform: translateX(-50%);
+        }
+        .annotation.top::before {
+            content: ''; position: absolute; bottom: calc(100% + 30px); left: 50%;
+            width: 8px; height: 8px; background: #E11D48; border-radius: 50%; transform: translate(-50%, 50%);
+        }
+
+        .annotation.right::after {
+            content: ''; position: absolute; top: 50%; left: 100%; 
+            width: 60px; height: 2px; background: #E11D48; transform: translateY(-50%);
+        }
+        .annotation.right::before {
+            content: ''; position: absolute; top: 50%; left: calc(100% + 60px);
+            width: 8px; height: 8px; background: #E11D48; border-radius: 50%; transform: translate(-50%, -50%);
+        }
+
+        .annotation.left::after {
+            content: ''; position: absolute; top: 50%; right: 100%;
+            width: 60px; height: 2px; background: #E11D48; transform: translateY(-50%);
+        }
+        .annotation.left::before {
+            content: ''; position: absolute; top: 50%; right: calc(100% + 60px);
+            width: 8px; height: 8px; background: #E11D48; border-radius: 50%; transform: translate(50%, -50%);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="phone">
+        <div class="notch"></div>
+        <div class="screen">
+            <div class="status-bar">
+                <span>9:41</span>
+                <span>5G 🔋</span>
+            </div>
+            
+            <div class="editor-image">
+                <div class="editor-header">
+                    <div class="action-icon">←</div>
+                    <div class="action-icon">
+                        <svg viewBox="0 0 24 24"><path d="M12.5 8c-2.65 0-5.05.99-6.9 2.6L2 7v9h9l-3.62-3.62c1.39-1.16 3.16-1.88 5.12-1.88 3.54 0 6.55 2.31 7.6 5.5l2.37-.78C20.76 10.34 16.95 8 12.5 8z"/></svg>
+                    </div> 
+                </div>
+            </div>
+
+            <div class="bottom-sheet">
+                <div class="tools-row">
+                    <div class="tool-pill active">
+                        <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-8.86 14l-2.02-4.3-4.3-2.02 4.3-2.02 2.02-4.3 2.02 4.3 4.3 2.02-4.3 2.02L10.14 17z"/></svg>
+                        Magic Eraser
+                    </div>
+                    <div class="tool-pill">Sky</div>
+                    <div class="tool-pill">Portrait Blur</div>
+                </div>
+                
+                <div class="slider-track">
+                    <div class="slider-thumb"></div>
+                </div>
+                <div class="done-btn">Done</div>
+            </div>
+            <div class="home-indicator"></div>
+        </div>
+
+        <!-- Overlays for Phone 3 -->
+        <div class="annotation top" style="bottom: -40px; left: 50%; transform: translateX(-50%);">Completion rate</div>
+        <div class="annotation left" style="top: 72px; right: -140px;">Undo rate</div>
+        <div class="annotation left" style="bottom: 105px; right: -230px;">Manual adjustment freq.</div>
+    </div>
+
+</body>
+</html>

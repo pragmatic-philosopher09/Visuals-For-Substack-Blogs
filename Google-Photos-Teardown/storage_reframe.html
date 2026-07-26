@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Google One — Reframing Storage</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;1,400;1,500&family=Google+Sans:wght@400;500;700&display=swap');
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background-color: #08080A;
+            font-family: 'Inter', sans-serif;
+            color: #E2E8F0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 40px 20px 50px;
+        }
+
+        .dashboard {
+            display: flex;
+            gap: 60px;
+            justify-content: center;
+            align-items: flex-start;
+        }
+
+        .frame-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .frame-label {
+            margin-bottom: 18px;
+            text-align: center;
+        }
+        .frame-label h3 {
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2.5px;
+            margin: 0 0 5px 0;
+        }
+        .frame-label p {
+            font-size: 0.65rem;
+            color: #64748B;
+            margin: 0;
+            font-style: italic;
+        }
+        .label-current h3 { color: #EF4444; }
+        .label-alt h3 { color: #34D399; }
+
+        /* Phone */
+        .phone {
+            width: 280px;
+            height: 600px;
+            background: #FFF;
+            border-radius: 40px;
+            box-shadow: 0 0 0 8px #1E1E1E, 0 0 0 10px #333, 0 30px 60px rgba(0,0,0,0.6);
+            position: relative;
+            overflow: visible;
+        }
+        .screen {
+            width: 100%;
+            height: 100%;
+            border-radius: 32px;
+            overflow: hidden;
+            position: relative;
+        }
+        .screen-light { background: #FFF; color: #1F2937; }
+        .screen-warm { background: linear-gradient(180deg, #0F172A 0%, #1E293B 100%); color: #F1F5F9; }
+
+        .status-bar {
+            height: 40px; width: 100%;
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 0 22px; font-size: 0.7rem; font-weight: 600;
+            position: absolute; top: 0; left: 0; right: 0; z-index: 10;
+        }
+        .status-bar.dark { color: #FFF; }
+        .status-bar.light { color: #111; }
+        .status-icons { display: flex; align-items: center; gap: 4px; }
+        .status-icons svg { width: 12px; height: 12px; }
+
+        .notch {
+            position: absolute; top: 8px; left: 50%; transform: translateX(-50%);
+            width: 90px; height: 24px; background: #000; border-radius: 12px; z-index: 20;
+        }
+        .home-indicator {
+            position: absolute; bottom: 8px; left: 50%; transform: translateX(-50%);
+            width: 100px; height: 4px; border-radius: 2px; z-index: 15; opacity: 0.2;
+        }
+        .hi-dark { background: #000; }
+        .hi-light { background: #FFF; }
+
+        .screen-label-bottom {
+            text-align: center; margin-top: 18px;
+            font-size: 0.7rem; font-weight: 600; color: #475569;
+            text-transform: uppercase; letter-spacing: 1.5px;
+        }
+
+        /* Transition arrow */
+        .transition-arrow {
+            display: flex; align-items: center; align-self: center; flex-shrink: 0;
+        }
+        .arrow-line {
+            width: 40px; height: 2px;
+            background: linear-gradient(90deg, #EF4444, #F59E0B, #34D399);
+            border-radius: 1px;
+        }
+        .arrow-tip {
+            width: 0; height: 0;
+            border-top: 7px solid transparent;
+            border-bottom: 7px solid transparent;
+            border-left: 10px solid #34D399;
+            margin-left: -1px;
+        }
+
+        /* =============================== */
+        /*    CURRENT: STORAGE METER UI     */
+        /* =============================== */
+        .current-content {
+            padding: 60px 20px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: 100%;
+        }
+
+        .g1-logo {
+            display: flex; align-items: center; gap: 8px;
+            margin-bottom: 28px;
+        }
+        .g1-logo-icon {
+            width: 28px; height: 28px; border-radius: 50%;
+            background: linear-gradient(135deg, #4285F4, #34A853, #FBBC04, #EA4335);
+            display: flex; justify-content: center; align-items: center;
+            font-size: 0.7rem; font-weight: 700; color: #FFF;
+        }
+        .g1-logo span { font-size: 1.1rem; font-weight: 600; color: #1F2937; }
+
+        .storage-ring-container {
+            position: relative;
+            width: 140px; height: 140px;
+            margin-bottom: 20px;
+        }
+        .storage-ring {
+            width: 140px; height: 140px;
+        }
+        .storage-center-text {
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            text-align: center;
+        }
+        .storage-center-text .used {
+            font-size: 1.4rem; font-weight: 800; color: #EF4444;
+        }
+        .storage-center-text .total {
+            font-size: 0.6rem; color: #94A3B8; font-weight: 500;
+        }
+
+        .storage-warning {
+            background: #FEF2F2;
+            border: 1px solid #FECACA;
+            border-radius: 10px;
+            padding: 10px 14px;
+            width: 100%;
+            margin-bottom: 20px;
+            display: flex; align-items: center; gap: 8px;
+        }
+        .warning-icon {
+            width: 20px; height: 20px; background: #EF4444; border-radius: 50%;
+            display: flex; justify-content: center; align-items: center;
+            color: #FFF; font-size: 0.65rem; font-weight: 800; flex-shrink: 0;
+        }
+        .storage-warning p {
+            font-size: 0.7rem; color: #991B1B; font-weight: 500; line-height: 1.3;
+        }
+
+        .breakdown-title {
+            font-size: 0.7rem; font-weight: 600; color: #64748B;
+            text-transform: uppercase; letter-spacing: 1px;
+            align-self: flex-start; margin-bottom: 10px;
+        }
+        .breakdown-row {
+            display: flex; align-items: center; gap: 10px;
+            width: 100%; margin-bottom: 8px;
+        }
+        .breakdown-icon {
+            width: 28px; height: 28px;
+            display: flex; justify-content: center; align-items: center;
+            flex-shrink: 0;
+        }
+
+        .breakdown-info { flex: 1; }
+        .breakdown-info h5 { font-size: 0.7rem; font-weight: 600; color: #334155; margin: 0; }
+        .breakdown-bar {
+            width: 100%; height: 4px; background: #E2E8F0; border-radius: 2px; margin-top: 4px;
+            position: relative;
+        }
+        .breakdown-fill { height: 100%; border-radius: 2px; position: absolute; top: 0; left: 0; }
+        .fill-photos { width: 75%; background: #3B82F6; }
+        .fill-drive { width: 15%; background: #F59E0B; }
+        .fill-gmail { width: 8%; background: #EC4899; }
+
+        .breakdown-val { font-size: 0.55rem; font-weight: 600; color: #94A3B8; }
+
+        .upgrade-btn-current {
+            margin-top: auto;
+            width: 100%;
+            padding: 14px 0;
+            background: #2563EB;
+            color: #FFF;
+            text-align: center;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 0.85rem;
+        }
+
+        /* =============================== */
+        /*   ALTERNATIVE: MEMORY TIMELINE   */
+        /* =============================== */
+        .alt-content {
+            padding: 60px 20px 20px;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .alt-greeting {
+            font-size: 0.75rem; color: #94A3B8; margin-bottom: 4px;
+        }
+        .alt-headline {
+            font-size: 1.15rem; font-weight: 700; color: #F1F5F9;
+            margin-bottom: 6px; line-height: 1.3;
+        }
+        .alt-sub {
+            font-size: 0.65rem; color: #64748B; margin-bottom: 24px; line-height: 1.4;
+        }
+
+        /* Timeline */
+        .timeline {
+            position: relative;
+            padding-left: 24px;
+            margin-bottom: 20px;
+            flex: 1;
+        }
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 6px; top: 0; bottom: 0;
+            width: 2px;
+            background: linear-gradient(to bottom, #34D399, #F59E0B 70%, #EF4444);
+            border-radius: 1px;
+        }
+
+        .tl-node {
+            position: relative;
+            margin-bottom: 18px;
+        }
+        .tl-dot {
+            position: absolute;
+            left: -24px; top: 2px;
+            width: 14px; height: 14px;
+            border-radius: 50%;
+            border: 2px solid;
+            background: #1E293B;
+        }
+        .dot-green { border-color: #34D399; }
+        .dot-amber { border-color: #F59E0B; }
+        .dot-red { border-color: #EF4444; }
+        .dot-filled { background: #34D399; border-color: #34D399; }
+
+        .tl-year {
+            font-size: 0.6rem; font-weight: 700; text-transform: uppercase;
+            letter-spacing: 1px; margin-bottom: 2px;
+        }
+        .year-green { color: #34D399; }
+        .year-amber { color: #F59E0B; }
+        .year-red { color: #EF4444; }
+
+        .tl-desc {
+            font-size: 0.65rem; color: #94A3B8; line-height: 1.3;
+        }
+
+        .tl-photos-row {
+            display: flex; gap: 4px; margin-top: 6px;
+        }
+        .tl-thumb {
+            width: 36px; height: 36px; border-radius: 6px;
+            background-size: cover; background-position: center;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .memory-stat {
+            background: rgba(52, 211, 153, 0.08);
+            border: 1px solid rgba(52, 211, 153, 0.2);
+            border-radius: 12px;
+            padding: 12px 14px;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .stat-number {
+            font-size: 1.4rem; font-weight: 800; color: #34D399;
+        }
+        .stat-text {
+            font-size: 0.6rem; color: #94A3B8; line-height: 1.3;
+        }
+
+        .upgrade-btn-alt {
+            width: 100%;
+            padding: 14px 0;
+            background: linear-gradient(135deg, #34D399, #10B981);
+            color: #FFF;
+            text-align: center;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            margin-top: auto;
+        }
+        .upgrade-btn-sub {
+            text-align: center;
+            font-size: 0.55rem;
+            color: #64748B;
+            margin-top: 8px;
+        }
+
+        /* Overlay quote */
+        .overlay-quote {
+            margin-top: 40px;
+            text-align: center;
+            max-width: 850px;
+        }
+        .overlay-quote blockquote {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.05rem;
+            font-style: italic;
+            color: #94A3B8;
+            line-height: 1.5;
+            position: relative;
+            padding: 0 20px;
+        }
+        .overlay-quote blockquote::before {
+            content: '"';
+            font-size: 3.5rem;
+            color: #334155;
+            position: absolute;
+            top: -16px;
+            left: -6px;
+            font-style: normal;
+        }
+        .overlay-quote em { color: #E2E8F0; font-style: italic; }
+    </style>
+</head>
+<body>
+
+    <div class="dashboard">
+
+        <!-- ===== CURRENT: STORAGE METER ===== -->
+        <div class="frame-wrapper">
+            <div class="frame-label label-current">
+                <h3>Current Framing</h3>
+                <p>Technical, data-driven</p>
+            </div>
+
+            <div class="phone">
+                <div class="notch"></div>
+                <div class="screen screen-light">
+                    <div class="status-bar light">
+                        <span>9:41</span>
+                        <span class="status-icons">
+                            <svg viewBox="0 0 24 24" fill="#111"><path d="M1 9l2 2c4.97-4.97 13.03-4.97 18 0l2-2C16.93 2.93 7.08 2.93 1 9zm8 8l3 3 3-3c-1.65-1.66-4.34-1.66-6 0zm-4-4l2 2c2.76-2.76 7.24-2.76 10 0l2-2C15.14 9.14 8.87 9.14 5 13z"/></svg>
+                            5G 🔋
+                        </span>
+                    </div>
+
+                    <div class="current-content">
+                        <div class="g1-logo">
+                            <div class="g1-logo-icon">1</div>
+                            <span>Google One</span>
+                        </div>
+
+                        <!-- Storage Ring -->
+                        <div class="storage-ring-container">
+                            <svg class="storage-ring" viewBox="0 0 140 140">
+                                <circle cx="70" cy="70" r="58" fill="none" stroke="#E2E8F0" stroke-width="10"/>
+                                <circle cx="70" cy="70" r="58" fill="none" stroke="#EF4444" stroke-width="10"
+                                    stroke-dasharray="352" stroke-dashoffset="17"
+                                    stroke-linecap="round" transform="rotate(-90 70 70)"/>
+                            </svg>
+                            <div class="storage-center-text">
+                                <div class="used">14.8</div>
+                                <div class="total">of 15 GB used</div>
+                            </div>
+                        </div>
+
+                        <!-- Warning -->
+                        <div class="storage-warning">
+                            <div class="warning-icon">!</div>
+                            <p>Storage almost full. You may not be able to save new photos.</p>
+                        </div>
+
+                        <!-- Breakdown -->
+                        <div class="breakdown-title">Breakdown</div>
+                        <div class="breakdown-row">
+                            <div class="breakdown-icon">
+                                <svg viewBox="0 0 24 24" width="20" height="20">
+                                    <path fill="#EA4335" d="M12 7.5a4.5 4.5 0 1 1 9 0H12z"/>
+                                    <path fill="#4285F4" d="M7.5 12a4.5 4.5 0 1 1 0-9V12z"/>
+                                    <path fill="#34A853" d="M12 16.5a4.5 4.5 0 1 1-9 0H12z"/>
+                                    <path fill="#FBBC05" d="M16.5 12a4.5 4.5 0 1 1 0 9V12z"/>
+                                </svg>
+                            </div>
+                            <div class="breakdown-info">
+                                <h5>Google Photos</h5>
+                                <div class="breakdown-bar"><div class="breakdown-fill fill-photos"></div></div>
+                            </div>
+                            <div class="breakdown-val">11.2 GB</div>
+                        </div>
+                        <div class="breakdown-row">
+                            <div class="breakdown-icon">
+                                <svg viewBox="0 0 32 32" width="20" height="20">
+                                    <path fill="#34A853" d="M16 12.45L12.54 6.34C12.66 6.23 12.79 6.15 12.92 6.1C11.9 6.43 11.43 7.58 11.43 7.58L5.11 18.73c-.09.35-.11.67-.1.95h6.9L16 12.45Z"/>
+                                    <path fill="#FBBC05" d="M16 12.45L20.1 19.68h6.9c.01-.28-.01-.6-.1-.95L20.57 7.58c0 0-.47-1.15-1.49-1.48.13.05.26.13.38.25L16 12.45Z"/>
+                                    <path fill="#4285F4" d="M11.91 19.68L8.49 25.72c0 0-.12-.06-.27-.17c.48.37.95.45.95.45H22.6c.74 0 .9-.28.9-.28l.01-.01-3.41-6.04h-8.19Z"/>
+                                </svg>
+                            </div>
+                            <div class="breakdown-info">
+                                <h5>Google Drive</h5>
+                                <div class="breakdown-bar"><div class="breakdown-fill fill-drive"></div></div>
+                            </div>
+                            <div class="breakdown-val">2.3 GB</div>
+                        </div>
+                        <div class="breakdown-row">
+                            <div class="breakdown-icon">
+                                <svg viewBox="52 42 88 66" width="20" height="20">
+                                    <path fill="#4285f4" d="M58 108h14V74L52 59v43c0 3.32 2.69 6 6 6"/>
+                                    <path fill="#34a853" d="M120 108h14c3.32 0 6-2.69 6-6V59l-20 15"/>
+                                    <path fill="#fbbc04" d="M120 48v26l20-15v-8c0-7.42-8.47-11.65-14.4-7.2L120 48"/>
+                                    <path fill="#ea4335" d="M72 74V48l24 18 24-18v26L96 92z"/>
+                                </svg>
+                            </div>
+                            <div class="breakdown-info">
+                                <h5>Gmail</h5>
+                                <div class="breakdown-bar"><div class="breakdown-fill fill-gmail"></div></div>
+                            </div>
+                            <div class="breakdown-val">1.3 GB</div>
+                        </div>
+
+                        <div class="upgrade-btn-current">Get more storage</div>
+                    </div>
+
+                    <div class="home-indicator hi-dark"></div>
+                </div>
+            </div>
+            <div class="screen-label-bottom">Data-Centric</div>
+        </div>
+
+        <!-- Arrow -->
+        <div class="transition-arrow">
+            <div class="arrow-line"></div>
+            <div class="arrow-tip"></div>
+        </div>
+
+        <!-- ===== ALTERNATIVE: MEMORY TIMELINE ===== -->
+        <div class="frame-wrapper">
+            <div class="frame-label label-alt">
+                <h3>Alternative Framing</h3>
+                <p>Emotional, time-anchored</p>
+            </div>
+
+            <div class="phone">
+                <div class="notch"></div>
+                <div class="screen screen-warm">
+                    <div class="status-bar dark">
+                        <span>9:41</span>
+                        <span class="status-icons">
+                            <svg viewBox="0 0 24 24" fill="#FFF"><path d="M1 9l2 2c4.97-4.97 13.03-4.97 18 0l2-2C16.93 2.93 7.08 2.93 1 9zm8 8l3 3 3-3c-1.65-1.66-4.34-1.66-6 0zm-4-4l2 2c2.76-2.76 7.24-2.76 10 0l2-2C15.14 9.14 8.87 9.14 5 13z"/></svg>
+                            5G 🔋
+                        </span>
+                    </div>
+
+                    <div class="alt-content">
+                        <div class="alt-greeting">Hi Priyanshu,</div>
+                        <div class="alt-headline">Your memories are protected until ~2027</div>
+                        <div class="alt-sub">Based on your current usage, here's your memory timeline.</div>
+
+                        <!-- Timeline -->
+                        <div class="timeline">
+                            <div class="tl-node">
+                                <div class="tl-dot dot-filled"></div>
+                                <div class="tl-year year-green">2019 — Present</div>
+                                <div class="tl-desc">12,847 photos safely backed up</div>
+                                <div class="tl-photos-row">
+                                    <div class="tl-thumb" style="background-image:url('https://picsum.photos/id/1015/100/100');"></div>
+                                    <div class="tl-thumb" style="background-image:url('https://picsum.photos/id/1025/100/100');"></div>
+                                    <div class="tl-thumb" style="background-image:url('https://picsum.photos/id/1039/100/100');"></div>
+                                    <div class="tl-thumb" style="background-image:url('https://picsum.photos/id/1062/100/100');"></div>
+                                </div>
+                            </div>
+                            <div class="tl-node">
+                                <div class="tl-dot dot-amber"></div>
+                                <div class="tl-year year-amber">2027</div>
+                                <div class="tl-desc">Storage runs out at current pace</div>
+                            </div>
+                            <div class="tl-node">
+                                <div class="tl-dot dot-red"></div>
+                                <div class="tl-year year-red">2027+</div>
+                                <div class="tl-desc">New memories won't be backed up</div>
+                            </div>
+                        </div>
+
+                        <!-- Stat -->
+                        <div class="memory-stat">
+                            <div class="stat-number">2035</div>
+                            <div class="stat-text">With 100GB, your memories<br>are safe until at least 2035</div>
+                        </div>
+
+                        <div class="upgrade-btn-alt">Extend Your Memory Timeline</div>
+                        <div class="upgrade-btn-sub">100 GB — ₹130/month</div>
+                    </div>
+
+                    <div class="home-indicator hi-light"></div>
+                </div>
+            </div>
+            <div class="screen-label-bottom">Emotion-Centric</div>
+        </div>
+
+    </div>
+
+    <!-- Quote -->
+    <div class="overlay-quote">
+        <blockquote>
+            People don't buy gigabytes — they protect <em>moments.</em>
+        </blockquote>
+    </div>
+
+</body>
+</html>

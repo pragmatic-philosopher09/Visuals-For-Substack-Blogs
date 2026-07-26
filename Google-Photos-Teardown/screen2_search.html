@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Google Photos - Search</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+        body {
+            background-color: #F8FAFC;
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .phone {
+            width: 340px;
+            height: 720px;
+            background: #FFFFFF;
+            border-radius: 44px;
+            box-shadow: 0 0 0 10px #E2E8F0, 0 25px 50px rgba(0,0,0,0.15);
+            position: relative;
+            overflow: visible; 
+            margin: 60px 200px;
+        }
+
+        .screen {
+            width: 100%;
+            height: 100%;
+            border-radius: 34px;
+            overflow: hidden;
+            background: #FFFFFF;
+            position: relative;
+            border: 1px solid #E2E8F0;
+        }
+
+        .status-bar {
+            height: 44px;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 24px;
+            box-sizing: border-box;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #111;
+            z-index: 10;
+            position: absolute;
+            top: 0; left: 0; right: 0;
+        }
+
+        .notch {
+            position: absolute;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 110px;
+            height: 28px;
+            background: #000;
+            border-radius: 14px;
+            z-index: 20;
+        }
+
+        /* --- UI ELEMENTS --- */
+        .s2-header {
+            padding: 60px 20px 24px;
+        }
+        .search-bar {
+            width: 100%;
+            height: 48px;
+            background: #F1F5F9;
+            border-radius: 24px;
+            display: flex;
+            align-items: center;
+            padding: 0 16px;
+            box-sizing: border-box;
+            color: #64748B;
+            font-size: 0.95rem;
+            box-shadow: inset 0 1px 2px rgba(0,0,0,0.05);
+        }
+        .search-bar svg {
+            width: 20px; height: 20px; fill: #64748B; margin-right: 12px;
+        }
+        .search-lens {
+            margin-left: auto; width: 24px; height: 24px;
+        }
+
+        .search-section {
+            padding: 0 20px 24px;
+        }
+        .search-title {
+            font-size: 1.05rem; font-weight: 600; margin-bottom: 16px; color: #1F2937;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .search-title .view-all {
+            font-size: 0.85rem; color: #2563EB; font-weight: 500;
+        }
+
+        .people-row {
+            display: flex; gap: 14px; overflow: hidden;
+        }
+        .avatar-circle {
+            width: 64px; height: 64px; border-radius: 50%;
+            background-color: #E2E8F0; flex-shrink: 0;
+            background-size: cover; background-position: center;
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .places-row {
+            display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px;
+        }
+        .place-card {
+            height: 90px; border-radius: 12px; background-color: #E2E8F0;
+            position: relative; overflow: hidden;
+            background-size: cover; background-position: center;
+        }
+        .place-card::after {
+            content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 50%;
+            background: linear-gradient(transparent, rgba(0,0,0,0.7));
+        }
+        .place-label {
+            position: absolute; bottom: 10px; left: 10px;
+            font-size: 0.85rem; font-weight: 600; color: #FFF; z-index: 2;
+        }
+
+        /* iOS Home Indicator */
+        .home-indicator {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 120px;
+            height: 5px;
+            background: #000;
+            border-radius: 3px;
+            z-index: 15;
+            opacity: 0.25;
+        }
+
+        /* --- ANNOTATIONS --- */
+        .annotation {
+            position: absolute; background: #E11D48; color: #FFF;
+            padding: 8px 14px; border-radius: 8px; font-size: 0.8rem; font-weight: 700;
+            box-shadow: 0 4px 12px rgba(225, 29, 72, 0.3); white-space: nowrap;
+            z-index: 100; letter-spacing: 0.5px; text-transform: uppercase;
+        }
+
+        .annotation.right::after {
+            content: ''; position: absolute; top: 50%; left: 100%; 
+            width: 60px; height: 2px; background: #E11D48; transform: translateY(-50%);
+        }
+        .annotation.right::before {
+            content: ''; position: absolute; top: 50%; left: calc(100% + 60px);
+            width: 8px; height: 8px; background: #E11D48; border-radius: 50%; transform: translate(-50%, -50%);
+        }
+
+        .annotation.left::after {
+            content: ''; position: absolute; top: 50%; right: 100%;
+            width: 60px; height: 2px; background: #E11D48; transform: translateY(-50%);
+        }
+        .annotation.left::before {
+            content: ''; position: absolute; top: 50%; right: calc(100% + 60px);
+            width: 8px; height: 8px; background: #E11D48; border-radius: 50%; transform: translate(50%, -50%);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="phone">
+        <div class="notch"></div>
+        <div class="screen">
+            <div class="status-bar">
+                <span>9:41</span>
+                <span>5G 🔋</span>
+            </div>
+            
+            <div class="s2-header">
+                <div class="search-bar">
+                    <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+                    Search your photos
+                    <!-- Google Lens Icon -->
+                    <svg class="search-lens" viewBox="0 0 192 192" style="width:24px;height:24px;margin-left:auto;">
+                        <circle cx="96" cy="96" r="28" fill="none" stroke="#64748B" stroke-width="12"/>
+                        <path d="M 21.5,96 C 21.5,54.9 54.9,21.5 96,21.5" fill="none" stroke="#EA4335" stroke-width="12" stroke-linecap="round"/>
+                        <path d="M 96,21.5 C 137.1,21.5 170.5,54.9 170.5,96" fill="none" stroke="#FBBC04" stroke-width="12" stroke-linecap="round"/>
+                        <path d="M 170.5,96 C 170.5,137.1 137.1,170.5 96,170.5" fill="none" stroke="#34A853" stroke-width="12" stroke-linecap="round"/>
+                        <path d="M 96,170.5 C 54.9,170.5 21.5,137.1 21.5,96" fill="none" stroke="#4285F4" stroke-width="12" stroke-linecap="round"/>
+                    </svg>
+                </div>
+            </div>
+
+            <div class="search-section">
+                <div class="search-title">
+                    People & Pets
+                    <span class="view-all">View all</span>
+                </div>
+                <div class="people-row">
+                    <div class="avatar-circle" style="background-image: url('https://randomuser.me/api/portraits/women/44.jpg');"></div>
+                    <div class="avatar-circle" style="background-image: url('https://randomuser.me/api/portraits/men/32.jpg');"></div>
+                    <div class="avatar-circle" style="background-image: url('https://randomuser.me/api/portraits/women/68.jpg');"></div>
+                    <div class="avatar-circle" style="background-image: url('https://images.unsplash.com/photo-1543466835-00a7907e9de1?auto=format&fit=crop&w=150&q=80');"></div> <!-- Dog -->
+                </div>
+            </div>
+
+            <div class="search-section">
+                <div class="search-title">
+                    Places
+                    <span class="view-all">View all</span>
+                </div>
+                <div class="places-row">
+                    <div class="place-card" style="background-image: url('https://picsum.photos/id/1040/200/200');"><div class="place-label">Castle</div></div>
+                    <div class="place-card" style="background-image: url('https://picsum.photos/id/1029/200/200');"><div class="place-label">New York</div></div>
+                    <div class="place-card" style="background-image: url('https://picsum.photos/id/1016/200/200');"><div class="place-label">Mountains</div></div>
+                    <div class="place-card" style="background-image: url('https://picsum.photos/id/1047/200/200');"><div class="place-label">City</div></div>
+                </div>
+            </div>
+            <div class="home-indicator"></div>
+        </div>
+
+        <!-- Overlays for Phone 2 -->
+        <div class="annotation right" style="top: 85px; left: -160px;">Query success</div>
+        <div class="annotation left" style="top: 420px; right: -190px;">Time to retrieval</div>
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>L1 Metrics: Core Value Drivers</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Inter:wght@400;500;600;700&display=swap');
+
+        body {
+            background-color: #F4F2EC; 
+            color: #2C2C2C;
+            font-family: 'Inter', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 40px 20px;
+        }
+
+        .editorial-container {
+            max-width: 900px;
+            width: 100%;
+            background: #FFFFFF;
+            padding: 40px 50px;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.04);
+            position: relative;
+        }
+
+        /* Elegant gold top accent */
+        .editorial-container::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 6px;
+            background: #C4A77D; 
+        }
+
+        .header {
+            margin-bottom: 30px;
+            text-align: center;
+            border-bottom: 2px solid #111;
+            padding-bottom: 24px;
+        }
+
+        .header h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            font-weight: 700;
+            margin: 0 0 8px 0;
+            color: #111;
+        }
+
+        .header p {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: #888;
+            margin: 0;
+        }
+
+        .table-list {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .table-row {
+            display: grid;
+            grid-template-columns: 1.2fr 1.8fr 2.5fr;
+            gap: 24px;
+        }
+
+        .table-header {
+            padding: 10px 0;
+            border-bottom: 1px solid #111;
+            margin-bottom: 10px;
+        }
+
+        .th-col {
+            font-family: 'Inter', sans-serif;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 2px;
+            font-weight: 700;
+            color: #C4A77D;
+        }
+
+        .row {
+            padding: 24px 0;
+            border-bottom: 1px solid #EAEAEA;
+            align-items: flex-start;
+        }
+
+        .row:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        .col-pillar h4 {
+            font-family: 'Inter', sans-serif;
+            text-transform: uppercase;
+            font-size: 1rem;
+            letter-spacing: 1px;
+            font-weight: 700;
+            color: #111;
+            margin: 0;
+        }
+
+        .col-goal {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.2rem;
+            color: #444;
+            line-height: 1.5;
+            font-style: italic;
+            border-left: 1px solid #EAEAEA;
+            padding-left: 24px;
+        }
+
+        .col-metrics {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.35rem;
+            color: #111;
+            line-height: 1.5;
+            border-left: 1px solid #EAEAEA;
+            padding-left: 24px;
+        }
+
+        .metric-item {
+            display: inline-block;
+        }
+
+        .metric-item:not(:last-child)::after {
+            content: ",";
+            color: #111;
+            margin-right: 6px;
+            font-weight: 400;
+        }
+
+        @media (max-width: 800px) {
+            .editorial-container { padding: 40px 30px; }
+            .table-row { grid-template-columns: 1fr; gap: 12px; }
+            .row { padding: 24px 0; }
+            .col-goal, .col-metrics { padding-left: 0; border-left: none; }
+            .col-goal { font-size: 1.1rem; margin-bottom: 8px; }
+            .col-metrics { font-size: 1.25rem; }
+            .table-header { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="editorial-container">
+        <div class="header">
+            <h2>L1 Metrics</h2>
+            <p>Core Value Drivers</p>
+        </div>
+
+        <div class="table-list">
+            
+            <div class="table-row table-header">
+                <div class="th-col">Pillar</div>
+                <div class="th-col" style="padding-left: 24px;">Goal</div>
+                <div class="th-col" style="padding-left: 24px;">Metrics</div>
+            </div>
+
+            <div class="table-row row">
+                <div class="col-pillar">
+                    <h4>Memory Preservation</h4>
+                </div>
+                <div class="col-goal">
+                    Build trust as a permanent archive
+                </div>
+                <div class="col-metrics">
+                    <span class="metric-item">Backup activation rate</span>
+                    <span class="metric-item">Backup completion rate</span>
+                    <span class="metric-item">Restoration success</span>
+                </div>
+            </div>
+
+            <div class="table-row row">
+                <div class="col-pillar">
+                    <h4>Memory Retrieval</h4>
+                </div>
+                <div class="col-goal">
+                    Make memories instantly accessible
+                </div>
+                <div class="col-metrics">
+                    <span class="metric-item">Search success rate</span>
+                    <span class="metric-item">Time to retrieval</span>
+                    <span class="metric-item">Query completion</span>
+                </div>
+            </div>
+
+            <div class="table-row row">
+                <div class="col-pillar">
+                    <h4>Memory Engagement</h4>
+                </div>
+                <div class="col-goal">
+                    Turn stored photos into recurring value
+                </div>
+                <div class="col-metrics">
+                    <span class="metric-item">Memories viewed</span>
+                    <span class="metric-item">Photos shared</span>
+                    <span class="metric-item">Edits completed</span>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</body>
+</html>

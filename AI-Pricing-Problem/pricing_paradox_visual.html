@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The AI Pricing Paradox</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        :root {
+            --bg-light: #f8fafc;
+            --card-bg: rgba(255, 255, 255, 0.85);
+            --card-border: rgba(0, 0, 0, 0.08);
+            --saas-color: #059669;
+            --saas-bg: rgba(5, 150, 105, 0.05);
+            --saas-glow: rgba(5, 150, 105, 0.3);
+            --ai-color: #dc2626;
+            --ai-bg: rgba(220, 38, 38, 0.05);
+            --ai-glow: rgba(220, 38, 38, 0.3);
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --vs-badge: #ffffff;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-light);
+            background-image: 
+                radial-gradient(circle at 0% 0%, rgba(5, 150, 105, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 100% 100%, rgba(220, 38, 38, 0.08) 0%, transparent 50%);
+            color: var(--text-main);
+            font-family: 'Inter', sans-serif;
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+            line-height: 1.5;
+        }
+
+        .container {
+            max-width: 1400px;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+            flex-shrink: 0;
+        }
+
+        .title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 2.75rem;
+            font-weight: 700;
+            letter-spacing: -0.03em;
+            background: linear-gradient(to right, #0f172a, #475569);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            flex: 1;
+            min-height: 0;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 20px;
+            padding: 2rem;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03);
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.06);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .card-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            background: #f1f5f9;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-main);
+            border: 1px solid var(--card-border);
+        }
+
+        .card-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.25rem;
+            font-weight: 600;
+            display: flex;
+            align-items: baseline;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .card-title span {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            font-weight: 400;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .comparison {
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
+            gap: 0.75rem;
+            margin-bottom: auto;
+        }
+
+        .side {
+            padding: 1.25rem;
+            border-radius: 16px;
+            border: 1px solid transparent;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            background: #ffffff;
+        }
+
+        .side.saas {
+            border-color: rgba(5, 150, 105, 0.15);
+            background: var(--saas-bg);
+        }
+
+        .side.saas:hover {
+            border-color: rgba(5, 150, 105, 0.4);
+            box-shadow: 0 0 20px rgba(5, 150, 105, 0.05);
+        }
+
+        .side.ai {
+            border-color: rgba(220, 38, 38, 0.15);
+            background: var(--ai-bg);
+        }
+
+        .side.ai:hover {
+            border-color: rgba(220, 38, 38, 0.4);
+            box-shadow: 0 0 20px rgba(220, 38, 38, 0.05);
+        }
+
+        .side-label {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.25rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 600;
+        }
+
+        .side.saas .side-label i { color: var(--saas-color); width: 16px; height: 16px; }
+        .side.ai .side-label i { color: var(--ai-color); width: 16px; height: 16px; }
+
+        .side-value {
+            font-family: 'Outfit', sans-serif;
+            font-size: 2rem;
+            font-weight: 700;
+            display: flex;
+            align-items: baseline;
+            gap: 0.25rem;
+        }
+
+        .side-subtext {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            font-weight: 400;
+        }
+
+        .vs-badge {
+            align-self: center;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: var(--vs-badge);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: var(--text-muted);
+            border: 1px solid var(--card-border);
+            z-index: 2;
+            margin: -1.15rem 0;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+
+        .implication {
+            background: rgba(99, 102, 241, 0.05);
+            border-radius: 12px;
+            padding: 1rem;
+            border-left: 3px solid #6366f1;
+            font-size: 0.9rem;
+            color: #334155;
+            margin-top: 1.5rem;
+        }
+
+        .implication strong {
+            color: #1e293b;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        /* Custom Visualizations */
+        .visual-bar-container {
+            margin-top: 0.75rem;
+            height: 6px;
+            background: rgba(0, 0, 0, 0.05);
+            border-radius: 3px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .visual-bar {
+            height: 100%;
+            border-radius: 3px;
+            position: relative;
+            transform-origin: left;
+            animation: growBar 1.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        @keyframes growBar {
+            from { transform: scaleX(0); }
+            to { transform: scaleX(1); }
+        }
+
+        .saas-bar { background: var(--saas-color); width: 85%; }
+        .ai-bar { background: var(--ai-color); width: 65%; }
+
+        /* Structure Bar */
+        .structure-bar {
+            display: flex;
+            height: 6px;
+            border-radius: 3px;
+            overflow: hidden;
+            margin-top: 0.75rem;
+        }
+        
+        .structure-fixed {
+            background: #cbd5e1;
+            transition: width 1s ease;
+        }
+        
+        .structure-variable {
+            background: currentColor;
+            transition: width 1s ease;
+        }
+
+        .saas .structure-variable { color: var(--saas-color); }
+        .ai .structure-variable { color: var(--ai-color); }
+
+        @media (max-width: 1024px) {
+            body {
+                height: auto;
+                overflow: auto;
+            }
+            .metrics-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header class="header">
+            <h1 class="title">The AI Pricing Paradox</h1>
+            <p class="subtitle">When your best customers become your biggest problem. Exploring the benchmark shifts from Traditional SaaS to AI/LLM-Native economics.</p>
+        </header>
+
+        <div class="metrics-grid">
+            
+            <!-- Gross Margin -->
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-icon"><i data-lucide="percent"></i></div>
+                    <h2 class="card-title">Gross Margin</h2>
+                </div>
+                
+                <div class="comparison">
+                    <div class="side saas">
+                        <div class="side-label"><i data-lucide="cloud"></i> Traditional SaaS</div>
+                        <div class="side-value">75% <span class="side-subtext">– 85%</span></div>
+                        <div class="visual-bar-container">
+                            <div class="visual-bar saas-bar"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="vs-badge">VS</div>
+                    
+                    <div class="side ai">
+                        <div class="side-label"><i data-lucide="cpu"></i> AI / LLM-Native</div>
+                        <div class="side-value">50% <span class="side-subtext">– 65%</span></div>
+                        <div class="visual-bar-container">
+                            <div class="visual-bar ai-bar"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="implication">
+                    <strong>Economic Implications:</strong> Traditional SaaS COGS is fixed and scalable. AI COGS is highly variable due to persistent inference.
+                </div>
+            </div>
+
+            <!-- Cost Structure -->
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-icon"><i data-lucide="pie-chart"></i></div>
+                    <h2 class="card-title">P&L Cost Structure Flex</h2>
+                </div>
+                
+                <div class="comparison">
+                    <div class="side saas">
+                        <div class="side-label"><i data-lucide="cloud"></i> Traditional SaaS</div>
+                        <div class="side-value">80% <span class="side-subtext">Fixed</span> / 20% <span class="side-subtext">Variable</span></div>
+                        <div class="structure-bar">
+                            <div class="structure-fixed" style="width: 80%"></div>
+                            <div class="structure-variable" style="width: 20%"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="vs-badge">VS</div>
+                    
+                    <div class="side ai">
+                        <div class="side-label"><i data-lucide="cpu"></i> AI / LLM-Native</div>
+                        <div class="side-value">50% <span class="side-subtext">Fixed</span> / 50% <span class="side-subtext">Variable</span></div>
+                        <div class="structure-bar">
+                            <div class="structure-fixed" style="width: 50%"></div>
+                            <div class="structure-variable" style="width: 50%"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="implication">
+                    <strong>Economic Implications:</strong> AI burn rates fluctuate dynamically based on raw token volume, destroying predictable runway calculations.
+                </div>
+            </div>
+
+            <!-- Burn Multiple -->
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-icon"><i data-lucide="flame"></i></div>
+                    <h2 class="card-title">Burn Multiple <span>(Net Burn / Net New ARR)</span></h2>
+                </div>
+                
+                <div class="comparison">
+                    <div class="side saas">
+                        <div class="side-label"><i data-lucide="cloud"></i> Traditional SaaS</div>
+                        <div class="side-value">1.5x <span class="side-subtext">– 2.0x</span></div>
+                        <div style="font-size: 0.8rem; color: var(--saas-color); margin-top: 0.25rem;">Healthy baseline</div>
+                    </div>
+                    
+                    <div class="vs-badge">VS</div>
+                    
+                    <div class="side ai">
+                        <div class="side-label"><i data-lucide="cpu"></i> AI / LLM-Native</div>
+                        <div class="side-value" style="color: var(--ai-color);">3.0x <span class="side-subtext" style="color: var(--ai-color);">– 4.0x+</span></div>
+                        <div style="font-size: 0.8rem; color: var(--ai-color); margin-top: 0.25rem;">For infrastructure-heavy apps</div>
+                    </div>
+                </div>
+
+                <div class="implication">
+                    <strong>Economic Implications:</strong> AI applications either achieve extreme prompt/caching efficiency or light capital on fire maintaining middleware.
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>

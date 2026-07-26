@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Google Photos - Memories</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+        body {
+            background-color: #F8FAFC;
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .phone {
+            width: 340px;
+            height: 720px;
+            background: #FFFFFF;
+            border-radius: 44px;
+            box-shadow: 0 0 0 10px #E2E8F0, 0 25px 50px rgba(0,0,0,0.15);
+            position: relative;
+            overflow: visible; 
+            margin: 60px 200px; /* Space for annotations */
+        }
+
+        .screen {
+            width: 100%;
+            height: 100%;
+            border-radius: 34px;
+            overflow: hidden;
+            background: #FFFFFF;
+            position: relative;
+            border: 1px solid #E2E8F0;
+        }
+
+        .status-bar {
+            height: 44px;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 24px;
+            box-sizing: border-box;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #111;
+            z-index: 10;
+            position: absolute;
+            top: 0; left: 0; right: 0;
+        }
+
+        .notch {
+            position: absolute;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 110px;
+            height: 28px;
+            background: #000;
+            border-radius: 14px;
+            z-index: 20;
+        }
+
+        /* --- UI ELEMENTS --- */
+        .header {
+            padding: 60px 20px 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .header .logo { font-weight: 600; font-size: 1.25rem; color: #1F2937; }
+        .header .profile { 
+            width: 32px; height: 32px; 
+            border-radius: 50%; 
+            background: url('https://randomuser.me/api/portraits/women/65.jpg') center/cover; 
+        }
+
+        .memories-row {
+            display: flex;
+            gap: 12px;
+            padding: 0 20px;
+            overflow: hidden;
+            margin-bottom: 24px;
+        }
+        .memory-card {
+            width: 130px;
+            height: 200px;
+            border-radius: 16px;
+            flex-shrink: 0;
+            position: relative;
+            background-color: #E2E8F0;
+            background-size: cover;
+            background-position: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            overflow: hidden;
+        }
+        .memory-card::after {
+            content: '';
+            position: absolute;
+            bottom: 0; left: 0; right: 0;
+            height: 50%;
+            background: linear-gradient(transparent, rgba(0,0,0,0.7));
+        }
+        
+        .memory-title {
+            position: absolute;
+            bottom: 12px; left: 12px; right: 12px;
+            color: #FFF; font-size: 0.8rem; font-weight: 600;
+            z-index: 2;
+        }
+
+        /* Icons on memory card */
+        .share-icon {
+            position: absolute; top: 12px; right: 12px; 
+            width: 24px; height: 24px; 
+            background: rgba(0,0,0,0.4); 
+            border-radius: 50%; 
+            z-index: 2;
+            display: flex; justify-content: center; align-items: center;
+        }
+        .share-icon svg { width: 12px; height: 12px; fill: white; }
+
+        .close-icon {
+            position: absolute; top: 12px; left: 12px; 
+            width: 24px; height: 24px; 
+            background: rgba(0,0,0,0.4); 
+            border-radius: 50%; 
+            z-index: 2;
+            display: flex; justify-content: center; align-items: center;
+            color: white; font-size: 14px; font-weight: bold;
+        }
+
+        .section-title {
+            padding: 0 20px 12px; font-weight: 600; font-size: 0.95rem; color: #1F2937;
+        }
+
+        .photo-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 3px;
+            padding: 0 20px;
+        }
+        .photo-square {
+            aspect-ratio: 1;
+            background-color: #F1F5F9;
+            background-size: cover;
+            background-position: center;
+        }
+
+        /* iOS Home Indicator */
+        .home-indicator {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 120px;
+            height: 5px;
+            background: #000;
+            border-radius: 3px;
+            z-index: 15;
+            opacity: 0.25;
+        }
+
+        /* --- ANNOTATIONS --- */
+        .annotation {
+            position: absolute;
+            background: #E11D48;
+            color: #FFF;
+            padding: 8px 14px;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            box-shadow: 0 4px 12px rgba(225, 29, 72, 0.3);
+            white-space: nowrap;
+            z-index: 100;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        /* Left-pointing */
+        .annotation.left::after {
+            content: ''; position: absolute; top: 50%; right: 100%;
+            width: 60px; height: 2px; background: #E11D48; transform: translateY(-50%);
+        }
+        .annotation.left::before {
+            content: ''; position: absolute; top: 50%; right: calc(100% + 60px);
+            width: 8px; height: 8px; background: #E11D48; border-radius: 50%; transform: translate(50%, -50%);
+        }
+
+        /* Right-pointing */
+        .annotation.right::after {
+            content: ''; position: absolute; top: 50%; left: 100%; 
+            width: 60px; height: 2px; background: #E11D48; transform: translateY(-50%);
+        }
+        .annotation.right::before {
+            content: ''; position: absolute; top: 50%; left: calc(100% + 60px);
+            width: 8px; height: 8px; background: #E11D48; border-radius: 50%; transform: translate(-50%, -50%);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="phone">
+        <div class="notch"></div>
+        <div class="screen">
+            <div class="status-bar">
+                <span>9:41</span>
+                <span>5G 🔋</span>
+            </div>
+            
+            <div class="header">
+                <div class="logo">Google Photos</div>
+                <div class="profile"></div>
+            </div>
+
+            <div class="memories-row">
+                <!-- Memory 1 -->
+                <div class="memory-card" style="background-image: url('https://picsum.photos/id/1015/300/400');">
+                    <div class="close-icon">×</div>
+                    <div class="share-icon">
+                        <svg viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92 1.61 0 2.92-1.31 2.92-2.92s-1.31-2.92-2.92-2.92z"/></svg>
+                    </div>
+                    <div class="memory-title">1 year ago</div>
+                </div>
+                <!-- Memory 2 -->
+                <div class="memory-card" style="background-image: url('https://picsum.photos/id/1025/300/400');">
+                    <div class="memory-title">Recent Highlights</div>
+                </div>
+                <!-- Memory 3 -->
+                <div class="memory-card" style="background-image: url('https://picsum.photos/id/1039/300/400');">
+                    <div class="memory-title">Trip to Paris</div>
+                </div>
+            </div>
+
+            <div class="section-title">Today</div>
+            <div class="photo-grid">
+                <div class="photo-square" style="background-image: url('https://picsum.photos/id/1062/200/200');"></div>
+                <div class="photo-square" style="background-image: url('https://picsum.photos/id/1074/200/200');"></div>
+                <div class="photo-square" style="background-image: url('https://picsum.photos/id/1084/200/200');"></div>
+                <div class="photo-square" style="background-image: url('https://picsum.photos/id/200/200/200');"></div>
+                <div class="photo-square" style="background-image: url('https://picsum.photos/id/212/200/200');"></div>
+                <div class="photo-square" style="background-image: url('https://picsum.photos/id/237/200/200');"></div>
+            </div>
+            <div class="home-indicator"></div>
+        </div>
+
+        <!-- Overlays for Phone 1 -->
+        <div class="annotation right" style="top: 200px; left: -190px;">Memory open rate</div>
+        <div class="annotation left" style="top: 130px; right: -120px;">Share rate</div>
+        <div class="annotation left" style="top: 250px; right: -130px;">Dismiss rate</div>
+    </div>
+
+</body>
+</html>

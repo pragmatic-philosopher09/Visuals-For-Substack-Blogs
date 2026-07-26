@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SaaS vs AI Flywheel - Innovative</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #030712; 
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background: 
+                radial-gradient(circle at 15% 50%, rgba(16, 185, 129, 0.08), transparent 45%),
+                radial-gradient(circle at 85% 50%, rgba(239, 68, 68, 0.08), transparent 45%),
+                var(--bg-color);
+            color: #fff;
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        .dashboard {
+            display: flex;
+            gap: 4rem;
+            width: 100%;
+            max-width: 1400px;
+            padding: 2rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .panel {
+            flex: 1;
+            min-width: 550px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+        }
+
+        .title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 2.25rem;
+            margin-bottom: 4rem;
+            text-align: center;
+            letter-spacing: -0.02em;
+            background: linear-gradient(135deg, #f9fafb, #9ca3af);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .flywheel {
+            position: relative;
+            width: 500px;
+            height: 500px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+        }
+
+        .flywheel::before {
+            content: '';
+            position: absolute;
+            top: 50%; left: 50%;
+            width: 550px; height: 550px;
+            transform: translate(-50%, -50%);
+            background: radial-gradient(circle, rgba(255,255,255,0.02) 0%, transparent 60%);
+            border-radius: 50%;
+            z-index: -1;
+        }
+
+        /* Connecting Lines */
+        .spoke {
+            position: absolute;
+            top: 50%; left: 50%;
+            width: 180px; height: 1px;
+            transform-origin: 0 50%;
+            background: linear-gradient(90deg, rgba(255,255,255,0.1), transparent);
+            z-index: 0;
+        }
+
+        /* Circular Track */
+        .track {
+            position: absolute;
+            width: 360px;
+            height: 360px;
+            border-radius: 50%;
+            border: 1px solid rgba(255,255,255,0.05);
+            box-sizing: border-box;
+            z-index: 1;
+        }
+        
+        .saas .track {
+            border-color: rgba(16, 185, 129, 0.2);
+            box-shadow: inset 0 0 30px rgba(16, 185, 129, 0.05), 0 0 30px rgba(16, 185, 129, 0.05);
+        }
+
+        .ai .track {
+            background: conic-gradient(from -90deg, rgba(99,102,241,0.1) 0%, rgba(168,85,247,0.1) 40%, rgba(239,68,68,0.2) 80%, rgba(239,68,68,0.3) 100%);
+            -webkit-mask: radial-gradient(circle, transparent 178px, black 179px);
+            border: none;
+        }
+
+        /* Orbiting Comet */
+        .comet-wrapper {
+            position: absolute;
+            width: 360px;
+            height: 360px;
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            margin-top: -180px;
+            margin-left: -180px;
+            z-index: 2;
+            will-change: transform;
+        }
+
+        .saas .comet {
+            width: 100%; height: 100%;
+            border-radius: 50%;
+            background: conic-gradient(from 0deg, transparent 0%, transparent 60%, rgba(16, 185, 129, 0.6) 95%, #34d399 100%);
+            -webkit-mask: radial-gradient(circle, transparent 176px, black 178px);
+        }
+
+        .ai .comet {
+            width: 100%; height: 100%;
+            border-radius: 50%;
+            background: conic-gradient(from 0deg, transparent 0%, transparent 60%, rgba(255, 255, 255, 0.6) 95%, #ffffff 100%);
+            -webkit-mask: radial-gradient(circle, transparent 176px, black 178px);
+            mix-blend-mode: screen;
+        }
+        
+        /* Nodes */
+        .node {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            --r: 180px;
+            transform: translate(-50%, -50%) rotate(var(--angle)) translate(var(--r)) rotate(calc(-1 * var(--angle)));
+            background: rgba(17, 24, 39, 0.8);
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 0.85rem 1.5rem;
+            border-radius: 12px;
+            font-weight: 500;
+            white-space: nowrap;
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            z-index: 10;
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+            color: #9ca3af;
+        }
+        
+        .saas .node.active {
+            border-color: #34d399;
+            color: #fff;
+            transform: translate(-50%, -50%) rotate(var(--angle)) translate(var(--r)) rotate(calc(-1 * var(--angle))) scale(1.15);
+            box-shadow: 0 0 25px rgba(16, 185, 129, 0.3), inset 0 0 0 1px #10b981;
+        }
+
+        .ai .node.active {
+            border-color: var(--active-color, #a855f7);
+            color: #fff;
+            transform: translate(-50%, -50%) rotate(var(--angle)) translate(var(--r)) rotate(calc(-1 * var(--angle))) scale(1.15);
+            box-shadow: 0 0 30px var(--active-glow, rgba(168,85,247,0.3)), inset 0 0 0 1px var(--active-color, #a855f7);
+        }
+
+        /* Center Displays */
+        .center-display {
+            position: absolute;
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            background: rgba(17, 24, 39, 0.9);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 600;
+            z-index: 5;
+            text-align: center;
+            flex-direction: column;
+            border: 1px solid rgba(255,255,255,0.05);
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.8);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .saas .center-display {
+            color: #10b981;
+        }
+
+        .ai .center-display {
+            color: #ef4444;
+        }
+
+        .center-value {
+            font-size: 2.2rem;
+            margin-top: 0.2rem;
+            line-height: 1;
+        }
+
+        /* AI specific unstable animations */
+        @keyframes shake {
+            0%, 100% { transform: translate(0, 0) rotate(0); }
+            25% { transform: translate(3px, -2px) rotate(1deg); }
+            50% { transform: translate(-3px, 2px) rotate(-1deg); }
+            75% { transform: translate(-1px, -3px) rotate(2deg); }
+        }
+        
+        .ai-shake {
+            animation: shake 0.15s infinite;
+        }
+        
+        /* Particle effects */
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 20;
+            box-shadow: 0 0 10px currentColor;
+        }
+
+        @media (max-width: 1200px) {
+            .dashboard {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="dashboard">
+        <!-- SaaS Flywheel -->
+        <div class="panel">
+            <h2 class="title">The SaaS Flywheel</h2>
+            <div class="flywheel saas">
+                <div class="track"></div>
+                <div class="comet-wrapper"><div class="comet"></div></div>
+                <div class="center-display" id="saas-center">
+                    <div>Growth</div>
+                    <div class="center-value">∞</div>
+                </div>
+                <!-- Nodes injected by JS -->
+            </div>
+        </div>
+
+        <!-- AI Flywheel -->
+        <div class="panel">
+            <h2 class="title">The AI Flywheel</h2>
+            <div class="flywheel ai">
+                <div class="track"></div>
+                <div class="comet-wrapper"><div class="comet"></div></div>
+                <div class="center-display" id="ai-center">
+                    <div>Burn Rate</div>
+                    <div class="center-value">$$$</div>
+                </div>
+                <!-- Nodes injected by JS -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const saasLabels = [
+            "Build Software", 
+            "Acquire Users", 
+            "More Usage", 
+            "Higher Retention", 
+            "Margins Improve"
+        ];
+        
+        const aiLabels = [
+            "Train Model", 
+            "Acquire Users", 
+            "More Usage", 
+            "More GPU Compute", 
+            "Higher Costs"
+        ];
+
+        function createNodesAndSpokes(containerSelector, labels) {
+            const container = document.querySelector(containerSelector);
+            labels.forEach((label, i) => {
+                const angle = -90 + (i * 72);
+                
+                // Create Spoke
+                const spoke = document.createElement('div');
+                spoke.className = 'spoke';
+                spoke.style.transform = `translate(-50%, -50%) rotate(${angle}deg) translate(90px)`; 
+                spoke.style.width = '90px'; // Line from center to edge
+                container.appendChild(spoke);
+
+                // Create Node
+                const node = document.createElement('div');
+                node.className = `node n${i}`;
+                node.style.setProperty('--angle', `${angle}deg`);
+                node.textContent = label;
+                container.appendChild(node);
+            });
+        }
+
+        createNodesAndSpokes('.saas', saasLabels);
+        createNodesAndSpokes('.ai', aiLabels);
+
+        // Animation logic
+        const saasNodesDOM = document.querySelectorAll('.saas .node');
+        const aiNodesDOM = document.querySelectorAll('.ai .node');
+        const saasComet = document.querySelector('.saas .comet-wrapper');
+        const aiComet = document.querySelector('.ai .comet-wrapper');
+        const saasCenter = document.getElementById('saas-center');
+        const aiCenter = document.getElementById('ai-center');
+        const aiFlywheel = document.querySelector('.flywheel.ai');
+
+        function spawnParticle() {
+            const p = document.createElement('div');
+            p.className = 'particle';
+            const size = Math.random() * 4 + 2;
+            p.style.width = size + 'px';
+            p.style.height = size + 'px';
+            p.style.backgroundColor = '#ef4444';
+            p.style.color = '#ef4444';
+            
+            p.style.left = '50%';
+            p.style.top = '50%';
+            
+            const angle = Math.random() * Math.PI * 2;
+            const speed = Math.random() * 120 + 60;
+            const vx = Math.cos(angle) * speed;
+            const vy = Math.sin(angle) * speed;
+            
+            aiFlywheel.appendChild(p);
+            
+            const duration = 500 + Math.random() * 400;
+            p.animate([
+                { transform: 'translate(-50%, -50%)', opacity: 1 },
+                { transform: `translate(calc(-50% + ${vx}px), calc(-50% + ${vy}px))`, opacity: 0 }
+            ], {
+                duration,
+                easing: 'cubic-bezier(0.1, 0.8, 0.3, 1)'
+            }).onfinish = () => p.remove();
+        }
+
+        let startTime = null;
+
+        function update(timestamp) {
+            if (!startTime) startTime = timestamp;
+            const elapsed = timestamp - startTime;
+            
+            const cycleDuration = 4500; // 4.5 seconds per loop
+            const t = elapsed / cycleDuration;
+            const orbitDeg = (t * 360) % 360; 
+            
+            // --- SaaS Updates ---
+            saasComet.style.transform = `rotate(${orbitDeg}deg)`;
+            saasNodesDOM.forEach((node, i) => {
+                const nodeAngle = i * 72;
+                let diff = Math.abs(orbitDeg - nodeAngle);
+                if (diff > 180) diff = 360 - diff;
+                
+                if (diff < 30) {
+                    node.classList.add('active');
+                } else {
+                    node.classList.remove('active');
+                }
+                
+                // Pop the center when the cycle hits Margins Improve (node 4)
+                if (i === 4 && diff < 30) {
+                    saasCenter.style.transform = 'scale(1.1)';
+                    saasCenter.style.boxShadow = 'inset 0 0 30px rgba(16,185,129,0.5), 0 0 40px rgba(16,185,129,0.3)';
+                } else if (i === 4) {
+                    saasCenter.style.transform = 'scale(1)';
+                    saasCenter.style.boxShadow = 'inset 0 0 20px rgba(0,0,0,0.8)';
+                }
+            });
+
+            // --- AI Updates ---
+            aiComet.style.transform = `rotate(${orbitDeg}deg)`;
+            let isStruggling = false;
+            
+            aiNodesDOM.forEach((node, i) => {
+                const nodeAngle = i * 72;
+                let diff = Math.abs(orbitDeg - nodeAngle);
+                if (diff > 180) diff = 360 - diff;
+                
+                if (diff < 30) {
+                    node.classList.add('active');
+                    
+                    // Color gradient: Indigo -> Purple -> Fuchsia -> Rose -> Red
+                    const colors = ['#6366f1', '#a855f7', '#d946ef', '#f43f5e', '#ef4444'];
+                    const glows = [
+                        'rgba(99,102,241,0.5)',
+                        'rgba(168,85,247,0.5)',
+                        'rgba(217,70,239,0.5)',
+                        'rgba(244,63,94,0.6)',
+                        'rgba(239,68,68,0.8)'
+                    ];
+                    node.style.setProperty('--active-color', colors[i]);
+                    node.style.setProperty('--active-glow', glows[i]);
+                    
+                    // More GPU Compute (3) & Higher Costs (4) trigger struggle
+                    if (i >= 3) {
+                        isStruggling = true;
+                    }
+                } else {
+                    node.classList.remove('active');
+                }
+            });
+            
+            if (isStruggling) {
+                aiCenter.classList.add('ai-shake');
+                aiCenter.style.boxShadow = 'inset 0 0 40px rgba(239,68,68,0.5), 0 0 40px rgba(239,68,68,0.4)';
+                if (Math.random() > 0.4) spawnParticle();
+            } else {
+                aiCenter.classList.remove('ai-shake');
+                aiCenter.style.boxShadow = 'inset 0 0 20px rgba(0,0,0,0.8)';
+            }
+
+            requestAnimationFrame(update);
+        }
+
+        requestAnimationFrame(update);
+    </script>
+</body>
+</html>

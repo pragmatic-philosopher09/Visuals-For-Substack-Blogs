@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Google Photos — Memory Legacy Concept</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,500;1,400&display=swap');
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background-color: #0A0A0A;
+            background-image:
+                radial-gradient(at 20% 80%, rgba(99, 102, 241, 0.07) 0px, transparent 50%),
+                radial-gradient(at 80% 20%, rgba(236, 72, 153, 0.06) 0px, transparent 50%);
+            font-family: 'Inter', sans-serif;
+            color: #F8FAFC;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 50px 20px 60px;
+        }
+
+        /* ===== PRESENTATION HEADER ===== */
+        .page-header {
+            text-align: center;
+            margin-bottom: 50px;
+            max-width: 700px;
+        }
+        .page-header h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            font-weight: 600;
+            font-style: italic;
+            color: #F8FAFC;
+            letter-spacing: -0.3px;
+            margin: 0 0 12px 0;
+            line-height: 1.3;
+        }
+        .page-header .accent-line {
+            width: 60px;
+            height: 3px;
+            background: linear-gradient(90deg, #818CF8, #E879F9);
+            margin: 0 auto;
+            border-radius: 2px;
+        }
+
+        /* ===== DASHBOARD ===== */
+        .dashboard {
+            display: flex;
+            gap: 60px;
+            justify-content: center;
+            align-items: flex-start;
+            position: relative;
+        }
+
+        .frame-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .frame-label {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .frame-label h3 {
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2.5px;
+            margin: 0 0 6px 0;
+        }
+        .label-timeline h3 { color: #818CF8; }
+        .label-settings h3 { color: #E879F9; }
+        .frame-label p {
+            font-size: 0.7rem;
+            color: #64748B;
+            margin: 0;
+            letter-spacing: 0.5px;
+        }
+
+        /* ===== iOS PHONE FRAME ===== */
+        .phone {
+            width: 280px;
+            height: 600px;
+            background: #000;
+            border-radius: 40px;
+            box-shadow: 0 0 0 8px #1E1E1E, 0 0 0 10px #333, 0 30px 60px rgba(0,0,0,0.6);
+            position: relative;
+            overflow: visible;
+            transition: transform 0.3s ease;
+        }
+        .phone:hover { transform: translateY(-4px); }
+
+        .screen {
+            width: 100%;
+            height: 100%;
+            border-radius: 32px;
+            overflow: hidden;
+            background: #111;
+            color: #FFF;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* iOS Status Bar */
+        .status-bar {
+            height: 40px;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 22px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: #FFF;
+            z-index: 10;
+            position: absolute;
+            top: 0; left: 0; right: 0;
+        }
+        .status-icons {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 0.65rem;
+        }
+        .status-icons svg { width: 14px; height: 14px; }
+
+        /* Dynamic Island */
+        .notch {
+            position: absolute;
+            top: 8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90px;
+            height: 24px;
+            background: #000;
+            border-radius: 12px;
+            z-index: 20;
+        }
+
+        .home-indicator {
+            position: absolute;
+            bottom: 8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            border-radius: 2px;
+            z-index: 15;
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        /* ===== GOOGLE PHOTOS NAV BAR ===== */
+        .gp-nav {
+            margin-top: 40px;
+            padding: 12px 18px 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .gp-back-chevron {
+            width: 20px;
+            height: 20px;
+            color: #60A5FA;
+        }
+        .gp-nav-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #FFF;
+            flex: 1;
+        }
+        .gp-nav-icon {
+            width: 20px;
+            height: 20px;
+            color: #94A3B8;
+        }
+
+        /* ===== CONTENT SCROLL ===== */
+        .content {
+            padding: 8px 18px 20px;
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+            overflow-y: auto;
+        }
+
+        /* Screen label beneath phone */
+        .screen-label-bottom {
+            text-align: center;
+            margin-top: 18px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: #475569;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+        }
+
+        /* Transition arrow */
+        .transition-arrow {
+            display: flex;
+            align-items: center;
+            align-self: center;
+            flex-shrink: 0;
+            margin-top: 280px; /* vertically center with phones */
+        }
+        .arrow-line {
+            width: 40px;
+            height: 2px;
+            background: linear-gradient(90deg, #818CF8, #E879F9);
+            border-radius: 1px;
+        }
+        .arrow-tip {
+            width: 0; height: 0;
+            border-top: 7px solid transparent;
+            border-bottom: 7px solid transparent;
+            border-left: 10px solid #E879F9;
+            margin-left: -1px;
+        }
+
+        /* ===============================
+           PHONE 1: MEMORY TIMELINE
+           =============================== */
+
+        /* Google Photos icon row */
+        .gp-brand-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+        .gp-brand-icon {
+            width: 24px;
+            height: 24px;
+        }
+        .gp-brand-label {
+            font-size: 0.62rem;
+            color: #94A3B8;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+        }
+
+        /* Timeline */
+        .timeline {
+            position: relative;
+            padding-left: 22px;
+            flex: 1;
+        }
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 5px;
+            top: 10px;
+            bottom: 10px;
+            width: 2px;
+            background: linear-gradient(to bottom, #818CF8, #A78BFA, #C084FC);
+            border-radius: 1px;
+        }
+
+        .tl-node {
+            position: relative;
+            margin-bottom: 22px;
+        }
+        .tl-node:last-child { margin-bottom: 8px; }
+
+        .tl-dot {
+            position: absolute;
+            left: -22px;
+            top: 3px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            border: 2.5px solid #111;
+            z-index: 2;
+        }
+        .tl-dot-1 { background: #818CF8; box-shadow: 0 0 0 2px rgba(129, 140, 248, 0.35); }
+        .tl-dot-2 { background: #A78BFA; box-shadow: 0 0 0 2px rgba(167, 139, 250, 0.35); }
+        .tl-dot-3 { background: #C084FC; box-shadow: 0 0 0 2px rgba(192, 132, 252, 0.35); }
+
+        .tl-year {
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: #FFF;
+            margin-bottom: 1px;
+        }
+        .tl-title {
+            font-size: 0.72rem;
+            color: #A5B4FC;
+            font-weight: 600;
+            margin-bottom: 2px;
+        }
+        .tl-count {
+            font-size: 0.62rem;
+            color: #64748B;
+            margin-bottom: 8px;
+        }
+
+        /* Thumbnail strip under each node */
+        .tl-thumbs {
+            display: flex;
+            gap: 4px;
+        }
+        .tl-thumb {
+            width: 38px;
+            height: 38px;
+            border-radius: 8px;
+            background-size: cover;
+            background-position: center;
+            border: 1px solid rgba(255,255,255,0.06);
+        }
+
+        /* Bottom CTA card */
+        .legacy-cta-card {
+            background: rgba(129, 140, 248, 0.06);
+            border: 1px solid rgba(129, 140, 248, 0.15);
+            border-radius: 14px;
+            padding: 14px;
+            margin: 12px 0 14px;
+            text-align: center;
+        }
+        .legacy-cta-card p {
+            font-size: 0.72rem;
+            color: #CBD5E1;
+            line-height: 1.45;
+        }
+
+        .btn-legacy {
+            width: 100%;
+            padding: 13px 0;
+            background: linear-gradient(135deg, #818CF8, #6366F1);
+            color: #FFF;
+            text-align: center;
+            border-radius: 26px;
+            font-weight: 700;
+            font-size: 0.82rem;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 14px rgba(99, 102, 241, 0.25);
+            letter-spacing: 0.3px;
+        }
+
+        /* ===============================
+           PHONE 2: LEGACY SETTINGS
+           =============================== */
+
+        .section-title {
+            font-size: 0.62rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: #64748B;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+            margin-top: 4px;
+        }
+
+        /* Avatar sharing row */
+        .share-row {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 18px;
+        }
+        .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: #FFF;
+            position: relative;
+        }
+        .av-blue   { background: #3B82F6; }
+        .av-pink   { background: #EC4899; }
+        .av-green  { background: #10B981; }
+        .av-add {
+            background: transparent;
+            border: 1.5px dashed #475569;
+            color: #64748B;
+            font-size: 1rem;
+        }
+
+        /* iOS-style grouped list */
+        .ios-group {
+            background: #1A1A1F;
+            border-radius: 14px;
+            overflow: hidden;
+            margin-bottom: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.04);
+        }
+        .ios-row {
+            display: flex;
+            align-items: center;
+            padding: 12px 14px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+        }
+        .ios-row:last-child { border-bottom: none; }
+
+        .ios-row-label {
+            font-size: 0.78rem;
+            font-weight: 500;
+            color: #E2E8F0;
+            flex: 1;
+        }
+
+        /* iOS Radio */
+        .ios-radio {
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            border: 2px solid #3A3A44;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: 12px;
+            flex-shrink: 0;
+        }
+        .ios-radio.on {
+            border-color: #818CF8;
+            background: #818CF8;
+        }
+        .ios-radio-inner {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #111;
+        }
+
+        /* iOS Checkmark */
+        .ios-check {
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: #818CF8;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: 12px;
+            flex-shrink: 0;
+        }
+        .ios-check svg {
+            width: 11px;
+            height: 11px;
+            fill: none;
+            stroke: #FFF;
+            stroke-width: 2.5;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        /* AI card */
+        .ai-card {
+            background: linear-gradient(135deg, rgba(236, 72, 153, 0.07), rgba(129, 140, 248, 0.04));
+            border: 1px solid rgba(236, 72, 153, 0.18);
+            border-radius: 14px;
+            padding: 12px 14px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 14px;
+            margin-top: auto;
+        }
+        .ai-sparkle {
+            width: 34px;
+            height: 34px;
+            border-radius: 10px;
+            background: rgba(236, 72, 153, 0.12);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-shrink: 0;
+        }
+        .ai-sparkle svg {
+            width: 18px;
+            height: 18px;
+        }
+        .ai-card-text {
+            font-size: 0.7rem;
+            color: #F1F5F9;
+            font-weight: 500;
+            line-height: 1.4;
+        }
+
+        .btn-protect {
+            width: 100%;
+            padding: 13px 0;
+            background: linear-gradient(135deg, #EC4899, #D946EF);
+            color: #FFF;
+            text-align: center;
+            border-radius: 26px;
+            font-weight: 700;
+            font-size: 0.82rem;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 14px rgba(236, 72, 153, 0.25);
+            letter-spacing: 0.3px;
+        }
+
+        /* ===== CAPTION QUOTE ===== */
+        .overlay-quote {
+            margin-top: 45px;
+            text-align: center;
+            max-width: 800px;
+        }
+        .overlay-quote blockquote {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.1rem;
+            font-style: italic;
+            color: #94A3B8;
+            line-height: 1.5;
+            position: relative;
+            padding: 0 24px;
+        }
+        .overlay-quote blockquote::before {
+            content: '"';
+            font-size: 3.5rem;
+            color: #334155;
+            position: absolute;
+            top: -16px;
+            left: -6px;
+            font-style: normal;
+        }
+        .overlay-quote em {
+            color: #F1F5F9;
+            font-style: normal;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Presentation Header -->
+    <div class="page-header">
+        <h1>Memory Legacy</h1>
+        <div class="accent-line"></div>
+    </div>
+
+    <!-- Dashboard -->
+    <div class="dashboard">
+
+        <!-- ===== PHONE 1: YOUR MEMORY LEGACY ===== -->
+        <div class="frame-wrapper">
+            <div class="frame-label label-timeline">
+                <h3>Memory Timeline</h3>
+                <p>"Curate what matters"</p>
+            </div>
+
+            <div class="phone">
+                <div class="notch"></div>
+                <div class="screen">
+                    <!-- iOS Status Bar -->
+                    <div class="status-bar">
+                        <span>9:41</span>
+                        <span class="status-icons">
+                            <svg viewBox="0 0 24 24" fill="#FFF"><path d="M1 9l2 2c4.97-4.97 13.03-4.97 18 0l2-2C16.93 2.93 7.08 2.93 1 9zm8 8l3 3 3-3c-1.65-1.66-4.34-1.66-6 0zm-4-4l2 2c2.76-2.76 7.24-2.76 10 0l2-2C15.14 9.14 8.87 9.14 5 13z"/></svg>
+                            5G 🔋
+                        </span>
+                    </div>
+
+                    <!-- Google Photos Nav -->
+                    <div class="gp-nav">
+                        <svg class="gp-back-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+                        <span class="gp-nav-title">Your Memory Legacy</span>
+                        <svg class="gp-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg>
+                    </div>
+
+                    <div class="content">
+                        <!-- Google Photos branding -->
+                        <div class="gp-brand-row">
+                            <svg class="gp-brand-icon" viewBox="0 0 24 24">
+                                <path fill="#EA4335" d="M12 7.5a4.5 4.5 0 1 1 9 0H12z"/>
+                                <path fill="#4285F4" d="M7.5 12a4.5 4.5 0 1 1 0-9V12z"/>
+                                <path fill="#34A853" d="M12 16.5a4.5 4.5 0 1 1-9 0H12z"/>
+                                <path fill="#FBBC05" d="M16.5 12a4.5 4.5 0 1 1 0 9V12z"/>
+                            </svg>
+                            <span class="gp-brand-label">Google Photos · Legacy</span>
+                        </div>
+
+                        <!-- Vertical Timeline -->
+                        <div class="timeline">
+                            <div class="tl-node">
+                                <div class="tl-dot tl-dot-1"></div>
+                                <div class="tl-year">2015</div>
+                                <div class="tl-title">College years</div>
+                                <div class="tl-count">248 memories</div>
+                                <div class="tl-thumbs">
+                                    <div class="tl-thumb" style="background-image:url('https://picsum.photos/id/1011/100/100');"></div>
+                                    <div class="tl-thumb" style="background-image:url('https://picsum.photos/id/1025/100/100');"></div>
+                                    <div class="tl-thumb" style="background-image:url('https://picsum.photos/id/1035/100/100');"></div>
+                                    <div class="tl-thumb" style="background-image:url('https://picsum.photos/id/1040/100/100');"></div>
+                                </div>
+                            </div>
+
+                            <div class="tl-node">
+                                <div class="tl-dot tl-dot-2"></div>
+                                <div class="tl-year">2019</div>
+                                <div class="tl-title">Wedding</div>
+                                <div class="tl-count">620 memories</div>
+                                <div class="tl-thumbs">
+                                    <div class="tl-thumb" style="background-image:url('https://picsum.photos/id/1062/100/100');"></div>
+                                    <div class="tl-thumb" style="background-image:url('https://picsum.photos/id/1074/100/100');"></div>
+                                    <div class="tl-thumb" style="background-image:url('https://picsum.photos/id/1039/100/100');"></div>
+                                    <div class="tl-thumb" style="background-image:url('https://picsum.photos/id/1060/100/100');"></div>
+                                </div>
+                            </div>
+
+                            <div class="tl-node">
+                                <div class="tl-dot tl-dot-3"></div>
+                                <div class="tl-year">2024</div>
+                                <div class="tl-title">Family moments</div>
+                                <div class="tl-count">1,430 memories</div>
+                                <div class="tl-thumbs">
+                                    <div class="tl-thumb" style="background-image:url('https://picsum.photos/id/1015/100/100');"></div>
+                                    <div class="tl-thumb" style="background-image:url('https://picsum.photos/id/1059/100/100');"></div>
+                                    <div class="tl-thumb" style="background-image:url('https://picsum.photos/id/1047/100/100');"></div>
+                                    <div class="tl-thumb" style="background-image:url('https://picsum.photos/id/1069/100/100');"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Bottom Card -->
+                        <div class="legacy-cta-card">
+                            <p>Preserve your most meaningful memories for the future</p>
+                        </div>
+
+                        <!-- Button -->
+                        <button class="btn-legacy">Create Legacy Collection</button>
+                    </div>
+
+                    <div class="home-indicator"></div>
+                </div>
+            </div>
+            <div class="screen-label-bottom">Legacy Curation</div>
+        </div>
+
+        <!-- Transition Arrow -->
+        <div class="transition-arrow">
+            <div class="arrow-line"></div>
+            <div class="arrow-tip"></div>
+        </div>
+
+        <!-- ===== PHONE 2: LEGACY SETTINGS ===== -->
+        <div class="frame-wrapper">
+            <div class="frame-label label-settings">
+                <h3>Continuity Settings</h3>
+                <p>"Pass on what matters"</p>
+            </div>
+
+            <div class="phone">
+                <div class="notch"></div>
+                <div class="screen">
+                    <!-- iOS Status Bar -->
+                    <div class="status-bar">
+                        <span>9:41</span>
+                        <span class="status-icons">
+                            <svg viewBox="0 0 24 24" fill="#FFF"><path d="M1 9l2 2c4.97-4.97 13.03-4.97 18 0l2-2C16.93 2.93 7.08 2.93 1 9zm8 8l3 3 3-3c-1.65-1.66-4.34-1.66-6 0zm-4-4l2 2c2.76-2.76 7.24-2.76 10 0l2-2C15.14 9.14 8.87 9.14 5 13z"/></svg>
+                            5G 🔋
+                        </span>
+                    </div>
+
+                    <!-- Google Photos Nav -->
+                    <div class="gp-nav">
+                        <svg class="gp-back-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+                        <span class="gp-nav-title">Legacy Settings</span>
+                        <svg class="gp-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg>
+                    </div>
+
+                    <div class="content">
+                        <!-- Share section -->
+                        <div class="section-title">Share your memories with</div>
+                        <div class="share-row">
+                            <div class="avatar av-blue">SK</div>
+                            <div class="avatar av-pink">AM</div>
+                            <div class="avatar av-green">PK</div>
+                            <div class="avatar av-add">+</div>
+                        </div>
+
+                        <!-- Access -->
+                        <div class="section-title">Access</div>
+                        <div class="ios-group">
+                            <div class="ios-row">
+                                <div class="ios-radio"></div>
+                                <span class="ios-row-label">Now</span>
+                            </div>
+                            <div class="ios-row">
+                                <div class="ios-radio on"><div class="ios-radio-inner"></div></div>
+                                <span class="ios-row-label">In the future</span>
+                            </div>
+                        </div>
+
+                        <!-- Memory types -->
+                        <div class="section-title">Memory types</div>
+                        <div class="ios-group">
+                            <div class="ios-row">
+                                <div class="ios-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+                                <span class="ios-row-label">Family albums</span>
+                            </div>
+                            <div class="ios-row">
+                                <div class="ios-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+                                <span class="ios-row-label">Milestones</span>
+                            </div>
+                            <div class="ios-row">
+                                <div class="ios-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+                                <span class="ios-row-label">Favorite moments</span>
+                            </div>
+                        </div>
+
+                        <!-- AI suggestion card -->
+                        <div class="ai-card">
+                            <div class="ai-sparkle">
+                                <svg viewBox="0 0 24 24" fill="none">
+                                    <path d="M12 2L14.09 8.26L20 9.27L15.55 13.97L16.91 20L12 16.9L7.09 20L8.45 13.97L4 9.27L9.91 8.26L12 2Z" fill="#EC4899"/>
+                                </svg>
+                            </div>
+                            <div class="ai-card-text">We found <strong>15 years</strong> of memories worth preserving</div>
+                        </div>
+
+                        <!-- Button -->
+                        <button class="btn-protect">Protect Legacy</button>
+                    </div>
+
+                    <div class="home-indicator"></div>
+                </div>
+            </div>
+            <div class="screen-label-bottom">Access Rules</div>
+        </div>
+
+    </div>
+
+    <!-- Quote -->
+    <div class="overlay-quote">
+        <blockquote>
+            Digital memories solved storage. The next challenge is <em>continuity.</em>
+        </blockquote>
+    </div>
+
+</body>
+</html>

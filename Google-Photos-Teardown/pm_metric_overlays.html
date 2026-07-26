@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Google Photos PM Overlay</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+        body {
+            background-color: #F8FAFC;
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 60px 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .dashboard {
+            display: flex;
+            gap: 160px; /* Big gap to fit annotations */
+            justify-content: center;
+            align-items: flex-start;
+        }
+
+        /* The Phone Hardware */
+        .phone {
+            width: 320px;
+            height: 680px;
+            background: #FFFFFF;
+            border-radius: 40px;
+            box-shadow: 0 0 0 10px #E2E8F0, 0 20px 40px rgba(0,0,0,0.1);
+            position: relative;
+            overflow: visible; /* Important for annotations to break out */
+        }
+
+        /* The Screen */
+        .screen {
+            width: 100%;
+            height: 100%;
+            border-radius: 30px;
+            overflow: hidden;
+            background: #FFFFFF;
+            position: relative;
+            border: 1px solid #E2E8F0;
+        }
+
+        /* Status Bar Mock */
+        .status-bar {
+            height: 40px;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 24px;
+            box-sizing: border-box;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #111;
+            z-index: 10;
+            position: absolute;
+            top: 0; left: 0; right: 0;
+        }
+        .status-bar.dark {
+            color: #FFF;
+        }
+
+        /* Dynamic Island / Notch */
+        .notch {
+            position: absolute;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 24px;
+            background: #000;
+            border-radius: 12px;
+            z-index: 20;
+        }
+
+        /* Annotation Badge */
+        .annotation {
+            position: absolute;
+            background: #E11D48; /* Premium Rose/Pink */
+            color: #FFF;
+            padding: 8px 14px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            box-shadow: 0 4px 12px rgba(225, 29, 72, 0.3);
+            white-space: nowrap;
+            z-index: 100;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        /* Left-pointing leader line */
+        .annotation.left::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            right: 100%; /* Point to the left */
+            width: 40px;
+            height: 2px;
+            background: #E11D48;
+            transform: translateY(-50%);
+        }
+        .annotation.left::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            right: calc(100% + 40px);
+            width: 8px;
+            height: 8px;
+            background: #E11D48;
+            border-radius: 50%;
+            transform: translate(50%, -50%);
+        }
+
+        /* Right-pointing leader line */
+        .annotation.right::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 100%; /* Point to the right */
+            width: 40px;
+            height: 2px;
+            background: #E11D48;
+            transform: translateY(-50%);
+        }
+        .annotation.right::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: calc(100% + 40px);
+            width: 8px;
+            height: 8px;
+            background: #E11D48;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        /* Top-pointing leader line */
+        .annotation.top::after {
+            content: '';
+            position: absolute;
+            bottom: 100%; /* Point upwards */
+            left: 50%; 
+            width: 2px;
+            height: 30px;
+            background: #E11D48;
+            transform: translateX(-50%);
+        }
+        .annotation.top::before {
+            content: '';
+            position: absolute;
+            bottom: calc(100% + 30px);
+            left: 50%;
+            width: 8px;
+            height: 8px;
+            background: #E11D48;
+            border-radius: 50%;
+            transform: translate(-50%, 50%);
+        }
+
+        /* --- SCREEN 1: MEMORIES --- */
+        .s1-header {
+            padding: 60px 20px 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .s1-header .logo { font-weight: 700; font-size: 1.2rem; }
+        .s1-header .profile { width: 30px; height: 30px; background: #CBD5E1; border-radius: 50%; }
+
+        .memories-row {
+            display: flex;
+            gap: 10px;
+            padding: 0 20px;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+        .memory-card {
+            width: 120px;
+            height: 180px;
+            border-radius: 16px;
+            flex-shrink: 0;
+            position: relative;
+            background: linear-gradient(135deg, #A7F3D0, #34D399);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+        .memory-card:nth-child(2) { background: linear-gradient(135deg, #FBCFE8, #F472B6); }
+        .memory-card:nth-child(3) { background: linear-gradient(135deg, #BAE6FD, #38BDF8); }
+        
+        .memory-title {
+            position: absolute;
+            bottom: 12px; left: 12px; right: 12px;
+            color: #FFF; font-size: 0.75rem; font-weight: 600;
+            text-shadow: 0 1px 4px rgba(0,0,0,0.4);
+        }
+
+        .photo-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2px;
+            padding: 0 20px;
+        }
+        .photo-square {
+            aspect-ratio: 1;
+            background: #F1F5F9;
+        }
+        .photo-square:nth-child(odd) { background: #E2E8F0; }
+
+
+        /* --- SCREEN 2: SEARCH --- */
+        .s2-header {
+            padding: 60px 20px 20px;
+        }
+        .search-bar {
+            width: 100%;
+            height: 44px;
+            background: #F1F5F9;
+            border-radius: 22px;
+            display: flex;
+            align-items: center;
+            padding: 0 16px;
+            box-sizing: border-box;
+            color: #64748B;
+            font-size: 0.9rem;
+        }
+        .search-section {
+            padding: 0 20px 20px;
+        }
+        .search-title {
+            font-size: 1rem; font-weight: 600; margin-bottom: 12px;
+        }
+        .people-row {
+            display: flex; gap: 12px; overflow: hidden;
+        }
+        .avatar-circle {
+            width: 60px; height: 60px; border-radius: 50%;
+            background: #CBD5E1; flex-shrink: 0;
+        }
+        .places-row {
+            display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px;
+        }
+        .place-card {
+            height: 80px; border-radius: 12px; background: #E2E8F0;
+            position: relative;
+        }
+        .place-label {
+            position: absolute; bottom: 8px; left: 8px;
+            font-size: 0.75rem; font-weight: 600;
+        }
+
+
+        /* --- SCREEN 3: MAGIC EDITOR --- */
+        .screen-dark {
+            background: #000;
+            color: #FFF;
+        }
+        .editor-image {
+            width: 100%;
+            height: 70%;
+            background: linear-gradient(180deg, #1E293B, #0F172A);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .editor-header {
+            position: absolute;
+            top: 50px; left: 20px; right: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 10;
+        }
+        .action-icon {
+            width: 32px; height: 32px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 50%;
+            display: flex; justify-content: center; align-items: center;
+            font-weight: 700;
+        }
+        .bottom-sheet {
+            position: absolute;
+            bottom: 0; left: 0; right: 0;
+            height: 30%;
+            background: #111;
+            border-top-left-radius: 20px;
+            border-top-right-radius: 20px;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        .tools-row {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 24px;
+            overflow: hidden;
+        }
+        .tool-pill {
+            padding: 8px 16px;
+            background: #333;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            white-space: nowrap;
+        }
+        .tool-pill.active {
+            background: #FFF; color: #000; font-weight: 600;
+        }
+        .done-btn {
+            width: 100%;
+            padding: 14px 0;
+            background: #FFF;
+            color: #000;
+            text-align: center;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 1rem;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="dashboard">
+
+        <!-- PHONE 1: MEMORIES -->
+        <div class="phone">
+            <div class="notch"></div>
+            <div class="screen">
+                <div class="status-bar">
+                    <span>9:41</span>
+                    <span>5G 🔋</span>
+                </div>
+                
+                <div class="s1-header">
+                    <div class="logo">Google Photos</div>
+                    <div class="profile"></div>
+                </div>
+
+                <div class="memories-row">
+                    <div class="memory-card">
+                        <div class="memory-title">1 year ago</div>
+                        <!-- Tiny share icon mock -->
+                        <div style="position: absolute; top: 12px; right: 12px; width: 16px; height: 16px; background: rgba(255,255,255,0.5); border-radius: 50%;"></div>
+                    </div>
+                    <div class="memory-card">
+                        <div class="memory-title">Recent Highlights</div>
+                    </div>
+                    <div class="memory-card"></div>
+                </div>
+
+                <div style="padding: 0 20px 10px; font-weight: 600; font-size: 0.9rem;">Today</div>
+                <div class="photo-grid">
+                    <div class="photo-square"></div>
+                    <div class="photo-square"></div>
+                    <div class="photo-square"></div>
+                    <div class="photo-square"></div>
+                    <div class="photo-square"></div>
+                    <div class="photo-square"></div>
+                </div>
+            </div>
+
+            <!-- Overlays for Phone 1 -->
+            <div class="annotation right" style="top: 150px; left: -140px;">Memory open rate</div>
+            <div class="annotation left" style="top: 100px; right: -85px;">Share rate</div>
+            <div class="annotation left" style="top: 180px; right: -95px;">Dismiss rate</div>
+        </div>
+
+        <!-- PHONE 2: SEARCH -->
+        <div class="phone">
+            <div class="notch"></div>
+            <div class="screen">
+                <div class="status-bar">
+                    <span>9:41</span>
+                    <span>5G 🔋</span>
+                </div>
+                
+                <div class="s2-header">
+                    <div class="search-bar">
+                        🔍 Search your photos
+                    </div>
+                </div>
+
+                <div class="search-section">
+                    <div class="search-title">People & Pets</div>
+                    <div class="people-row">
+                        <div class="avatar-circle"></div>
+                        <div class="avatar-circle"></div>
+                        <div class="avatar-circle"></div>
+                        <div class="avatar-circle"></div>
+                    </div>
+                </div>
+
+                <div class="search-section">
+                    <div class="search-title">Places</div>
+                    <div class="places-row">
+                        <div class="place-card"><div class="place-label">Tokyo</div></div>
+                        <div class="place-card"><div class="place-label">New York</div></div>
+                        <div class="place-card"><div class="place-label">London</div></div>
+                        <div class="place-card"><div class="place-label">Paris</div></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Overlays for Phone 2 -->
+            <div class="annotation right" style="top: 80px; left: -110px;">Query success</div>
+            <div class="annotation left" style="top: 250px; right: -130px;">Time to retrieval</div>
+        </div>
+
+        <!-- PHONE 3: MAGIC EDITOR -->
+        <div class="phone">
+            <div class="notch"></div>
+            <div class="screen screen-dark">
+                <div class="status-bar dark">
+                    <span>9:41</span>
+                    <span>5G 🔋</span>
+                </div>
+                
+                <div class="editor-header">
+                    <div class="action-icon">←</div>
+                    <!-- Undo icon mock -->
+                    <div class="action-icon" style="transform: scaleX(-1);">↺</div> 
+                </div>
+
+                <div class="editor-image">
+                    <div style="font-size: 3rem; opacity: 0.2;">✨</div>
+                </div>
+
+                <div class="bottom-sheet">
+                    <div class="tools-row">
+                        <div class="tool-pill active">Magic Eraser</div>
+                        <div class="tool-pill">Sky</div>
+                        <div class="tool-pill">Portrait Blur</div>
+                    </div>
+                    <!-- Slider mock -->
+                    <div style="width: 100%; height: 4px; background: #333; border-radius: 2px; margin-bottom: 24px; position: relative;">
+                        <div style="width: 20px; height: 20px; background: #FFF; border-radius: 50%; position: absolute; top: -8px; left: 40%;"></div>
+                    </div>
+                    <div class="done-btn">Done</div>
+                </div>
+            </div>
+
+            <!-- Overlays for Phone 3 -->
+            <div class="annotation top" style="bottom: -40px; left: 50%; transform: translateX(-50%);">Completion rate</div>
+            <div class="annotation right" style="top: 60px; left: -80px;">Undo rate</div>
+            <div class="annotation left" style="bottom: 120px; right: -210px;">Manual adjustment freq.</div>
+        </div>
+
+    </div>
+
+</body>
+</html>

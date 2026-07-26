@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anti-Metrics & Guardrails</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Inter:wght@400;500;600;700&display=swap');
+
+        body {
+            background-color: #F4F2EC; 
+            color: #2C2C2C;
+            font-family: 'Inter', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 40px 20px;
+        }
+
+        .editorial-container {
+            max-width: 800px;
+            width: 100%;
+            background: #FFFFFF;
+            padding: 40px 50px;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.04);
+            position: relative;
+        }
+
+        /* Elegant gold top accent */
+        .editorial-container::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 6px;
+            background: #C4A77D; 
+        }
+
+        .header {
+            margin-bottom: 30px;
+            text-align: center;
+            border-bottom: 2px solid #111;
+            padding-bottom: 24px;
+        }
+
+        .header h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            font-weight: 700;
+            margin: 0 0 8px 0;
+            color: #111;
+        }
+
+        .header p {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: #888;
+            margin: 0;
+        }
+
+        .table-list {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .table-header {
+            display: flex;
+            padding: 10px 0;
+            border-bottom: 1px solid #111;
+            margin-bottom: 10px;
+        }
+
+        .th-col {
+            font-family: 'Inter', sans-serif;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 2px;
+            font-weight: 700;
+            color: #C4A77D;
+        }
+
+        .th-risk { flex: 1.2; padding-right: 24px; }
+        .th-track { flex: 2.8; padding-left: 24px; }
+
+        .row {
+            display: flex;
+            padding: 24px 0;
+            border-bottom: 1px solid #EAEAEA;
+            align-items: flex-start;
+        }
+
+        .row:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        .col-risk {
+            flex: 1.2;
+            padding-right: 24px;
+        }
+
+        .col-risk h4 {
+            font-family: 'Inter', sans-serif;
+            text-transform: uppercase;
+            font-size: 0.95rem;
+            letter-spacing: 1px;
+            font-weight: 700;
+            color: #E63946; /* Subtle red for risk */
+            margin: 0 0 6px 0;
+        }
+
+        .col-risk p {
+            font-size: 0.85rem;
+            color: #666;
+            margin: 0;
+            line-height: 1.4;
+        }
+
+        .col-track {
+            flex: 2.8;
+            font-family: 'Playfair Display', serif;
+            font-size: 1.35rem;
+            color: #111;
+            line-height: 1.5;
+            padding-left: 24px;
+            border-left: 1px solid #EAEAEA;
+        }
+
+        .metric-item {
+            display: inline-block;
+        }
+
+        .metric-item:not(:last-child)::after {
+            content: ",";
+            color: #111;
+            margin-right: 6px;
+            font-weight: 400;
+        }
+
+        @media (max-width: 768px) {
+            .editorial-container { padding: 40px 30px; }
+            .row { flex-direction: column; gap: 12px; padding: 24px 0; }
+            .col-risk, .col-track { padding: 0; border: none; }
+            .col-track { font-size: 1.25rem; }
+            .table-header { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="editorial-container">
+        <div class="header">
+            <h2>Guardrail Metrics</h2>
+            <p>Anti-Metrics & Counter-Measures</p>
+        </div>
+
+        <div class="table-list">
+            
+            <div class="table-header">
+                <div class="th-col th-risk">Risk Area</div>
+                <div class="th-col th-track">Track</div>
+            </div>
+
+            <div class="row">
+                <div class="col-risk">
+                    <h4>AI Quality</h4>
+                    <p>More AI ≠ better experience</p>
+                </div>
+                <div class="col-track">
+                    <span class="metric-item">AI suggestion acceptance rate</span>
+                    <span class="metric-item">AI edit reversal rate</span>
+                    <span class="metric-item">Manual override frequency</span>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-risk">
+                    <h4>User Trust</h4>
+                    <p>Photos are deeply personal</p>
+                </div>
+                <div class="col-track">
+                    <span class="metric-item">Backup failures</span>
+                    <span class="metric-item">Privacy setting changes</span>
+                    <span class="metric-item">Deleted memories after resurfacing</span>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-risk">
+                    <h4>Notification Quality</h4>
+                    <p>Increasing memory reminders can artificially increase engagement</p>
+                </div>
+                <div class="col-track">
+                    <span class="metric-item">Notification disable rate</span>
+                    <span class="metric-item">Memory dismissal rate</span>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</body>
+</html>

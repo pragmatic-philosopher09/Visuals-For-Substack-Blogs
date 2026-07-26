@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Economics Calculator - Bright Edition</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        :root {
+            --primary: #4f46e5;
+            --primary-hover: #4338ca;
+            --bg-body: #f1f5f9;
+            --bg-card: #ffffff;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+
+            --healthy: #10b981;
+            --healthy-bg: #d1fae5;
+            --warning: #f59e0b;
+            --warning-bg: #fef3c7;
+            --critical: #ef4444;
+            --critical-bg: #fee2e2;
+
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.025);
+            --shadow-glow: 0 10px 30px rgba(79, 70, 229, 0.15);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-body);
+            background-image: 
+                radial-gradient(circle at 0% 0%, #ffffff 0%, transparent 50%),
+                radial-gradient(circle at 100% 100%, #e2e8f0 0%, transparent 50%);
+            color: var(--text-main);
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            line-height: 1.5;
+        }
+
+        .app-container {
+            background: var(--bg-card);
+            border-radius: 32px;
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.1), 0 0 0 1px rgba(0,0,0,0.02);
+            display: grid;
+            grid-template-columns: 1fr 420px;
+            max-width: 1100px;
+            width: 100%;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* --- Left Pane (Editor) --- */
+        .editor-pane {
+            padding: 3rem;
+            background: #ffffff;
+            z-index: 10;
+        }
+
+        .header {
+            margin-bottom: 2.5rem;
+        }
+
+        .badge {
+            display: inline-block;
+            background: rgba(79, 70, 229, 0.1);
+            color: var(--primary);
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            padding: 0.25rem 0.75rem;
+            border-radius: 99px;
+            margin-bottom: 1rem;
+        }
+
+        .header h1 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 0.75rem;
+            color: #0f172a;
+            letter-spacing: -0.02em;
+        }
+
+        .header p {
+            color: var(--text-muted);
+            font-size: 1rem;
+        }
+
+        .input-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        .input-card {
+            background: #f8fafc;
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 1.25rem;
+            transition: all 0.3s ease;
+        }
+
+        .input-card.full-width {
+            grid-column: 1 / -1;
+        }
+
+        .input-card:hover {
+            background: #ffffff;
+            box-shadow: var(--shadow-md);
+            border-color: rgba(79, 70, 229, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 1rem;
+        }
+
+        .card-header i {
+            width: 16px;
+            height: 16px;
+            color: var(--primary);
+        }
+
+        .fields-row {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .field {
+            flex: 1;
+        }
+
+        .field label {
+            display: block;
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: var(--text-main);
+            margin-bottom: 0.4rem;
+        }
+
+        .field input[type="number"] {
+            width: 100%;
+            background: #ffffff;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 0.6rem 0.75rem;
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--text-main);
+            transition: all 0.2s;
+            outline: none;
+            box-shadow: var(--shadow-sm) inset;
+        }
+
+        .field input[type="number"]:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+        }
+
+        .slider-field {
+            margin-bottom: 1.25rem;
+        }
+        .slider-field:last-child {
+            margin-bottom: 0;
+        }
+
+        .slider-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .slider-val {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 700;
+            color: var(--primary);
+            font-size: 0.9rem;
+            background: rgba(79, 70, 229, 0.1);
+            padding: 0.2rem 0.5rem;
+            border-radius: 6px;
+        }
+
+        input[type=range] {
+            -webkit-appearance: none;
+            width: 100%;
+            background: transparent;
+            height: 6px;
+            outline: none;
+            margin: 10px 0;
+        }
+        input[type=range]::-webkit-slider-runnable-track {
+            width: 100%;
+            height: 6px;
+            background: #e2e8f0;
+            border-radius: 3px;
+        }
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            height: 20px;
+            width: 20px;
+            border-radius: 50%;
+            background: var(--primary);
+            margin-top: -7px;
+            box-shadow: 0 2px 6px rgba(79, 70, 229, 0.4);
+            cursor: pointer;
+            transition: transform 0.1s;
+        }
+        input[type=range]::-webkit-slider-thumb:hover {
+            transform: scale(1.2);
+        }
+        input[type=range]::-moz-range-track {
+            width: 100%;
+            height: 6px;
+            background: #e2e8f0;
+            border-radius: 3px;
+        }
+        input[type=range]::-moz-range-thumb {
+            height: 20px;
+            width: 20px;
+            border-radius: 50%;
+            background: var(--primary);
+            box-shadow: 0 2px 6px rgba(79, 70, 229, 0.4);
+            cursor: pointer;
+            border: none;
+        }
+
+        /* --- Right Pane (Dashboard) --- */
+        .dashboard-pane {
+            background: #f8fafc;
+            padding: 3rem;
+            border-left: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .status-card {
+            background: #ffffff;
+            border-radius: 24px;
+            padding: 2.5rem 2rem;
+            text-align: center;
+            border: 2px solid transparent;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: var(--shadow-lg);
+            margin-bottom: 1.5rem;
+        }
+
+        .status-card.healthy { border-color: var(--healthy); box-shadow: 0 20px 40px rgba(16, 185, 129, 0.15); }
+        .status-card.healthy .margin-value { color: var(--healthy); }
+        .status-card.healthy .status-pill { background: var(--healthy-bg); color: var(--healthy); border-color: rgba(16, 185, 129, 0.3); }
+
+        .status-card.warning { border-color: var(--warning); box-shadow: 0 20px 40px rgba(245, 158, 11, 0.15); }
+        .status-card.warning .margin-value { color: var(--warning); }
+        .status-card.warning .status-pill { background: var(--warning-bg); color: var(--warning); border-color: rgba(245, 158, 11, 0.3); }
+
+        .status-card.critical { border-color: var(--critical); box-shadow: 0 20px 40px rgba(239, 68, 68, 0.15); }
+        .status-card.critical .margin-value { color: var(--critical); }
+        .status-card.critical .status-pill { background: var(--critical-bg); color: var(--critical); border-color: rgba(239, 68, 68, 0.3); }
+
+        .status-label {
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-muted);
+        }
+
+        .margin-value {
+            font-size: 4.5rem;
+            font-weight: 800;
+            line-height: 1;
+            font-family: 'Outfit', sans-serif;
+            margin: 0.75rem 0 1rem;
+            transition: color 0.4s ease;
+        }
+
+        .status-pill {
+            display: inline-block;
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 0.3rem 0.75rem;
+            border-radius: 99px;
+            border: 1px solid transparent;
+            transition: all 0.4s ease;
+        }
+
+        .diag-alert {
+            padding: 1rem;
+            border-radius: 12px;
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+            margin-bottom: 2rem;
+            transition: all 0.4s ease;
+            border: 1px solid transparent;
+        }
+
+        .diag-alert.healthy { background: var(--healthy-bg); border-color: rgba(16, 185, 129, 0.2); }
+        .diag-alert.healthy .diag-icon { color: var(--healthy); }
+        .diag-alert.warning { background: var(--warning-bg); border-color: rgba(245, 158, 11, 0.2); }
+        .diag-alert.warning .diag-icon { color: var(--warning); }
+        .diag-alert.critical { background: var(--critical-bg); border-color: rgba(239, 68, 68, 0.2); }
+        .diag-alert.critical .diag-icon { color: var(--critical); }
+
+        .diag-icon {
+            margin-top: 0.1rem;
+        }
+        
+        .diag-content h4 {
+            font-size: 0.85rem;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+            color: var(--text-main);
+        }
+
+        .diag-content p {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            line-height: 1.4;
+        }
+
+        .pl-breakdown {
+            background: #ffffff;
+            border-radius: 16px;
+            padding: 1.5rem;
+            border: 1px solid var(--border);
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .pl-breakdown h3 {
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 0.75rem;
+        }
+
+        .pl-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.85rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .pl-row .label { color: var(--text-muted); }
+        .pl-row .val { font-family: 'Outfit', sans-serif; font-weight: 600; }
+        
+        .pl-row.highlight .label { color: var(--text-main); font-weight: 500; }
+        .pl-row.highlight .val { color: var(--warning); font-weight: 700; }
+
+        .pl-row .rev { color: var(--healthy); }
+        
+        .divider {
+            height: 1px;
+            background: var(--border);
+            margin: 1rem 0;
+        }
+
+        .pl-row.total .label { font-weight: 700; color: var(--text-main); }
+        .pl-row.total .val { color: var(--critical); font-weight: 700; }
+        
+        .pl-row.net { margin-top: 0.5rem; font-size: 0.95rem; }
+        .pl-row.net .label { font-weight: 700; color: var(--text-main); }
+        .pl-row.net .val { font-weight: 800; font-size: 1rem; transition: color 0.3s; }
+
+        .actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: auto;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 0.75rem 1rem;
+            border-radius: 12px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s;
+            text-align: center;
+        }
+
+        .btn.secondary {
+            background: #ffffff;
+            border: 1px solid var(--border);
+            color: var(--text-main);
+        }
+        .btn.secondary:hover {
+            background: #f8fafc;
+            border-color: #cbd5e1;
+        }
+
+        .btn.primary {
+            background: var(--primary);
+            color: #ffffff;
+            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+        }
+        .btn.primary:hover {
+            background: var(--primary-hover);
+            box-shadow: 0 6px 16px rgba(79, 70, 229, 0.4);
+            transform: translateY(-1px);
+        }
+
+        @media (max-width: 1024px) {
+            .app-container {
+                grid-template-columns: 1fr;
+            }
+            .dashboard-pane {
+                border-left: none;
+                border-top: 1px solid var(--border);
+            }
+        }
+        @media (max-width: 640px) {
+            .input-grid { grid-template-columns: 1fr; }
+            .editor-pane, .dashboard-pane { padding: 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="app-container">
+        
+        <!-- Left Pane -->
+        <div class="editor-pane">
+            <header class="header">
+                <span class="badge">Interactive Tool</span>
+                <h1>AI Unit Economics Simulator</h1>
+                <p>Visualize how model pricing, vector DB architectures, and token-heavy power users impact your unit profit limits.</p>
+            </header>
+            
+            <div class="input-grid">
+                
+                <!-- Group 1: Revenue -->
+                <div class="input-card">
+                    <div class="card-header"><i data-lucide="wallet"></i> Revenue & Base Cost</div>
+                    <div class="fields-row">
+                        <div class="field">
+                            <label>Subscription ($)</label>
+                            <input type="number" id="subPrice" value="80">
+                        </div>
+                        <div class="field">
+                            <label>Server Host ($)</label>
+                            <input type="number" id="baseHost" value="4">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Group 3: Model Pricing -->
+                <div class="input-card">
+                    <div class="card-header"><i data-lucide="zap"></i> Model API (Per 1M)</div>
+                    <div class="fields-row">
+                        <div class="field">
+                            <label>Input ($)</label>
+                            <input type="number" id="inputPrice" value="3.00" step="0.5">
+                        </div>
+                        <div class="field">
+                            <label>Output ($)</label>
+                            <input type="number" id="outputPrice" value="15.00" step="1">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Group 2: Volumes (Full Width) -->
+                <div class="input-card full-width">
+                    <div class="card-header"><i data-lucide="bar-chart-2"></i> Token Volumes (Monthly Per User)</div>
+                    <div class="slider-field">
+                        <div class="slider-header">
+                            <label>Input Tokens</label>
+                            <span class="slider-val" id="inputVolVal">1.00 M</span>
+                        </div>
+                        <input type="range" id="inputVol" min="0.1" max="10" step="0.1" value="1">
+                    </div>
+                    <div class="slider-field">
+                        <div class="slider-header">
+                            <label>Output Tokens</label>
+                            <span class="slider-val" id="outputVolVal">0.20 M</span>
+                        </div>
+                        <input type="range" id="outputVol" min="0.05" max="2" step="0.05" value="0.2">
+                    </div>
+                </div>
+
+                <!-- Group 4: Middleware (Full Width) -->
+                <div class="input-card full-width">
+                    <div class="card-header"><i data-lucide="layers"></i> AI Middleware Costs</div>
+                    <div class="fields-row">
+                        <div class="field">
+                            <label>Vector DB (RAG) ($)</label>
+                            <input type="number" id="ragCost" value="5.00">
+                        </div>
+                        <div class="field">
+                            <label>Monitoring & Evals ($)</label>
+                            <input type="number" id="evalCost" value="2.00">
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Right Pane -->
+        <div class="dashboard-pane">
+            
+            <div id="statusCard" class="status-card healthy">
+                <div class="status-label">Net Gross Margin</div>
+                <div class="margin-value" id="marginDisplay">71.2%</div>
+                <div class="status-pill" id="statusPill">Healthy Profile</div>
+            </div>
+
+            <div id="diagAlert" class="diag-alert healthy">
+                <div class="diag-icon" id="diagIcon">
+                    <i data-lucide="check-circle"></i>
+                </div>
+                <div class="diag-content">
+                    <h4 id="diagTitle">Optimized Architecture</h4>
+                    <p id="diagText">Your unit margins map safely inside target SaaS expectations. The business scales sustainably.</p>
+                </div>
+            </div>
+
+            <div class="pl-breakdown">
+                <h3>Unit Monthly P&L Breakdown</h3>
+                
+                <div class="pl-row"><span class="label">Revenue (ARR eq.)</span><span class="val rev" id="itemSub">$80.00</span></div>
+                <div class="pl-row"><span class="label">Standard Cloud Server</span><span class="val cost" id="itemHost">$4.00</span></div>
+                <div class="pl-row highlight"><span class="label">Model Inference (API)</span><span class="val cost" id="itemInference">$6.00</span></div>
+                <div class="pl-row"><span class="label">Vector Database (RAG)</span><span class="val cost" id="itemRag">$5.00</span></div>
+                <div class="pl-row"><span class="label">Guardrails / Monitoring</span><span class="val cost" id="itemEval">$2.00</span></div>
+                
+                <div class="divider"></div>
+                
+                <div class="pl-row total"><span class="label">Total Unit COGS</span><span class="val cost" id="itemTotalCogs">$17.00</span></div>
+                <div class="pl-row net"><span class="label">Net Gross Profit</span><span class="val" id="itemProfit">$63.00</span></div>
+            </div>
+
+            <div class="actions">
+                <button id="resetBtn" class="btn secondary">Reset Defaults</button>
+                <button id="exportDiagnostics" class="btn primary">Copy Report</button>
+            </div>
+
+        </div>
+
+    </div>
+
+    <script>
+        lucide.createIcons();
+
+        // DOM Elements
+        const subPriceInput = document.getElementById('subPrice');
+        const baseHostInput = document.getElementById('baseHost');
+        const inputVolInput = document.getElementById('inputVol');
+        const outputVolInput = document.getElementById('outputVol');
+        const inputPriceInput = document.getElementById('inputPrice');
+        const outputPriceInput = document.getElementById('outputPrice');
+        const ragCostInput = document.getElementById('ragCost');
+        const evalCostInput = document.getElementById('evalCost');
+
+        const inputVolVal = document.getElementById('inputVolVal');
+        const outputVolVal = document.getElementById('outputVolVal');
+
+        const marginDisplay = document.getElementById('marginDisplay');
+        const statusCard = document.getElementById('statusCard');
+        const statusPill = document.getElementById('statusPill');
+
+        const diagAlert = document.getElementById('diagAlert');
+        const diagTitle = document.getElementById('diagTitle');
+        const diagText = document.getElementById('diagText');
+        const diagIcon = document.getElementById('diagIcon');
+
+        // P&L item DOMs
+        const itemSub = document.getElementById('itemSub');
+        const itemHost = document.getElementById('itemHost');
+        const itemInference = document.getElementById('itemInference');
+        const itemRag = document.getElementById('itemRag');
+        const itemEval = document.getElementById('itemEval');
+        const itemTotalCogs = document.getElementById('itemTotalCogs');
+        const itemProfit = document.getElementById('itemProfit');
+
+        const resetBtn = document.getElementById('resetBtn');
+        const exportDiagnosticsBtn = document.getElementById('exportDiagnostics');
+
+        // SVG Icons
+        const iconHealthy = `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>`;
+        const iconWarning = `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>`;
+        const iconCritical = `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>`;
+
+        // Calculations Engine
+        function recalculate() {
+            const sub = parseFloat(subPriceInput.value) || 0;
+            const baseHost = parseFloat(baseHostInput.value) || 0;
+            const inVol = parseFloat(inputVolInput.value) || 0;
+            const outVol = parseFloat(outputVolInput.value) || 0;
+            const inPrice = parseFloat(inputPriceInput.value) || 0;
+            const outPrice = parseFloat(outputPriceInput.value) || 0;
+            const rag = parseFloat(ragCostInput.value) || 0;
+            const evaluation = parseFloat(evalCostInput.value) || 0;
+
+            inputVolVal.textContent = `${inVol.toFixed(2)} M`;
+            outputVolVal.textContent = `${outVol.toFixed(2)} M`;
+
+            const inferenceCost = (inVol * inPrice) + (outVol * outPrice);
+            const totalCOGS = baseHost + inferenceCost + rag + evaluation;
+            const netProfit = sub - totalCOGS;
+            const margin = sub > 0 ? (netProfit / sub) * 100 : -100;
+
+            marginDisplay.textContent = `${margin.toFixed(1)}%`;
+            itemSub.textContent = `$${sub.toFixed(2)}`;
+            itemHost.textContent = `$${baseHost.toFixed(2)}`;
+            itemInference.textContent = `$${inferenceCost.toFixed(2)}`;
+            itemRag.textContent = `$${rag.toFixed(2)}`;
+            itemEval.textContent = `$${evaluation.toFixed(2)}`;
+            itemTotalCogs.textContent = `$${totalCOGS.toFixed(2)}`;
+            itemProfit.textContent = `$${netProfit.toFixed(2)}`;
+
+            if (netProfit < 0) {
+                itemProfit.style.color = "var(--critical)";
+            } else {
+                itemProfit.style.color = "var(--healthy)";
+            }
+
+            // Update Status
+            statusCard.className = "status-card";
+            diagAlert.className = "diag-alert";
+            
+            if (margin >= 50) {
+                statusCard.classList.add("healthy");
+                diagAlert.classList.add("healthy");
+                statusPill.textContent = "Healthy Operational Margin";
+                diagTitle.textContent = "Optimized Architecture";
+                diagText.textContent = "Your unit margins map safely inside target SaaS expectations. The business scales sustainably.";
+                diagIcon.innerHTML = iconHealthy;
+            } else if (margin >= 0 && margin < 50) {
+                statusCard.classList.add("warning");
+                diagAlert.classList.add("warning");
+                statusPill.textContent = "Margin Compression";
+                diagTitle.textContent = "Compressed Unit Model";
+                diagText.textContent = "Warning: Variable compute usage is eating over 50% of your retail margin. Scale is limited.";
+                diagIcon.innerHTML = iconWarning;
+            } else {
+                statusCard.classList.add("critical");
+                diagAlert.classList.add("critical");
+                statusPill.textContent = "Negative Margin Burn";
+                diagTitle.textContent = "Usage Destroys Capital";
+                diagText.textContent = "Critical Danger: Your power user usage surpasses subscription thresholds. Every click now actively costs you cash.";
+                diagIcon.innerHTML = iconCritical;
+            }
+        }
+
+        // Action Handlers
+        resetBtn.addEventListener('click', () => {
+            subPriceInput.value = 80;
+            baseHostInput.value = 4;
+            inputVolInput.value = 1;
+            outputVolInput.value = 0.2;
+            inputPriceInput.value = 3.00;
+            outputPriceInput.value = 15.00;
+            ragCostInput.value = 5.00;
+            evalCostInput.value = 2.00;
+            recalculate();
+        });
+
+        exportDiagnosticsBtn.addEventListener('click', () => {
+            const sub = parseFloat(subPriceInput.value) || 0;
+            const totalCOGS = parseFloat(itemTotalCogs.textContent.replace('$',''));
+            const inferenceCost = parseFloat(itemInference.textContent.replace('$',''));
+            const profit = parseFloat(itemProfit.textContent.replace('$',''));
+            const margin = (profit / sub) * 100;
+
+            const diagnosticString = `[AI Calculator Diagnostic Result]
+Subscription Rate: $${sub}/mo
+Total Compute COGS: $${totalCOGS.toFixed(2)} (Inference: $${inferenceCost.toFixed(2)})
+Net Profit Margin: ${margin.toFixed(1)}% ($${profit.toFixed(2)} / User)
+Status: ${margin < 0 ? "⚠️ Critical Negative Burn" : margin < 50 ? "⚡ Compressed Margin" : "✅ Healthy Margin"}`;
+
+            const textarea = document.createElement('textarea');
+            textarea.value = diagnosticString;
+            document.body.appendChild(textarea);
+            textarea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textarea);
+
+            const origText = exportDiagnosticsBtn.textContent;
+            exportDiagnosticsBtn.textContent = "Copied Data!";
+            setTimeout(() => {
+                exportDiagnosticsBtn.textContent = origText;
+            }, 2000);
+        });
+
+        // Event Listeners
+        const inputs = [subPriceInput, baseHostInput, inputVolInput, outputVolInput, inputPriceInput, outputPriceInput, ragCostInput, evalCostInput];
+        inputs.forEach(element => {
+            element.addEventListener('input', recalculate);
+        });
+
+        window.onload = recalculate;
+    </script>
+</body>
+</html>

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Value Alignment — Google Photos</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@600;700;800&display=swap');
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background: #F8F9FC;
+            font-family: 'Inter', sans-serif;
+            color: #1E293B;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 60px 40px;
+        }
+
+        .table-container {
+            width: 100%;
+            max-width: 700px;
+            background: #FFFFFF;
+            border-radius: 14px;
+            overflow: hidden;
+            box-shadow:
+                0 1px 3px rgba(0,0,0,0.04),
+                0 8px 32px rgba(0,0,0,0.06);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead th {
+            padding: 18px 32px;
+            font-size: 0.78rem;
+            font-weight: 700;
+            color: #0F172A;
+            text-align: left;
+            border-bottom: 2px solid #E2E8F0;
+            background: #FAFBFD;
+        }
+
+        tbody td {
+            padding: 18px 32px;
+            font-size: 0.88rem;
+            font-weight: 500;
+            color: #334155;
+            text-align: left;
+        }
+
+        tbody tr:not(:last-child) td {
+            border-bottom: 1px solid #F1F5F9;
+        }
+
+        tbody tr:hover {
+            background: #FAFAFF;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>User Value</th>
+                    <th>Business Value</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Reduce storage anxiety</td>
+                    <td>Improve upgrade experience</td>
+                </tr>
+                <tr>
+                    <td>Better library management</td>
+                    <td>Strengthen Google One conversion</td>
+                </tr>
+                <tr>
+                    <td>Preserve meaningful memories</td>
+                    <td>Reduce low-value storage usage</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+</body>
+</html>

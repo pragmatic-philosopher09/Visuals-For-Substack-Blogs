@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Substack Cover - Google Photos Teardown</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;1,400&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #0b0c10;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            font-family: 'Outfit', sans-serif;
+            overflow: hidden;
+        }
+
+        /* 1200x630 is the standard OG / Substack cover ratio */
+        .cover-container {
+            width: 1200px;
+            height: 630px;
+            background: linear-gradient(135deg, #0f111a 0%, #050608 100%);
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 40px 100px rgba(0,0,0,0.5);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 80px 100px;
+        }
+
+        /* Ambient Glows using Google Colors */
+        .glow {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(120px);
+            opacity: 0.45;
+            z-index: 1;
+            mix-blend-mode: screen;
+        }
+
+        .glow-blue {
+            width: 600px; height: 600px;
+            background: #4285F4;
+            top: -200px; right: -100px;
+        }
+        
+        .glow-red {
+            width: 500px; height: 500px;
+            background: #EA4335;
+            bottom: -200px; left: -100px;
+            opacity: 0.35;
+        }
+
+        .glow-yellow {
+            width: 400px; height: 400px;
+            background: #FBBC04;
+            top: 20%; left: 30%;
+            opacity: 0.25;
+        }
+
+        .glow-green {
+            width: 500px; height: 500px;
+            background: #34A853;
+            bottom: -100px; right: 200px;
+            opacity: 0.3;
+        }
+
+        /* Abstract Glassmorphic Photo Cards floating in the background */
+        .glass-card {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-top: 1px solid rgba(255, 255, 255, 0.15);
+            border-left: 1px solid rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border-radius: 24px;
+            z-index: 2;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.4);
+        }
+
+        .card-1 {
+            width: 280px; height: 380px;
+            top: 60px; right: 120px;
+            transform: rotate(12deg);
+        }
+
+        .card-2 {
+            width: 220px; height: 300px;
+            top: 240px; right: 380px;
+            transform: rotate(-8deg);
+            background: rgba(255, 255, 255, 0.02);
+            backdrop-filter: blur(12px);
+        }
+
+        .card-3 {
+            width: 320px; height: 200px;
+            bottom: -40px; right: 80px;
+            transform: rotate(-4deg);
+        }
+
+        /* Content */
+        .content {
+            position: relative;
+            z-index: 10;
+            max-width: 750px;
+        }
+
+        .eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            padding: 8px 20px;
+            border-radius: 30px;
+            margin-bottom: 32px;
+        }
+
+        .eyebrow-text {
+            color: #E2E8F0;
+            font-size: 0.95rem;
+            font-weight: 600;
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+        }
+
+        .eyebrow-dot {
+            width: 8px; height: 8px;
+            background: #4285F4;
+            border-radius: 50%;
+            box-shadow: 0 0 10px #4285F4;
+        }
+
+        h1 {
+            font-size: 5.5rem;
+            font-weight: 800;
+            color: #FFFFFF;
+            line-height: 1.1;
+            letter-spacing: -2px;
+            margin-bottom: 24px;
+            background: linear-gradient(180deg, #FFFFFF 0%, #A0AEC0 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .brand-name {
+            display: block;
+        }
+
+        h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.8rem;
+            font-style: italic;
+            color: #94A3B8;
+            font-weight: 400;
+            line-height: 1.2;
+            margin-bottom: 40px;
+        }
+
+        .metadata {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 30px;
+            margin-top: 20px;
+        }
+
+        .meta-item {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .meta-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: #64748B;
+            font-weight: 600;
+        }
+
+        .meta-value {
+            font-size: 1.1rem;
+            color: #E2E8F0;
+            font-weight: 500;
+        }
+
+        /* Four-color Google-ish line */
+        .color-bar {
+            position: absolute;
+            bottom: 0; left: 0; right: 0;
+            height: 6px;
+            display: flex;
+            z-index: 10;
+        }
+        .c-blue { flex: 1; background: #4285F4; }
+        .c-red { flex: 1; background: #EA4335; }
+        .c-yellow { flex: 1; background: #FBBC04; }
+        .c-green { flex: 1; background: #34A853; }
+
+    </style>
+</head>
+<body>
+
+    <div class="cover-container">
+        
+        <!-- Background Ambient Glows -->
+        <div class="glow glow-blue"></div>
+        <div class="glow glow-red"></div>
+        <div class="glow glow-yellow"></div>
+        <div class="glow glow-green"></div>
+
+        <!-- Glassmorphic Elements representing Photos/Albums -->
+        <div class="glass-card card-1"></div>
+        <div class="glass-card card-2"></div>
+        <div class="glass-card card-3"></div>
+
+        <!-- Typography & Content -->
+        <div class="content">
+            <div class="eyebrow">
+                <div class="eyebrow-dot"></div>
+                <span class="eyebrow-text">Product Strategy Teardown</span>
+            </div>
+
+            <h1>
+                <span class="brand-name">Google Photos</span>
+            </h1>
+
+            <h2>
+                From Storage Utility to Memory Legacy.
+            </h2>
+
+            <div class="metadata">
+                <div class="meta-item">
+                    <span class="meta-label">Focus</span>
+                    <span class="meta-value">UI/UX & Product Strategy</span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label">Format</span>
+                    <span class="meta-value">Deep Dive Analysis</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bottom Color Bar -->
+        <div class="color-bar">
+            <div class="c-blue"></div>
+            <div class="c-red"></div>
+            <div class="c-yellow"></div>
+            <div class="c-green"></div>
+        </div>
+
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Personas & Jobs-To-Be-Done</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap');
+
+        body {
+            background-color: #ffecd2;
+            background-image: 
+                radial-gradient(at 0% 0%, hsla(333, 100%, 82%, 1) 0px, transparent 50%),
+                radial-gradient(at 50% 0%, hsla(284, 100%, 82%, 1) 0px, transparent 50%),
+                radial-gradient(at 100% 0%, hsla(217, 100%, 82%, 1) 0px, transparent 50%),
+                radial-gradient(at 0% 100%, hsla(35, 100%, 82%, 1) 0px, transparent 50%),
+                radial-gradient(at 50% 100%, hsla(192, 100%, 82%, 1) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, hsla(305, 100%, 82%, 1) 0px, transparent 50%);
+            color: #1e293b;
+            font-family: 'Outfit', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 40px;
+        }
+
+        .container {
+            max-width: 1000px;
+            width: 100%;
+        }
+
+        /* ===== HEADER ===== */
+        .header-text {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        .header-text h2 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin: 0 0 12px 0;
+            color: #0f172a;
+            letter-spacing: -0.5px;
+        }
+        .header-text p {
+            color: #475569;
+            font-size: 1.1rem;
+            margin: 0;
+            font-weight: 500;
+        }
+
+        /* ===== PERSONA CARDS GRID ===== */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.65);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border-radius: 30px;
+            padding: 36px;
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            box-shadow: 
+                0 20px 40px rgba(0, 0, 0, 0.05),
+                inset 0 1px 0 rgba(255, 255, 255, 1);
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 
+                0 30px 60px rgba(0, 0, 0, 0.08),
+                inset 0 1px 0 rgba(255, 255, 255, 1);
+        }
+
+        /* Shiny glint effect */
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 50%; height: 100%;
+            background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.4) 50%, rgba(255,255,255,0) 100%);
+            transform: skewX(-25deg);
+            transition: all 0.7s ease;
+        }
+        .card:hover::before { left: 200%; }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .icon-box {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #ffffff, #f1f5f9);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.06), inset 0 2px 4px rgba(255,255,255,1);
+            border: 2px solid rgba(255, 255, 255, 0.9);
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+        .icon-box img { width: 100%; height: 100%; object-fit: cover; }
+
+        .card:nth-child(1) .icon-box { border-bottom: 3px solid #3b82f6; }
+        .card:nth-child(2) .icon-box { border-bottom: 3px solid #f43f5e; }
+        .card:nth-child(3) .icon-box { border-bottom: 3px solid #10b981; }
+        .card:nth-child(4) .icon-box { border-bottom: 3px solid #8b5cf6; }
+
+        .header-text-group { display: flex; flex-direction: column; }
+        .header-text-group h3 {
+            margin: 0;
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #0f172a;
+            line-height: 1.2;
+        }
+        .header-text-group .subtitle {
+            margin: 4px 0 0 0;
+            font-size: 0.85rem;
+            color: #64748b;
+            font-weight: 500;
+        }
+
+        .divider {
+            height: 1px;
+            background: linear-gradient(to right, rgba(0,0,0,0.05), rgba(0,0,0,0));
+            margin: 20px 0;
+        }
+
+        .info-group { margin-bottom: 20px; }
+        .info-group:last-child { margin-bottom: 0; }
+
+        .label {
+            display: inline-block;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 4px 10px;
+            border-radius: 8px;
+            margin-bottom: 8px;
+        }
+        .label-need { background: rgba(59, 130, 246, 0.1); color: #2563eb; }
+        .label-value { background: rgba(16, 185, 129, 0.1); color: #059669; }
+
+        .value {
+            font-size: 1rem;
+            color: #334155;
+            font-weight: 500;
+            line-height: 1.5;
+            margin: 0;
+        }
+
+        /* ===== JTBD TABLE SECTION ===== */
+        .table-section-header {
+            text-align: center;
+            margin-bottom: 28px;
+        }
+        .table-section-header h3 {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #0f172a;
+            margin: 0 0 6px 0;
+        }
+        .table-section-header p {
+            font-size: 0.9rem;
+            color: #64748b;
+            font-weight: 500;
+            margin: 0;
+        }
+
+        .table-container {
+            background: rgba(255, 255, 255, 0.65);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border-radius: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            box-shadow: 
+                0 20px 40px rgba(0, 0, 0, 0.05),
+                inset 0 1px 0 rgba(255, 255, 255, 1);
+            overflow: hidden;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead th {
+            padding: 18px 28px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: #64748b;
+            text-align: left;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        tbody tr {
+            transition: background 0.15s ease;
+        }
+        tbody tr:hover {
+            background: rgba(255, 255, 255, 0.35);
+        }
+        tbody tr:not(:last-child) td {
+            border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+        }
+
+        tbody td {
+            padding: 20px 28px;
+            font-size: 0.92rem;
+            font-weight: 500;
+            color: #334155;
+            text-align: left;
+            vertical-align: middle;
+        }
+
+        /* Persona name with color dot */
+        .segment-cell {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 700;
+            color: #0f172a;
+        }
+        .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+        .dot-blue   { background: #3b82f6; }
+        .dot-rose   { background: #f43f5e; }
+        .dot-green  { background: #10b981; }
+        .dot-violet { background: #8b5cf6; }
+
+        /* Core need pill */
+        .need-pill {
+            display: inline-block;
+            padding: 5px 14px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        .pill-blue   { background: rgba(59, 130, 246, 0.1); color: #2563eb; }
+        .pill-rose   { background: rgba(244, 63, 94, 0.1); color: #e11d48; }
+        .pill-green  { background: rgba(16, 185, 129, 0.1); color: #059669; }
+        .pill-violet { background: rgba(139, 92, 246, 0.1); color: #7c3aed; }
+
+        @media (max-width: 768px) {
+            .grid { grid-template-columns: 1fr; }
+            thead th, tbody td { padding: 14px 18px; font-size: 0.82rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="header-text">
+            <h2>User Personas</h2>
+            <p>Understanding who we are building for</p>
+        </div>
+
+        <!-- ===== PERSONA CARDS ===== -->
+        <div class="grid">
+            <div class="card">
+                <div class="card-header">
+                    <div class="icon-box"><img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Everyday User Avatar"></div>
+                    <div class="header-text-group">
+                        <h3>Everyday Smartphone User</h3>
+                        <p class="subtitle">e.g., Casual shooters, Gen Z, Retirees</p>
+                    </div>
+                </div>
+                <div class="divider"></div>
+                <div class="info-group">
+                    <span class="label label-need">Primary Need</span>
+                    <p class="value">Backup and quick access</p>
+                </div>
+                <div class="info-group">
+                    <span class="label label-value">Product Value</span>
+                    <p class="value">Never lose important photos</p>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <div class="icon-box"><img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Memory Keeper Avatar"></div>
+                    <div class="header-text-group">
+                        <h3>Memory Keeper</h3>
+                        <p class="subtitle">e.g., Parents, Grandparents, Scrapbookers</p>
+                    </div>
+                </div>
+                <div class="divider"></div>
+                <div class="info-group">
+                    <span class="label label-need">Primary Need</span>
+                    <p class="value">Preserve life events</p>
+                </div>
+                <div class="info-group">
+                    <span class="label label-value">Product Value</span>
+                    <p class="value">Relive meaningful moments</p>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <div class="icon-box"><img src="https://randomuser.me/api/portraits/women/68.jpg" alt="Productivity User Avatar"></div>
+                    <div class="header-text-group">
+                        <h3>Productivity User</h3>
+                        <p class="subtitle">e.g., Students, Professionals, Researchers</p>
+                    </div>
+                </div>
+                <div class="divider"></div>
+                <div class="info-group">
+                    <span class="label label-need">Primary Need</span>
+                    <p class="value">Store documents/screenshots</p>
+                </div>
+                <div class="info-group">
+                    <span class="label label-value">Product Value</span>
+                    <p class="value">Retrieve information quickly</p>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <div class="icon-box"><img src="https://randomuser.me/api/portraits/men/46.jpg" alt="Creator Avatar"></div>
+                    <div class="header-text-group">
+                        <h3>Creator / Power User</h3>
+                        <p class="subtitle">e.g., Photographers, Vloggers, Influencers</p>
+                    </div>
+                </div>
+                <div class="divider"></div>
+                <div class="info-group">
+                    <span class="label label-need">Primary Need</span>
+                    <p class="value">Manage large libraries</p>
+                </div>
+                <div class="info-group">
+                    <span class="label label-value">Product Value</span>
+                    <p class="value">Organize and enhance content</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== JTBD TABLE ===== -->
+        <div class="table-section-header">
+            <h3>Jobs-To-Be-Done</h3>
+            <p>What each segment is really trying to accomplish</p>
+        </div>
+
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>User Segment</th>
+                        <th>Job-To-Be-Done</th>
+                        <th>Core Need</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><div class="segment-cell"><span class="dot dot-blue"></span>Everyday User</div></td>
+                        <td>Automatically back up and organize growing photo libraries</td>
+                        <td><span class="need-pill pill-blue">Peace of mind</span></td>
+                    </tr>
+                    <tr>
+                        <td><div class="segment-cell"><span class="dot dot-rose"></span>Memory Keeper</div></td>
+                        <td>Rediscover important moments from the past</td>
+                        <td><span class="need-pill pill-rose">Emotional connection</span></td>
+                    </tr>
+                    <tr>
+                        <td><div class="segment-cell"><span class="dot dot-green"></span>Productivity User</div></td>
+                        <td>Retrieve screenshots, documents, and visual information quickly</td>
+                        <td><span class="need-pill pill-green">Information retrieval</span></td>
+                    </tr>
+                    <tr>
+                        <td><div class="segment-cell"><span class="dot dot-violet"></span>Creator / Power User</div></td>
+                        <td>Manage and edit large volumes of content efficiently</td>
+                        <td><span class="need-pill pill-violet">Precision & control</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</body>
+</html>

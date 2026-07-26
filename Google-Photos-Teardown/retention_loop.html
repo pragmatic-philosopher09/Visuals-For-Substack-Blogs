@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Retention Loop</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700;800&display=swap');
+
+        body {
+            background-color: #fdfbf7;
+            font-family: 'Space Grotesk', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 40px;
+            color: #000;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1100px;
+            text-align: center;
+        }
+
+        .header {
+            margin-bottom: 70px;
+            text-transform: uppercase;
+        }
+
+        .header h2 {
+            font-size: 2.8rem;
+            font-weight: 800;
+            margin: 0;
+            letter-spacing: -1.5px;
+            text-shadow: 4px 4px 0px #C4B5FD;
+            border-bottom: 5px solid #000;
+            display: inline-block;
+            padding-bottom: 8px;
+        }
+
+        .loop-board {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+        }
+
+        .row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+        }
+
+        .connectors {
+            padding: 30px 0;
+        }
+
+        .card {
+            width: 260px;
+            height: 160px;
+            flex-shrink: 0;
+            border: 4px solid #000;
+            border-radius: 12px;
+            padding: 24px 20px;
+            box-shadow: 8px 8px 0px #000;
+            transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.2s;
+            position: relative;
+            background: #fff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .card:hover {
+            transform: translate(-4px, -4px);
+            box-shadow: 12px 12px 0px #000;
+        }
+
+        .step-num {
+            position: absolute;
+            top: -20px;
+            left: -20px;
+            width: 44px;
+            height: 44px;
+            background: #000;
+            color: #fff;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.3rem;
+            font-weight: 800;
+            border: 4px solid #fff;
+            box-shadow: 4px 4px 0px #000;
+        }
+
+        .card h3 {
+            font-size: 1.3rem;
+            font-weight: 800;
+            margin: 0;
+            line-height: 1.2;
+            text-transform: uppercase;
+            letter-spacing: -0.5px;
+        }
+
+        .card p {
+            margin: 8px 0 0 0;
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: #333;
+            line-height: 1.3;
+        }
+
+        /* Distinct Neo-Brutalist Colors */
+        .bg-1 { background-color: #FF90E8; transform: rotate(-2deg); }
+        .bg-2 { background-color: #93C5FD; transform: rotate(1deg); }
+        .bg-3 { background-color: #FFE358; transform: rotate(-1deg); }
+        .bg-4 { background-color: #A7F3D0; transform: rotate(2deg); }
+        .bg-5 { background-color: #FCA5A5; transform: rotate(-1.5deg); }
+        .bg-6 { background-color: #C4B5FD; transform: rotate(1.5deg); }
+
+        .bg-1:hover { transform: translate(-4px, -4px) rotate(-2deg); }
+        .bg-2:hover { transform: translate(-4px, -4px) rotate(1deg); }
+        .bg-3:hover { transform: translate(-4px, -4px) rotate(-1deg); }
+        .bg-4:hover { transform: translate(-4px, -4px) rotate(2deg); }
+        .bg-5:hover { transform: translate(-4px, -4px) rotate(-1.5deg); }
+        .bg-6:hover { transform: translate(-4px, -4px) rotate(1.5deg); }
+
+        .arrow {
+            font-size: 3.5rem;
+            font-weight: 900;
+            color: #000;
+            text-shadow: 4px 4px 0px rgba(0,0,0,0.15);
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .connectors .arrow-up, .connectors .arrow-down {
+            width: 260px; /* Exact match to card width for alignment */
+            flex: none;
+            font-size: 4rem;
+        }
+
+        .connectors .spacer {
+            flex: 1;
+        }
+
+        /* Mobile Layout */
+        .mobile-only-arrow { display: none; }
+        
+        @media (max-width: 900px) {
+            .loop-board {
+                align-items: center;
+                gap: 20px;
+            }
+            .row {
+                flex-direction: column;
+                gap: 20px;
+            }
+            .connectors {
+                display: none;
+            }
+            .arrow {
+                transform: rotate(90deg);
+                font-size: 2.5rem;
+                padding: 10px 0;
+            }
+            .card {
+                width: 100%;
+                max-width: 320px;
+                height: auto;
+                padding: 40px 20px;
+                transform: none !important;
+            }
+            .card:hover {
+                transform: translate(-4px, -4px) !important;
+            }
+            .mobile-only-arrow {
+                display: flex;
+                transform: rotate(90deg);
+                font-size: 2.5rem;
+                padding: 10px 0;
+            }
+            .loop-label {
+                margin-top: 20px;
+                font-weight: 800;
+                font-size: 1.2rem;
+                border: 3px solid #000;
+                padding: 10px 20px;
+                border-radius: 50px;
+                background: #000;
+                color: #fff;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h2>Retention Flywheel</h2>
+        </div>
+
+        <div class="loop-board">
+            <!-- Top Row: Left to Right -->
+            <div class="row">
+                <div class="card bg-1">
+                    <div class="step-num">1</div>
+                    <h3>Capture</h3>
+                    <p>User captures moments</p>
+                </div>
+                
+                <div class="arrow">➔</div>
+                
+                <div class="card bg-2">
+                    <div class="step-num">2</div>
+                    <h3>Backup</h3>
+                    <p>Photos automatically sync</p>
+                </div>
+
+                <div class="arrow">➔</div>
+                
+                <div class="card bg-3">
+                    <div class="step-num">3</div>
+                    <h3>Intelligence</h3>
+                    <p>Search, faces, memories</p>
+                </div>
+            </div>
+
+            <!-- Mobile Connector -->
+            <div class="mobile-only-arrow arrow">➔</div>
+
+            <!-- Middle Connectors for Desktop -->
+            <div class="row connectors">
+                <div class="arrow arrow-up">⬆</div>
+                <div class="spacer"></div>
+                <div class="arrow arrow-down">⬇</div>
+            </div>
+
+            <!-- Bottom Row: Right to Left (Logically reversed in HTML so CSS flex-direction row places 6 on left, 4 on right) -->
+            <div class="row">
+                <div class="card bg-6">
+                    <div class="step-num">6</div>
+                    <h3>Trust</h3>
+                    <p>Trusts app with more memories</p>
+                </div>
+
+                <div class="arrow">⬅</div>
+                
+                <div class="card bg-5">
+                    <div class="step-num">5</div>
+                    <h3>Engagement</h3>
+                    <p>Emotional connection sparks</p>
+                </div>
+
+                <div class="arrow">⬅</div>
+                
+                <div class="card bg-4">
+                    <div class="step-num">4</div>
+                    <h3>Resurface</h3>
+                    <p>Old moments reappear</p>
+                </div>
+            </div>
+            
+            <!-- Mobile Loop Label -->
+            <div class="mobile-only-arrow loop-label">↻ Repeats continuously</div>
+        </div>
+    </div>
+</body>
+</html>

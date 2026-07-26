@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The AI Pricing Trilemma - Interactive</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Outfit', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            blue: '#3b82f6',
+                            emerald: '#10b981',
+                            rose: '#f43f5e',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .mesh-bg {
+            background-color: #ffffff;
+            background-image: 
+                radial-gradient(at 0% 0%, hsla(210,100%,94%,1) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, hsla(340,100%,96%,1) 0px, transparent 50%);
+        }
+        #triangle-container {
+            touch-action: none; /* Prevent scrolling while dragging on mobile */
+        }
+        .gradient-text {
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .transition-all-fast {
+            transition: all 0.15s ease-out;
+        }
+    </style>
+</head>
+<body class="mesh-bg min-h-screen flex items-center justify-center p-4 md:p-8 antialiased text-slate-800">
+
+    <div class="max-w-6xl w-full mx-auto bg-white/60 backdrop-blur-3xl rounded-[2.5rem] shadow-[0_8px_40px_rgb(0,0,0,0.04)] border border-slate-100 p-8 md:p-12">
+        
+        <div class="text-center mb-12">
+            <span class="text-xs font-bold tracking-[0.2em] text-slate-400 uppercase mb-3 block">Interactive Strategic Model</span>
+            <h2 class="text-3xl md:text-5xl font-extrabold tracking-tight text-slate-900">The Pricing Trilemma</h2>
+            <p class="text-slate-500 mt-4 max-w-2xl mx-auto">Drag the glowing core to balance your AI strategy. Notice how optimizing for one outcome inherently drains the others.</p>
+        </div>
+
+        <div class="flex flex-col lg:flex-row gap-12 lg:gap-20 items-center">
+            
+            <!-- Interactive Triangle Area -->
+            <div class="w-full lg:w-1/2 flex justify-center relative">
+                <div id="triangle-container" class="relative w-full max-w-[400px] aspect-[1.15/1] cursor-crosshair">
+                    
+                    <!-- SVG Triangle Background -->
+                    <svg class="absolute inset-0 w-full h-full overflow-visible" viewBox="0 0 100 86.6">
+                        <defs>
+                            <linearGradient id="tri-grad" x1="50%" y1="0%" x2="50%" y2="100%">
+                                <stop offset="0%" stop-color="#eff6ff" />
+                                <stop offset="100%" stop-color="#f8fafc" />
+                            </linearGradient>
+                            <filter id="glow">
+                                <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+                                <feMerge>
+                                    <feMergeNode in="coloredBlur"/>
+                                    <feMergeNode in="SourceGraphic"/>
+                                </feMerge>
+                            </filter>
+                        </defs>
+                        <!-- Solid Triangle -->
+                        <polygon points="50,5 95,81.6 5,81.6" fill="url(#tri-grad)" stroke="#e2e8f0" stroke-width="0.5"/>
+                        <!-- Connecting mesh lines to center -->
+                        <line id="line-top" x1="50" y1="5" x2="50" y2="50" stroke="#3b82f6" stroke-width="0.5" stroke-dasharray="1 1" opacity="0.5"/>
+                        <line id="line-right" x1="95" y1="81.6" x2="50" y2="50" stroke="#10b981" stroke-width="0.5" stroke-dasharray="1 1" opacity="0.5"/>
+                        <line id="line-left" x1="5" y1="81.6" x2="50" y2="50" stroke="#f43f5e" stroke-width="0.5" stroke-dasharray="1 1" opacity="0.5"/>
+                    </svg>
+
+                    <!-- Corner Labels -->
+                    <div class="absolute -top-8 left-1/2 -translate-x-1/2 text-center">
+                        <div class="text-brand-blue font-bold text-sm bg-blue-50 px-3 py-1 rounded-full border border-blue-100 shadow-sm">Adoption</div>
+                    </div>
+                    <div class="absolute -bottom-8 -right-8 text-center">
+                        <div class="text-brand-emerald font-bold text-sm bg-emerald-50 px-3 py-1 rounded-full border border-emerald-100 shadow-sm">Margin</div>
+                    </div>
+                    <div class="absolute -bottom-8 -left-12 text-center">
+                        <div class="text-brand-rose font-bold text-sm bg-rose-50 px-3 py-1 rounded-full border border-rose-100 shadow-sm">Retention</div>
+                    </div>
+
+                    <!-- Draggable Core -->
+                    <div id="drag-core" class="absolute top-[50%] left-[50%] -translate-x-1/2 -translate-y-1/2 w-8 h-8 bg-slate-800 rounded-full shadow-[0_0_20px_rgba(15,23,42,0.4)] border-4 border-white flex items-center justify-center cursor-grab active:cursor-grabbing transition-transform hover:scale-110 z-20">
+                        <div class="w-1.5 h-1.5 bg-white rounded-full animate-pulse"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Dynamic State Panel -->
+            <div class="w-full lg:w-1/2 flex flex-col justify-center space-y-8">
+                
+                <!-- Adoption Bar -->
+                <div>
+                    <div class="flex justify-between items-end mb-2">
+                        <h4 class="font-bold text-slate-800 flex items-center">
+                            <i data-lucide="rocket" class="w-4 h-4 mr-2 text-brand-blue"></i>
+                            Adoption Growth
+                        </h4>
+                        <span id="val-adoption" class="font-mono font-bold text-brand-blue">33%</span>
+                    </div>
+                    <div class="w-full h-3 bg-slate-100 rounded-full overflow-hidden">
+                        <div id="bar-adoption" class="h-full bg-gradient-to-r from-blue-400 to-blue-600 rounded-full transition-all-fast" style="width: 33%"></div>
+                    </div>
+                </div>
+
+                <!-- Margin Bar -->
+                <div>
+                    <div class="flex justify-between items-end mb-2">
+                        <h4 class="font-bold text-slate-800 flex items-center">
+                            <i data-lucide="shield-check" class="w-4 h-4 mr-2 text-brand-emerald"></i>
+                            Margin Preservation
+                        </h4>
+                        <span id="val-margin" class="font-mono font-bold text-brand-emerald">33%</span>
+                    </div>
+                    <div class="w-full h-3 bg-slate-100 rounded-full overflow-hidden">
+                        <div id="bar-margin" class="h-full bg-gradient-to-r from-emerald-400 to-emerald-600 rounded-full transition-all-fast" style="width: 33%"></div>
+                    </div>
+                </div>
+
+                <!-- Retention Bar -->
+                <div>
+                    <div class="flex justify-between items-end mb-2">
+                        <h4 class="font-bold text-slate-800 flex items-center">
+                            <i data-lucide="users" class="w-4 h-4 mr-2 text-brand-rose"></i>
+                            Low Churn (Retention)
+                        </h4>
+                        <span id="val-retention" class="font-mono font-bold text-brand-rose">33%</span>
+                    </div>
+                    <div class="w-full h-3 bg-slate-100 rounded-full overflow-hidden">
+                        <div id="bar-retention" class="h-full bg-gradient-to-r from-rose-400 to-rose-600 rounded-full transition-all-fast" style="width: 33%"></div>
+                    </div>
+                </div>
+
+                <!-- Dynamic Insight Box -->
+                <div class="mt-4 p-6 bg-slate-50 border border-slate-200 rounded-2xl relative overflow-hidden transition-colors duration-300" id="insight-box">
+                    <div class="absolute top-0 left-0 w-1 h-full bg-slate-300 transition-colors duration-300" id="insight-border"></div>
+                    <h5 class="text-sm font-bold text-slate-400 uppercase tracking-wider mb-2" id="insight-title">Balanced State</h5>
+                    <p class="text-slate-700 text-sm leading-relaxed min-h-[4rem]" id="insight-text">
+                        You are currently balancing all three metrics. Growth is steady, margins are acceptable, and retention is stable. But you aren't dominating any single vector.
+                    </p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        lucide.createIcons();
+
+        const container = document.getElementById('triangle-container');
+        const core = document.getElementById('drag-core');
+        
+        // Lines
+        const lineTop = document.getElementById('line-top');
+        const lineRight = document.getElementById('line-right');
+        const lineLeft = document.getElementById('line-left');
+
+        // Bars & Values
+        const barAdoption = document.getElementById('bar-adoption');
+        const barMargin = document.getElementById('bar-margin');
+        const barRetention = document.getElementById('bar-retention');
+        
+        const valAdoption = document.getElementById('val-adoption');
+        const valMargin = document.getElementById('val-margin');
+        const valRetention = document.getElementById('val-retention');
+
+        // Insight Box
+        const insightBox = document.getElementById('insight-box');
+        const insightBorder = document.getElementById('insight-border');
+        const insightTitle = document.getElementById('insight-title');
+        const insightText = document.getElementById('insight-text');
+
+        let isDragging = false;
+        
+        // Logical Triangle Vertices (matching SVG viewBox 0 0 100 86.6)
+        // A = Top (Adoption), B = Bottom Right (Margin), C = Bottom Left (Retention)
+        const A = {x: 50, y: 5};
+        const B = {x: 95, y: 81.6};
+        const C = {x: 5, y: 81.6};
+
+        // Helper to calculate area of triangle given 3 points
+        function triangleArea(p1, p2, p3) {
+            return Math.abs((p1.x*(p2.y-p3.y) + p2.x*(p3.y-p1.y) + p3.x*(p1.y-p2.y))/2.0);
+        }
+
+        const totalArea = triangleArea(A, B, C);
+
+        function updateState(px, py) {
+            // Calculate Barycentric Coordinates (Weights)
+            const P = {x: px, y: py};
+            
+            // wA = area(P,B,C) / totalArea -> Adoption
+            let wA = triangleArea(P, B, C) / totalArea;
+            // wB = area(P,A,C) / totalArea -> Margin
+            let wB = triangleArea(P, A, C) / totalArea;
+            // wC = area(P,A,B) / totalArea -> Retention
+            let wC = triangleArea(P, A, B) / totalArea;
+
+            // Clamp and normalize due to floating point inaccuracies at edges
+            wA = Math.max(0, Math.min(1, wA));
+            wB = Math.max(0, Math.min(1, wB));
+            wC = Math.max(0, Math.min(1, wC));
+            
+            const sum = wA + wB + wC;
+            wA /= sum; wB /= sum; wC /= sum;
+
+            // Update DOM Elements
+            const pctA = (wA * 100).toFixed(0);
+            const pctB = (wB * 100).toFixed(0);
+            const pctC = (wC * 100).toFixed(0);
+
+            barAdoption.style.width = pctA + '%';
+            barMargin.style.width = pctB + '%';
+            barRetention.style.width = pctC + '%';
+
+            valAdoption.innerText = pctA + '%';
+            valMargin.innerText = pctB + '%';
+            valRetention.innerText = pctC + '%';
+
+            // Update SVG lines to connect to dot
+            lineTop.setAttribute('x2', px);
+            lineTop.setAttribute('y2', py);
+            lineRight.setAttribute('x2', px);
+            lineRight.setAttribute('y2', py);
+            lineLeft.setAttribute('x2', px);
+            lineLeft.setAttribute('y2', py);
+
+            // Update Insights based on dominant weight
+            if (wA > 0.55) {
+                insightTitle.innerText = "Adoption Compression";
+                insightBorder.className = "absolute top-0 left-0 w-1 h-full transition-colors duration-300 bg-brand-blue";
+                insightBox.className = "mt-4 p-6 bg-blue-50/50 border border-blue-100 rounded-2xl relative overflow-hidden transition-colors duration-300";
+                insightTitle.className = "text-sm font-bold uppercase tracking-wider mb-2 text-brand-blue";
+                insightText.innerText = "You are optimizing purely for viral growth. Unmetered access drives massive user numbers, but your API token costs are skyrocketing, crushing gross margins.";
+            } else if (wB > 0.55) {
+                insightTitle.innerText = "Margin Preservation";
+                insightBorder.className = "absolute top-0 left-0 w-1 h-full transition-colors duration-300 bg-brand-emerald";
+                insightBox.className = "mt-4 p-6 bg-emerald-50/50 border border-emerald-100 rounded-2xl relative overflow-hidden transition-colors duration-300";
+                insightTitle.className = "text-sm font-bold uppercase tracking-wider mb-2 text-brand-emerald";
+                insightText.innerText = "Strict usage caps and expensive pricing defend your unit economics perfectly. However, the friction is slowing your growth loops and restricting market share.";
+            } else if (wC > 0.55) {
+                insightTitle.innerText = "Competitive Churn";
+                insightBorder.className = "absolute top-0 left-0 w-1 h-full transition-colors duration-300 bg-brand-rose";
+                insightBox.className = "mt-4 p-6 bg-rose-50/50 border border-rose-100 rounded-2xl relative overflow-hidden transition-colors duration-300";
+                insightTitle.className = "text-sm font-bold uppercase tracking-wider mb-2 text-brand-rose";
+                insightText.innerText = "By artificially throttling speeds or context windows to save money, users are churning to subsidized competitors who offer better, unrestricted performance.";
+            } else {
+                insightTitle.innerText = "The Balanced Equilibrium";
+                insightBorder.className = "absolute top-0 left-0 w-1 h-full transition-colors duration-300 bg-slate-400";
+                insightBox.className = "mt-4 p-6 bg-slate-50 border border-slate-200 rounded-2xl relative overflow-hidden transition-colors duration-300";
+                insightTitle.className = "text-sm font-bold uppercase tracking-wider mb-2 text-slate-500";
+                insightText.innerText = "A delicate balance. You are maintaining moderate growth and acceptable margins without alienating power users. This requires constant routing optimization.";
+            }
+        }
+
+        // --- Interaction Logic ---
+        function onMove(clientX, clientY) {
+            if (!isDragging) return;
+            
+            const rect = container.getBoundingClientRect();
+            // Map client coordinates to 0-100 viewBox scale
+            let x = ((clientX - rect.left) / rect.width) * 100;
+            let y = ((clientY - rect.top) / rect.height) * 86.6;
+
+            // Constrain inside the triangle using barycentric coordinates
+            // If P is outside, clamp it to the nearest edge
+            
+            // wA = area(P,B,C) / totalArea
+            let wA = triangleArea({x,y}, B, C) / totalArea;
+            let wB = triangleArea({x,y}, A, C) / totalArea;
+            let wC = triangleArea({x,y}, A, B) / totalArea;
+            
+            // Check if point is outside (sum > 1.01 or any weight < 0)
+            // A simpler clamping logic for UI: 
+            // We just project the point onto the triangle bounds.
+            
+            // For a perfect visual constraint without complex math, 
+            // clamp Y between 5 and 81.6
+            y = Math.max(5, Math.min(81.6, y));
+            
+            // Find max width at this Y
+            // At Y=5, width is 0 (X=50). At Y=81.6, X goes from 5 to 95.
+            const yProgress = (y - 5) / (81.6 - 5);
+            const minX = 50 - (45 * yProgress);
+            const maxX = 50 + (45 * yProgress);
+            
+            x = Math.max(minX, Math.min(maxX, x));
+
+            // Update Core Visual Position (convert 0-100 scale back to CSS percentages)
+            core.style.left = `${x}%`;
+            core.style.top = `${(y / 86.6) * 100}%`;
+
+            updateState(x, y);
+        }
+
+        // Mouse Events
+        core.addEventListener('mousedown', () => { isDragging = true; });
+        window.addEventListener('mouseup', () => { isDragging = false; });
+        window.addEventListener('mousemove', (e) => onMove(e.clientX, e.clientY));
+
+        // Touch Events for Mobile
+        core.addEventListener('touchstart', (e) => { isDragging = true; }, {passive: true});
+        window.addEventListener('touchend', () => { isDragging = false; });
+        window.addEventListener('touchmove', (e) => {
+            if(isDragging && e.touches.length > 0) {
+                // Prevent scrolling while dragging inside the container is handled by CSS touch-action:none
+                onMove(e.touches[0].clientX, e.touches[0].clientY);
+            }
+        }, {passive: true});
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RICE Prioritization — Google Photos Opportunities</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,500;1,400&display=swap');
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background-color: #0A0A0A;
+            background-image:
+                radial-gradient(at 20% 80%, rgba(99, 102, 241, 0.06) 0px, transparent 50%),
+                radial-gradient(at 80% 20%, rgba(236, 72, 153, 0.05) 0px, transparent 50%);
+            font-family: 'Inter', sans-serif;
+            color: #F8FAFC;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 60px 40px;
+        }
+
+        /* Header */
+        .page-header {
+            text-align: center;
+            margin-bottom: 48px;
+            max-width: 700px;
+        }
+        .page-header h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            font-weight: 500;
+            font-style: italic;
+            color: #F8FAFC;
+            letter-spacing: -0.3px;
+            margin: 0 0 12px 0;
+        }
+        .accent-line {
+            width: 60px;
+            height: 3px;
+            background: linear-gradient(90deg, #818CF8, #E879F9);
+            margin: 0 auto 16px;
+            border-radius: 2px;
+        }
+        .page-header p {
+            font-size: 0.85rem;
+            color: #64748B;
+            line-height: 1.5;
+        }
+
+        /* Table Container */
+        .table-container {
+            width: 100%;
+            max-width: 860px;
+            background: #111114;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow:
+                0 25px 60px rgba(0,0,0,0.5),
+                0 0 100px rgba(99, 102, 241, 0.03);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        /* Header Row */
+        thead th {
+            padding: 18px 20px;
+            font-size: 0.62rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.8px;
+            color: #64748B;
+            text-align: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            background: rgba(255, 255, 255, 0.015);
+        }
+        thead th:first-child {
+            text-align: left;
+            padding-left: 28px;
+            width: 42%;
+        }
+        thead th:last-child {
+            padding-right: 28px;
+        }
+
+        /* Body Rows */
+        tbody tr {
+            transition: background 0.2s ease;
+        }
+        tbody tr:hover {
+            background: rgba(129, 140, 248, 0.03);
+        }
+        tbody tr:not(:last-child) td {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+        }
+
+        tbody td {
+            padding: 22px 20px;
+            text-align: center;
+            font-size: 0.88rem;
+            color: #94A3B8;
+            font-weight: 500;
+            font-variant-numeric: tabular-nums;
+        }
+        tbody td:first-child {
+            text-align: left;
+            padding-left: 28px;
+            color: #E2E8F0;
+            font-weight: 600;
+            font-size: 0.88rem;
+            letter-spacing: -0.1px;
+        }
+        tbody td:last-child {
+            padding-right: 28px;
+        }
+
+        /* RICE Score Column */
+        .rice-score {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 800;
+            font-size: 1.05rem;
+            letter-spacing: -0.5px;
+        }
+        .rice-high {
+            color: #34D399;
+        }
+        .rice-mid {
+            color: #FBBF24;
+        }
+        .rice-low {
+            color: #F87171;
+        }
+
+        /* Rank indicator */
+        .rank-badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 22px;
+            height: 22px;
+            border-radius: 6px;
+            font-size: 0.6rem;
+            font-weight: 800;
+            margin-right: 12px;
+            vertical-align: middle;
+            flex-shrink: 0;
+        }
+        .rank-1 { background: rgba(52, 211, 153, 0.12); color: #34D399; }
+        .rank-2 { background: rgba(251, 191, 36, 0.12); color: #FBBF24; }
+        .rank-3 { background: rgba(248, 113, 113, 0.1); color: #F87171; }
+
+        .opp-name {
+            display: inline;
+            vertical-align: middle;
+        }
+
+        /* Metric cells — subtle bar underneath */
+        .metric-cell {
+            position: relative;
+        }
+        .metric-cell .bar {
+            position: absolute;
+            bottom: 8px;
+            left: 50%;
+            transform: translateX(-50%);
+            height: 3px;
+            border-radius: 1.5px;
+            opacity: 0.4;
+        }
+
+        /* Footer */
+        .table-footer {
+            padding: 14px 28px;
+            border-top: 1px solid rgba(255, 255, 255, 0.04);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.01);
+        }
+        .table-footer span {
+            font-size: 0.6rem;
+            color: #475569;
+            letter-spacing: 0.5px;
+        }
+        .formula {
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.6rem;
+            color: #64748B;
+            font-weight: 500;
+            letter-spacing: 0.3px;
+        }
+        .formula em {
+            color: #818CF8;
+            font-style: normal;
+            font-weight: 700;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="page-header">
+        <h1>Opportunity Prioritization</h1>
+        <div class="accent-line"></div>
+        <p>RICE scoring framework applied to Google Photos product opportunities</p>
+    </div>
+
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Opportunity</th>
+                    <th>Reach</th>
+                    <th>Impact</th>
+                    <th>Confidence</th>
+                    <th>Effort</th>
+                    <th>RICE Score</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        <span class="rank-badge rank-1">1</span>
+                        <span class="opp-name">Storage Monetization & Value Perception</span>
+                    </td>
+                    <td class="metric-cell">9<div class="bar" style="width:36px; background:#34D399;"></div></td>
+                    <td class="metric-cell">8<div class="bar" style="width:32px; background:#34D399;"></div></td>
+                    <td class="metric-cell">9<div class="bar" style="width:36px; background:#34D399;"></div></td>
+                    <td class="metric-cell">5<div class="bar" style="width:20px; background:#34D399;"></div></td>
+                    <td><span class="rice-score rice-high">130</span></td>
+                </tr>
+                <tr>
+                    <td>
+                        <span class="rank-badge rank-2">2</span>
+                        <span class="opp-name">AI Editing vs Creative Control</span>
+                    </td>
+                    <td class="metric-cell">7<div class="bar" style="width:28px; background:#FBBF24;"></div></td>
+                    <td class="metric-cell">9<div class="bar" style="width:36px; background:#FBBF24;"></div></td>
+                    <td class="metric-cell">8<div class="bar" style="width:32px; background:#FBBF24;"></div></td>
+                    <td class="metric-cell">5<div class="bar" style="width:20px; background:#FBBF24;"></div></td>
+                    <td><span class="rice-score rice-mid">101</span></td>
+                </tr>
+                <tr>
+                    <td>
+                        <span class="rank-badge rank-3">3</span>
+                        <span class="opp-name">Long-Term Memory Preservation</span>
+                    </td>
+                    <td class="metric-cell">4<div class="bar" style="width:16px; background:#F87171;"></div></td>
+                    <td class="metric-cell">9<div class="bar" style="width:36px; background:#F87171;"></div></td>
+                    <td class="metric-cell">6<div class="bar" style="width:24px; background:#F87171;"></div></td>
+                    <td class="metric-cell">8<div class="bar" style="width:32px; background:#F87171;"></div></td>
+                    <td><span class="rice-score rice-low">27</span></td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="table-footer">
+            <span>3 opportunities evaluated</span>
+            <span class="formula">RICE = (<em>R</em> × <em>I</em> × <em>C</em>) / <em>E</em></span>
+        </div>
+    </div>
+
+</body>
+</html>

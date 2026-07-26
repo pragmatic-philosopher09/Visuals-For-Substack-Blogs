@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Visuals | Substack</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Outfit', 'sans-serif'] }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-slate-50 min-h-screen flex flex-col m-0 overflow-hidden">
+    <!-- Navbar / Header -->
+    <header class="bg-white border-b border-slate-200 px-6 py-4 flex flex-col sm:flex-row items-center justify-between shrink-0 shadow-sm relative z-10">
+        <div class="font-bold text-slate-800 text-lg mb-4 sm:mb-0">AI Pricing Strategy</div>
+        
+        <!-- Toggle Tabs -->
+        <div class="flex bg-slate-100 p-1 rounded-xl">
+            <button id="btn-sim" class="px-4 py-2 text-sm font-semibold rounded-lg bg-white shadow-sm text-slate-900 transition-all" onclick="switchTab('simulator.html', 'btn-sim')">
+                Gross Margin Simulator
+            </button>
+            <button id="btn-tri" class="px-4 py-2 text-sm font-semibold rounded-lg text-slate-500 hover:text-slate-800 transition-all" onclick="switchTab('trilemma.html', 'btn-tri')">
+                Pricing Trilemma
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="flex-grow relative w-full h-full bg-slate-50">
+        <iframe id="main-frame" src="simulator.html" class="absolute inset-0 w-full h-full border-0"></iframe>
+    </main>
+
+    <script>
+        function switchTab(src, btnId) {
+            document.getElementById('main-frame').src = src;
+            
+            // Reset styles
+            document.getElementById('btn-sim').className = 'px-4 py-2 text-sm font-semibold rounded-lg text-slate-500 hover:text-slate-800 transition-all';
+            document.getElementById('btn-tri').className = 'px-4 py-2 text-sm font-semibold rounded-lg text-slate-500 hover:text-slate-800 transition-all';
+            
+            // Set active style
+            document.getElementById(btnId).className = 'px-4 py-2 text-sm font-semibold rounded-lg bg-white shadow-sm text-slate-900 transition-all';
+        }
+    </script>
+</body>
+</html>

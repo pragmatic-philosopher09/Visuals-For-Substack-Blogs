@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Product Archetypes & Business Models</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        :root {
+            --bg-body: #f8fafc;
+            --bg-card: #ffffff;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+            --primary: #4f46e5;
+            
+            --blue-bg: #eff6ff;
+            --blue-text: #1d4ed8;
+            --blue-border: #bfdbfe;
+            
+            --purple-bg: #f3e8ff;
+            --purple-text: #7e22ce;
+            --purple-border: #e9d5ff;
+
+            --emerald-bg: #ecfdf5;
+            --emerald-text: #047857;
+            --emerald-border: #a7f3d0;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            line-height: 1.5;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .header h1 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--text-main);
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.02em;
+        }
+
+        .header p {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+        }
+
+        /* --- Table/Grid Layout --- */
+        .archetype-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .grid-header {
+            display: grid;
+            grid-template-columns: 1.2fr 1fr 1.5fr 1fr;
+            gap: 1.5rem;
+            padding: 0 1.5rem 0.75rem 1.5rem;
+            border-bottom: 2px solid var(--border);
+            margin-bottom: 0.5rem;
+        }
+
+        .grid-header-cell {
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .archetype-row {
+            display: grid;
+            grid-template-columns: 1.2fr 1fr 1.5fr 1fr;
+            gap: 1.5rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 1.5rem;
+            align-items: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02), 0 2px 4px -1px rgba(0,0,0,0.01);
+        }
+
+        .archetype-row:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 20px -3px rgba(0,0,0,0.08), 0 4px 6px -2px rgba(0,0,0,0.04);
+            border-color: #cbd5e1;
+        }
+
+        /* --- Column Styles --- */
+        .col-archetype {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+        }
+
+        .icon-box {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .icon-box i { width: 20px; height: 20px; }
+
+        .row-1 .icon-box { background: var(--blue-bg); color: var(--blue-text); border: 1px solid var(--blue-border); }
+        .row-2 .icon-box { background: var(--purple-bg); color: var(--purple-text); border: 1px solid var(--purple-border); }
+        .row-3 .icon-box { background: var(--emerald-bg); color: var(--emerald-text); border: 1px solid var(--emerald-border); }
+
+        .col-archetype h3 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 0.2rem;
+            line-height: 1.2;
+        }
+
+        .col-archetype p {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            font-style: italic;
+        }
+
+        .col-model .badge {
+            display: inline-block;
+            padding: 0.5rem 0.85rem;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .row-1 .badge { background: var(--blue-bg); color: var(--blue-text); border: 1px solid var(--blue-border); }
+        .row-2 .badge { background: var(--purple-bg); color: var(--purple-text); border: 1px solid var(--purple-border); }
+        .row-3 .badge { background: var(--emerald-bg); color: var(--emerald-text); border: 1px solid var(--emerald-border); }
+
+        .col-guardrail {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+            background: #f8fafc;
+            padding: 1rem;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+        }
+
+        .col-guardrail i {
+            width: 18px;
+            height: 18px;
+            color: var(--primary);
+            flex-shrink: 0;
+            margin-top: 0.1rem;
+        }
+
+        .col-guardrail p {
+            font-size: 0.85rem;
+            color: var(--text-main);
+            line-height: 1.4;
+        }
+
+        .col-metric {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            line-height: 1.4;
+        }
+
+        .col-metric strong {
+            color: var(--text-main);
+            font-weight: 700;
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.95rem;
+            display: block;
+            margin-bottom: 0.2rem;
+        }
+
+        @media (max-width: 1024px) {
+            .grid-header { display: none; }
+            .archetype-row {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+            .col-model, .col-guardrail, .col-metric {
+                padding-left: 3.5rem;
+            }
+            .col-guardrail {
+                background: transparent;
+                border: none;
+                padding: 0 0 0 3.5rem;
+            }
+            .col-guardrail i { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="header">
+            <h1>AI Product Archetypes</h1>
+            <p>Aligning business models and technical guardrails to product form factors.</p>
+        </div>
+
+        <div class="archetype-grid">
+            
+            <!-- Header Row -->
+            <div class="grid-header">
+                <div class="grid-header-cell">Product Archetype</div>
+                <div class="grid-header-cell">Best Fit Business Model</div>
+                <div class="grid-header-cell">Primary Technical Guardrail</div>
+                <div class="grid-header-cell">Key North Star Metric</div>
+            </div>
+
+            <!-- Row 1 -->
+            <div class="archetype-row row-1">
+                <div class="col-archetype">
+                    <div class="icon-box"><i data-lucide="database"></i></div>
+                    <div class="content">
+                        <h3>High-Volume / Data Ingestion</h3>
+                        <p>(e.g., Document Parsing, Log Analysis)</p>
+                    </div>
+                </div>
+                <div class="col-model">
+                    <span class="badge">Token-Tax / Pure Consumption</span>
+                </div>
+                <div class="col-guardrail">
+                    <i data-lucide="server"></i>
+                    <p>Server-side prompt caching and semantic chunking to lower baseline RAG compute overhead.</p>
+                </div>
+                <div class="col-metric">
+                    <strong>Cost per Megabyte Ingested</strong> vs. Revenue per Megabyte
+                </div>
+            </div>
+
+            <!-- Row 2 -->
+            <div class="archetype-row row-2">
+                <div class="col-archetype">
+                    <div class="icon-box"><i data-lucide="pen-tool"></i></div>
+                    <div class="content">
+                        <h3>Iterative / Interactive Tooling</h3>
+                        <p>(e.g., IDEs, Creative Studios, Design Co-pilots)</p>
+                    </div>
+                </div>
+                <div class="col-model">
+                    <span class="badge">Hybrid Credit Fencing</span>
+                </div>
+                <div class="col-guardrail">
+                    <i data-lucide="layout-dashboard"></i>
+                    <p>Real-time user token tracking widgets built directly into the UI to prevent bill shock.</p>
+                </div>
+                <div class="col-metric">
+                    <strong>User Premium Credit Burn Rate</strong>
+                </div>
+            </div>
+
+            <!-- Row 3 -->
+            <div class="archetype-row row-3">
+                <div class="col-archetype">
+                    <div class="icon-box"><i data-lucide="bot"></i></div>
+                    <div class="content">
+                        <h3>Autonomous / Task-Oriented</h3>
+                        <p>(e.g., Sales Agents, Customer Support Bots)</p>
+                    </div>
+                </div>
+                <div class="col-model">
+                    <span class="badge">Value-Based Outcome Pricing</span>
+                </div>
+                <div class="col-guardrail">
+                    <i data-lucide="git-pull-request"></i>
+                    <p>Exception-handling routing to human operators before recursive loops create runaway token bills.</p>
+                </div>
+                <div class="col-metric">
+                    <strong>Cost per Autonomous Resolution</strong> (CAR)
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>

@@ -3,11 +3,15 @@
 | Version | Contents | Open |
 |---|---|---|
 | **v1 — reconstructed** | Earlier card-based visuals, source HTML/CSS, and nine PNG exports. Recreated from the conversation after the original uncommitted files were overwritten; not an exact backup. | [Visuals](v1/visuals.html) |
-| **v2 — current** | Revised conversational article, bespoke illustrated visuals, official video embeds, source files, and nine PNG exports. | [Article](v2/article.md) · [Visuals](v2/visuals.html) |
+| **v2 — current** | Revised conversational article, bespoke illustrated visuals, official video embeds, source files, and nine PNG exports. | [Article](v2/article.md) · [HTML](v2/article.html) · [PDF](v2/Roblox_Teardown.pdf) · [References](v2/references.md) · [Visuals](v2/visuals.html) |
 
 Each version is self-contained; `assets/` inside each version contains its own PNGs. V1 contains the visual reconstruction only, not a reconstructed article.
 
-Work is stored in this session's isolated worktree. The main checkout at `/Users/priyanshu._.mohanty/Visuals-For-Substack-Blogs/Roblox-Teardown` has not been read or modified.
+To rebuild the article HTML and PDF after editing `article.md`:
+
+```sh
+python3 Roblox-Teardown/v2/build_article.py
+```
 
 To re-export v2 with an existing Python Playwright/Chromium installation:
 

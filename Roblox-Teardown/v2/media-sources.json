@@ -1,0 +1,37 @@
+{
+  "checked": "2026-10-29",
+  "policy": "Public accessibility does not establish public-domain status. The videos below are linked or shown through the publisher-enabled YouTube player, never downloaded, clipped, turned into GIFs, or re-hosted. No public-domain Roblox gameplay was verified in this research. Original video-frame artwork is not copied into PNG exports.",
+  "videos": [
+    {
+      "key": "hunt",
+      "id": "I7pmbho1DUQ",
+      "title": "The Hunt: Mega Edition - Think You're The Best? Prove it.",
+      "publisher": "Roblox",
+      "publisher_url": "https://www.youtube.com/@Roblox",
+      "source_url": "https://www.youtube.com/watch?v=I7pmbho1DUQ",
+      "verification_url": "https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=I7pmbho1DUQ&format=json",
+      "verification": "YouTube oEmbed returned publisher Roblox and an embed iframe.",
+      "usage": "Click-to-load official player, plus a permanent source link in both the companion and article.",
+      "context": "Promotional trailer for a past event. Not the author's session, representative raw gameplay, or evidence of current UI.",
+      "public_domain": false,
+      "license": "No open reuse license verified; embedding and linking only."
+    },
+    {
+      "key": "discovery",
+      "id": "K7jsk3bzmvE",
+      "title": "How the “Recommended for You” algorithm works on Roblox",
+      "publisher": "Roblox Creators",
+      "publisher_url": "https://www.youtube.com/@RobloxCreators",
+      "source_url": "https://www.youtube.com/watch?v=K7jsk3bzmvE",
+      "verification_url": "https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=K7jsk3bzmvE&format=json",
+      "verification": "YouTube oEmbed returned publisher Roblox Creators and an embed iframe. Linked by official Creator Hub discovery documentation.",
+      "documentation_url": "https://create.roblox.com/docs/discovery",
+      "usage": "Click-to-load official player, plus a permanent source link in both the companion and article.",
+      "context": "First-party algorithm explainer, not independent validation. Current documentation takes precedence over potentially historical video details.",
+      "public_domain": false,
+      "license": "No open reuse license verified; embedding and linking only."
+    }
+  ],
+  "original_artwork": "All block characters, corridor doors, map routes, railway, balance, metric constellation, quest notes, poster art, and fictional phone UI were authored for this teardown. They are explanatory illustrations, not Roblox screenshots.",
+  "publication": "Paste original video URLs into Substack and verify platform-supported embedding at publication. If embedding is unavailable, preserve the original-source links. Additional screenshot, clip, or GIF reuse requires separate rights verification."
+}

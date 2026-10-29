@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Social Preview - SIM Price Tag</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@700&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@500;700&display=swap');
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#222;display:flex;justify-content:center;align-items:center;min-height:100vh}
+#frame{width:1200px;height:630px;position:relative;overflow:hidden;background:#e4dccb}
+#frame::before{content:"";position:absolute;inset:0;opacity:.22;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+.left{position:absolute;left:72px;top:0;bottom:0;width:560px;display:flex;flex-direction:column;justify-content:center;z-index:3}
+.eyebrow{font-family:'JetBrains Mono',monospace;font-size:16px;font-weight:700;letter-spacing:3px;color:#1a1a1a}
+.eyebrow b{background:#1a1a1a;color:#e4dccb;padding:3px 9px;margin-right:10px}
+h1{font-family:'Instrument Serif',serif;font-weight:400;font-size:80px;line-height:.98;letter-spacing:-2px;color:#141414;margin-top:30px}
+h1 i{display:block}
+.sim{position:absolute;left:640px;top:110px;width:300px;height:390px;z-index:2;transform:rotate(-8deg);filter:drop-shadow(0 26px 30px rgba(60,40,10,.35))}
+.tagwrap{position:absolute;left:880px;top:330px;z-index:4;transform:rotate(14deg);transform-origin:20px 20px}
+.tag{width:300px;height:170px;background:#fffaf0;position:relative;clip-path:polygon(0 50%,22% 0,100% 0,100% 100%,22% 100%);
+  padding:22px 22px 18px 96px;font-family:'JetBrains Mono',monospace}
+.tagshadow{position:absolute;inset:0;transform:translate(6px,14px);background:rgba(60,40,10,.25);filter:blur(10px);clip-path:polygon(0 50%,22% 0,100% 0,100% 100%,22% 100%)}
+.hole{position:absolute;left:38px;top:73px;width:24px;height:24px;border-radius:50%;background:#e4dccb;box-shadow:inset 0 2px 3px rgba(0,0,0,.3);border:3px solid #c9a227}
+.lbl{font-size:13px;letter-spacing:3px;color:#7a7060;font-weight:700}
+.old{font-size:34px;font-weight:700;color:#1a1a1a;margin-top:4px;position:relative;display:inline-block}
+.old::after{content:"";position:absolute;left:-6px;right:-6px;top:52%;height:4px;background:#c1121f;transform:rotate(-6deg);border-radius:2px}
+.new{font-family:'Caveat',cursive;font-size:56px;color:#c1121f;line-height:.9;margin-top:2px;transform:rotate(-4deg)}
+.string{position:absolute;z-index:5;left:0;top:0;width:1200px;height:630px;pointer-events:none}
+</style>
+</head>
+<body>
+<div id="frame">
+  <div class="left">
+    <div class="eyebrow"><b>Deconstructed</b>Jio IPO</div>
+    <h1>Sold as a platform.<i>Tagged as a telco.</i></h1>
+  </div>
+
+  <!-- SIM card -->
+  <svg class="sim" viewBox="0 0 300 390">
+    <defs>
+      <linearGradient id="body" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#1e2a78"/><stop offset="1" stop-color="#0d1446"/></linearGradient>
+      <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f5d77a"/><stop offset=".5" stop-color="#d4a73a"/><stop offset="1" stop-color="#f0cf6c"/></linearGradient>
+    </defs>
+    <path d="M60 0H284a16 16 0 0 1 16 16V374a16 16 0 0 1-16 16H16A16 16 0 0 1 0 374V60z" fill="url(#body)"/>
+    <rect x="70" y="150" width="160" height="128" rx="16" fill="url(#gold)"/>
+    <g stroke="#a67c1e" stroke-width="3" fill="none">
+      <path d="M70 192h50M70 236h50M180 192h50M180 236h50M120 150v128M180 150v128M120 214h60"/>
+    </g>
+    <text x="150" y="92" text-anchor="middle" font-family="JetBrains Mono" font-weight="700" font-size="26" fill="#e4dccb" letter-spacing="6">SIM</text>
+    
+  </svg>
+
+  <!-- string from SIM corner hole to tag hole -->
+  <svg class="string" viewBox="0 0 1200 630">
+    <circle cx="912" cy="288" r="6" fill="#c9a227"/><path d="M912 288 C 965 320, 885 385, 913 420" fill="none" stroke="#7a5a1e" stroke-width="3" stroke-linecap="round"/>
+  </svg>
+
+  <div class="tagwrap">
+    <div class="tagshadow"></div>
+    <div class="tag">
+      <div class="lbl">SOLD AS</div>
+      <div class="old">PLATFORM</div>
+      <div class="new">telco</div>
+    </div>
+    <div class="hole"></div>
+  </div>
+</div>
+</body>
+</html>

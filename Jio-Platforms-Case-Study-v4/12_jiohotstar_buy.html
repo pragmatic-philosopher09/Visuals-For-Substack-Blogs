@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Fig 12 - JioHotstar: Buying Preference</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>body{font-family:'Outfit',sans-serif;background:#f1f5f9}#frame{width:1200px}</style>
+</head>
+<body class="p-8 flex justify-center">
+<div id="frame" class="bg-white rounded-[2rem] border border-slate-200 shadow-sm p-12 text-slate-800">
+  <span class="text-xs font-bold tracking-[0.2em] text-slate-400 uppercase">Fig 12 · Case study: the Buy that worked</span>
+  <h2 class="text-4xl font-extrabold tracking-tight text-slate-900 mt-2">Jio couldn't build cricket fandom, so it bought the IPL</h2>
+  <p class="text-slate-500 mt-2 text-lg">Free IPL streaming in 2023 built reach. The Disney merger brought the catalogue. Then the paywall went up.</p>
+
+  <div class="grid grid-cols-[300px_1fr] gap-10 mt-8">
+    <div class="w-[290px] h-[580px] rounded-[40px] bg-slate-900 p-[10px] shadow-xl">
+      <div class="w-full h-full rounded-[32px] overflow-hidden bg-[#0b1033] text-white relative">
+        <div class="h-[210px] bg-gradient-to-br from-indigo-700 via-blue-800 to-[#0b1033] flex flex-col justify-end p-4 relative">
+          <div class="absolute top-10 left-4 text-[10px] bg-red-600 px-2 py-0.5 rounded font-bold">● LIVE</div>
+          <div class="text-[10px] opacity-70">TATA IPL 2026 · Match 42</div>
+          <div class="font-extrabold text-lg leading-tight">MI vs CSK</div>
+          <div class="text-[11px] opacity-80">CSK 142/3 (15.2)</div>
+        </div>
+        <div class="absolute inset-x-0 top-[150px] bottom-0 bg-gradient-to-b from-transparent via-[#0b1033]/95 to-[#0b1033] p-4 pt-16">
+          <div class="text-center">
+            <div class="text-xl font-extrabold">Subscribe to keep watching</div>
+            <div class="text-[11px] opacity-70 mt-1">Free preview has ended</div>
+          </div>
+          <div class="mt-4 space-y-2">
+            <div class="rounded-xl border border-white/20 p-3 flex justify-between items-center"><div><div class="font-bold text-sm">Mobile</div><div class="text-[10px] opacity-60">1 device · 720p · with ads</div></div><div class="font-extrabold">₹149<span class="text-[10px] font-normal opacity-60">/3 mo</span></div></div>
+            <div class="rounded-xl border-2 border-amber-400 p-3 flex justify-between items-center bg-white/5"><div><div class="font-bold text-sm">Super</div><div class="text-[10px] opacity-60">2 devices · 1080p</div></div><div class="font-extrabold">₹299<span class="text-[10px] font-normal opacity-60">/3 mo</span></div></div>
+            <div class="rounded-xl border border-white/20 p-3 flex justify-between items-center"><div><div class="font-bold text-sm">Premium</div><div class="text-[10px] opacity-60">4 devices · 4K · ad-free</div></div><div class="font-extrabold">₹499<span class="text-[10px] font-normal opacity-60">/3 mo</span></div></div>
+          </div>
+          <div class="mt-3 rounded-xl bg-[#0a2885] p-3 text-center text-[11px]"><b>Jio user?</b> Included with ₹349+ recharge →</div>
+          <div class="text-center text-[10px] opacity-50 mt-2">The Buy (content) is sold through the Bundle (recharge)</div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <h3 class="font-bold text-slate-900">Reported subscriptions (millions): reach, not like-for-like</h3><p class="text-xs text-slate-500">Sep 2024 = Disney+ Hotstar paid subscribers. JioHotstar figures include telco-bundled access, so the jump measures reach, not separately paying demand. Most of the growth came during IPL 2025 (late Mar–May). Milestones as reported by ET, Variety and Financial Express.</p>
+      <div class="h-[250px] mt-2"><canvas id="subs"></canvas></div>
+      <div class="grid grid-cols-3 gap-3 mt-6">
+        <div class="rounded-2xl bg-amber-50 border border-amber-100 p-4"><div class="text-xs text-amber-700 font-bold uppercase tracking-wider">IPL digital rights</div><div class="text-2xl font-extrabold mt-1">₹23,758 cr</div><div class="text-xs text-slate-500">2023–27, Viacom18</div></div>
+        <div class="rounded-2xl bg-amber-50 border border-amber-100 p-4"><div class="text-xs text-amber-700 font-bold uppercase tracking-wider">JioStar merger</div><div class="text-2xl font-extrabold mt-1">~₹70,000 cr</div><div class="text-xs text-slate-500">post-money value · RIL ~63% / Disney ~37%</div></div>
+        <div class="rounded-2xl bg-amber-50 border border-amber-100 p-4"><div class="text-xs text-amber-700 font-bold uppercase tracking-wider">Reliance cash in</div><div class="text-2xl font-extrabold mt-1">~₹11,500 cr</div><div class="text-xs text-slate-500">growth capital into the JV</div></div>
+      </div>
+      <div class="mt-5 rounded-2xl bg-slate-900 text-white p-5 text-sm">
+        <b class="text-amber-400">Why this Buy worked (author's read):</b> distribution plus an asset that was <b>scarce</b>. Live IPL can only be watched in one place, so anyone who wants it has to come to JioHotstar. Compare JioSaavn: every app licenses the same songs, so buying Saavn bought scale but not exclusivity. (Execution, pricing and discovery mattered in both cases too.)
+      </div>
+    </div>
+  </div>
+  <p class="text-[11px] text-slate-400 mt-6">Paywall is an illustrative recreation; plan prices simplified from 2025 launch pricing. Subscriber counts as reported by Disney/JioStar and media; definitions differ (2024 = paid; 2025–26 include telco-bundled subscriptions). Public data does not split bundled vs direct-paying subscribers or show JioHotstar's standalone returns. The ₹23,758 cr covers the IPL digital-rights package only, not JioHotstar's total costs; ₹11,500 cr is Reliance's growth capital into the JV. The two are not added together. IPL rights figure is the 2022 auction outcome for digital rights.</p>
+</div>
+<script>
+Chart.defaults.font.family='Outfit';Chart.defaults.color='#64748b';Chart.defaults.animation=false;
+const lbl={id:'l',afterDatasetsDraw(c){const {ctx}=c;c.getDatasetMeta(0).data.forEach((el,i)=>{ctx.save();ctx.font='700 13px Outfit';ctx.fillStyle='#0f172a';ctx.textAlign='center';ctx.fillText(c.data.datasets[0].data[i]+'M',el.x,el.y-8);ctx.restore();});}};
+new Chart(document.getElementById('subs'),{type:'bar',plugins:[lbl],data:{labels:[['Sep 2024','Disney+ Hotstar'],['Feb 2025','JioHotstar launch'],['Late Mar 2025','IPL starts'],['Mid-Apr 2025','IPL'],['Jun 2025','after IPL']],datasets:[{data:[35.9,50,100,200,300],backgroundColor:['#94a3b8','#fbbf24','#f59e0b','#f59e0b','#d97706'],borderRadius:10,barThickness:56}]},options:{maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{max:340,grid:{color:'#f1f5f9'}},x:{grid:{display:false}}}}});
+</script>
+<script>document.fonts.ready.then(()=>Object.values(Chart.instances).forEach(c=>c.update()));</script>
+</body>
+</html>

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Fig 8b - Scorecard: Beyond connectivity</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>body{font-family:'Outfit',sans-serif;background:#f1f5f9}#frame{width:1200px}</style>
+</head>
+<body class="p-8 flex justify-center">
+<div id="frame" class="bg-white rounded-[2rem] border border-slate-200 shadow-sm p-12 text-slate-800">
+  <span class="text-xs font-bold tracking-[0.2em] text-slate-400 uppercase">Fig 8b · The scorecard, part 2: beyond connectivity</span>
+  <h2 class="text-4xl font-extrabold tracking-tight text-slate-900 mt-2">Leaving the connection: 1 won, 2 mixed, 3 flopped</h2>
+  <p class="text-slate-500 mt-2 text-lg">Six products that compete for attention outside the SIM: streaming, music, commerce, video calls, messaging and browsing.</p>
+  <div id="grid" class="grid grid-cols-3 gap-5 mt-8"></div>
+  <div class="mt-6 rounded-2xl bg-violet-50 border border-violet-100 p-5 text-[15px]"><b class="text-violet-700">The pattern:</b> beyond connectivity, Jio's clearest win, JioHotstar, came from combining its distribution with a scarce asset it bought (IPL rights, Disney's catalogue). Buying a non-scarce asset (music) produced a mixed result. None of the four standalone Build attempts has displaced an established specialist.</div>
+  <p class="text-[12px] text-slate-400 mt-5">As of 23 Oct 2026. JioCinema existed as a bundled Jio app from 2016; it only became a contender after the 2023 IPL rights (Buy), so it is scored as part of JioHotstar. Scores are the author's judgement, made with hindsight. Outcomes judge adoption and competitive position against the "win if" criterion; standalone financial returns are not public for most products.</p>
+</div>
+<script>
+const C={bundle:['Bundle','bg-blue-600','text-blue-700','bg-blue-50'],buy:['Buy','bg-amber-500','text-amber-700','bg-amber-50'],build:['Build','bg-violet-600','text-violet-700','bg-violet-50']};
+const O={win:['✓ Won','text-emerald-700 bg-emerald-50'],mixed:['◐ Mixed','text-slate-600 bg-slate-100'],flop:['✕ Flopped','text-rose-700 bg-rose-50']};
+const E={High:'text-emerald-700',Medium:'text-amber-700',Low:'text-rose-700'};
+const cards=[["JioHotstar", "2023–25", "buy", "win", "300M subs incl. bundles (Jun 2025); 530M MAU (Q1 FY27)", "IPL rights plus the Disney merger. Jio bought scarcity, then distributed it through the bundle.", "become India's leading paid streaming service.", ["Medium", "subs include telco bundles"]], ["JioSaavn", "2018", "buy", "mixed", "~100M MAU (2023–24)", "Acquired scale, but music isn't scarce. Spotify and YouTube Music license the same songs.", "lead Indian music streaming.", ["Medium", "third-party MAU estimates"]], ["JioMart", "2020", "build", "mixed", "Trails Blinkit in quick commerce", "Strong on supply (Reliance stores), weak on habit. It trails Blinkit in daily usage.", "become a habitual, top-two commerce destination.", ["Medium", "order data not disclosed"]], ["JioMeet", "2020", "build", "flop", "\"Zoom clone\"", "Launched mid-pandemic. Gave nobody a reason to switch from Zoom, Meet or Teams.", "hold meaningful share after the 2020 spike.", ["Medium", "no usage disclosed since 2020"]], ["JioChat", "2015", "build", "flop", "Pre-launch messenger", "A messenger competing with WhatsApp. Jio later took Meta's money instead.", "become a mainstream messenger.", ["High", "negligible usage"]], ["JioPages", "2020", "build", "flop", "Chromium browser", "Built because Jio could, not because users asked for it. Chrome was already preinstalled.", "win meaningful browser share.", ["High", "negligible StatCounter share"]]];
+document.getElementById('grid').innerHTML=cards.map(([n,y,m,o,num,why,crit,ev])=>{const c=C[m],ou=O[o];return `
+<div class="rounded-2xl border border-slate-200 overflow-hidden flex flex-col">
+  <div class="${c[1]} h-2"></div>
+  <div class="p-5 flex flex-col gap-2 flex-1">
+    <div class="flex justify-between items-start"><div><div class="font-extrabold text-2xl leading-tight">${n}</div><div class="text-sm text-slate-400">${y}</div></div><span class="text-sm font-bold px-2.5 py-1 rounded-full ${ou[1]}">${ou[0]}</span></div>
+    <span class="self-start text-[11px] uppercase tracking-widest font-bold px-2 py-0.5 rounded ${c[3]} ${c[2]}">${c[0]}</span>
+    <div class="text-base font-bold text-slate-900">${num}</div>
+    <p class="text-[15px] text-slate-600 leading-snug">${why}</p>
+    <div class="mt-auto pt-3 border-t border-slate-100 text-[13px] leading-snug"><div><b class="text-slate-900">Win if:</b> <span class="text-slate-600">${crit}</span></div><div class="mt-1"><b class="text-slate-900">Evidence:</b> <b class="${E[ev[0]]}">${ev[0]}</b> <span class="text-slate-500">· ${ev[1]}</span></div></div>
+  </div>
+</div>`}).join('');
+</script>
+</body>
+</html>

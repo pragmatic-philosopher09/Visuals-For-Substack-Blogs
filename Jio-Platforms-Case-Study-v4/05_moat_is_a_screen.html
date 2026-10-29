@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Fig 5 - The Moat Is a Screen</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+body{font-family:'Outfit',sans-serif;background:#f1f5f9}#frame{width:1200px}
+.phone{width:280px;height:580px;border-radius:40px;background:#0f172a;padding:10px;box-shadow:0 20px 40px -12px rgba(15,23,42,.35)}
+.screen{width:100%;height:100%;border-radius:32px;background:#fff;overflow:hidden;position:relative}
+.notch{position:absolute;top:8px;left:50%;transform:translateX(-50%);width:90px;height:22px;background:#0f172a;border-radius:20px;z-index:5}
+.pin{width:26px;height:26px;border-radius:999px;color:#fff;font-weight:800;font-size:13px;display:flex;align-items:center;justify-content:center;box-shadow:0 0 0 4px #fff}
+.ring-bundle{outline:3px solid #2563eb;outline-offset:2px}
+.ring-buy{outline:3px solid #f59e0b;outline-offset:2px}
+.ring-build{outline:3px solid #8b5cf6;outline-offset:2px}
+</style>
+</head>
+<body class="p-8 flex justify-center">
+<div id="frame" class="bg-white rounded-[2rem] border border-slate-200 shadow-sm p-12 text-slate-800">
+  <span class="text-xs font-bold tracking-[0.2em] text-slate-400 uppercase">Fig 5 · Act II: The moat is a screen</span>
+  <h2 class="text-4xl font-extrabold tracking-tight text-slate-900 mt-2">Every recharge cycle is a scheduled return to Jio's shop window</h2>
+  <p class="text-slate-500 mt-2 text-lg">Prepaid plans expire, so each one creates a recurring purchase moment. Look at what Jio places along the way.</p>
+  <div class="flex gap-5 mt-4 text-sm">
+    <span class="flex items-center gap-2"><span class="w-3 h-3 rounded-full bg-blue-600"></span>Bundle: in the plan, no new habit</span>
+    <span class="flex items-center gap-2"><span class="w-3 h-3 rounded-full bg-amber-500"></span>Buy: rented or acquired preference</span>
+    <span class="flex items-center gap-2"><span class="w-3 h-3 rounded-full bg-violet-500"></span>Build: Jio's own product, has to earn usage</span>
+  </div>
+
+  <div class="flex justify-between items-start mt-8 px-2">
+    <!-- Phone 1: Home -->
+    <div class="flex flex-col items-center">
+      <div class="text-xs font-bold uppercase tracking-widest text-slate-400 mb-3">① Home · "Recharge due"</div>
+      <div class="phone"><div class="screen">
+        <div class="notch"></div>
+        <div class="bg-[#0a2885] text-white px-4 pt-10 pb-5">
+          <div class="flex justify-between items-center text-xs opacity-80"><span>MyJio</span><span>🔔</span></div>
+          <div class="mt-3 text-[11px] opacity-80">98XXX XX123 · Prepaid</div>
+          <div class="mt-1 text-lg font-bold">Plan expires in 2 days</div>
+          <div class="mt-3 bg-white text-[#0a2885] rounded-full text-center py-2 text-sm font-bold relative ring-bundle">Recharge now</div>
+        </div>
+        <div class="px-4 py-3">
+          <div class="grid grid-cols-2 gap-2 text-[11px]">
+            <div class="rounded-xl bg-slate-50 p-2"><div class="text-slate-400">Data left</div><div class="font-bold text-sm">0.4 / 2 GB</div></div>
+            <div class="rounded-xl bg-slate-50 p-2"><div class="text-slate-400">5G</div><div class="font-bold text-sm">Unlimited</div></div>
+          </div>
+          <div class="mt-3 rounded-xl p-3 text-white text-[11px] ring-buy" style="background:linear-gradient(135deg,#4285f4,#a142f4)">
+            <div class="font-bold text-sm">Google AI Pro, free for 18 months</div>
+            <div class="opacity-90">Gemini 2.5 Pro · 2TB storage · worth ₹35,100</div>
+            <div class="mt-2 inline-block bg-white text-slate-900 rounded-full px-2 py-0.5 font-bold">Claim now</div>
+          </div>
+          <div class="mt-3 text-[11px] font-bold text-slate-500">Your apps</div>
+          <div class="grid grid-cols-4 gap-2 mt-2 text-[9px] text-center">
+            <div><div class="w-10 h-10 mx-auto rounded-xl bg-[#1f2bb0] ring-buy flex items-center justify-center text-white font-bold">JH</div>JioHotstar</div>
+            <div><div class="w-10 h-10 mx-auto rounded-xl bg-[#2db400] ring-build flex items-center justify-center text-white font-bold">JS</div>JioSaavn</div>
+            <div><div class="w-10 h-10 mx-auto rounded-xl bg-[#0078ad] ring-build flex items-center justify-center text-white font-bold">JM</div>JioMart</div>
+            <div><div class="w-10 h-10 mx-auto rounded-xl bg-[#e11d48] ring-bundle flex items-center justify-center text-white font-bold">TV</div>JioTV</div>
+          </div>
+        </div>
+      </div></div>
+    </div>
+
+    <!-- Phone 2: Plans -->
+    <div class="flex flex-col items-center">
+      <div class="text-xs font-bold uppercase tracking-widest text-slate-400 mb-3">② Pick a plan · bundle inside</div>
+      <div class="phone"><div class="screen">
+        <div class="notch"></div>
+        <div class="px-4 pt-10 pb-2 border-b border-slate-100">
+          <div class="font-bold">Prepaid plans</div>
+          <div class="flex gap-2 mt-2 text-[10px]">
+            <span class="px-2 py-1 rounded-full bg-[#0a2885] text-white">Popular</span>
+            <span class="px-2 py-1 rounded-full bg-slate-100">Entertainment</span>
+            <span class="px-2 py-1 rounded-full bg-slate-100">True 5G</span>
+          </div>
+        </div>
+        <div class="px-3 py-3 space-y-2">
+          <div class="rounded-xl border border-slate-200 p-3">
+            <div class="flex justify-between"><span class="font-extrabold text-lg">₹299</span><span class="text-[10px] text-slate-400">28 days</span></div>
+            <div class="text-[11px] text-slate-500">1.5 GB/day · Unlimited calls</div>
+            <div class="flex gap-1 mt-1.5 text-[9px]"><span class="px-1.5 py-0.5 rounded bg-rose-50 text-rose-600 ring-bundle">JioTV</span><span class="px-1.5 py-0.5 rounded bg-sky-50 text-sky-700">JioAICloud</span></div>
+          </div>
+          <div class="rounded-xl border-2 border-[#0a2885] p-3 relative">
+            <span class="absolute -top-2 right-3 text-[9px] bg-[#0a2885] text-white px-2 rounded-full">Most chosen</span>
+            <div class="flex justify-between"><span class="font-extrabold text-lg">₹349</span><span class="text-[10px] text-slate-400">28 days</span></div>
+            <div class="text-[11px] text-slate-500">2 GB/day · Unlimited 5G</div>
+            <div class="flex flex-wrap gap-1 mt-1.5 text-[9px]">
+              <span class="px-1.5 py-0.5 rounded bg-indigo-50 text-indigo-700 ring-buy">JioHotstar 3 mo</span>
+              <span class="px-1.5 py-0.5 rounded bg-violet-50 text-violet-700 ring-buy">Google AI Pro</span>
+              <span class="px-1.5 py-0.5 rounded bg-rose-50 text-rose-600 ring-bundle">JioTV</span>
+            </div>
+          </div>
+          <div class="rounded-xl border border-slate-200 p-3">
+            <div class="flex justify-between"><span class="font-extrabold text-lg">₹899</span><span class="text-[10px] text-slate-400">90 days</span></div>
+            <div class="text-[11px] text-slate-500">2 GB/day + 20 GB · Unlimited 5G</div>
+            <div class="flex gap-1 mt-1.5 text-[9px]"><span class="px-1.5 py-0.5 rounded bg-indigo-50 text-indigo-700 ring-buy">JioHotstar</span><span class="px-1.5 py-0.5 rounded bg-slate-100 text-slate-600">JioSaavn Pro trial</span></div>
+          </div>
+          <div class="rounded-xl border border-slate-200 p-3 opacity-70">
+            <div class="flex justify-between"><span class="font-extrabold text-lg">₹1,029</span><span class="text-[10px] text-slate-400">84 days</span></div>
+            <div class="text-[11px] text-slate-500">2 GB/day · Prime Video Lite</div>
+          </div>
+        </div>
+      </div></div>
+    </div>
+
+    <!-- Phone 3: Success -->
+    <div class="flex flex-col items-center">
+      <div class="text-xs font-bold uppercase tracking-widest text-slate-400 mb-3">③ Paid · the cross-sell</div>
+      <div class="phone"><div class="screen">
+        <div class="notch"></div>
+        <div class="px-4 pt-12 text-center">
+          <div class="w-14 h-14 mx-auto rounded-full bg-emerald-500 text-white text-3xl flex items-center justify-center">✓</div>
+          <div class="font-bold mt-3">Recharge successful</div>
+          <div class="text-[11px] text-slate-500">₹349 · valid till 25 Nov</div>
+        </div>
+        <div class="px-3 mt-4 space-y-2">
+          <div class="rounded-xl bg-indigo-50 p-3 flex items-center gap-3 ring-buy">
+            <div class="w-9 h-9 rounded-lg bg-[#1f2bb0] text-white text-xs font-bold flex items-center justify-center">JH</div>
+            <div class="text-[11px]"><div class="font-bold">JioHotstar unlocked</div><div class="text-slate-500">Watch live cricket now →</div></div>
+          </div>
+          <div class="rounded-xl bg-violet-50 p-3 flex items-center gap-3 ring-buy">
+            <div class="w-9 h-9 rounded-lg text-white text-xs font-bold flex items-center justify-center" style="background:linear-gradient(135deg,#4285f4,#a142f4)">G</div>
+            <div class="text-[11px]"><div class="font-bold">Activate Google AI Pro</div><div class="text-slate-500">Link your Google account →</div></div>
+          </div>
+          <div class="rounded-xl bg-sky-50 p-3 flex items-center gap-3 ring-build">
+            <div class="w-9 h-9 rounded-lg bg-[#0078ad] text-white text-xs font-bold flex items-center justify-center">JM</div>
+            <div class="text-[11px]"><div class="font-bold">JioMart: groceries in 30 min</div><div class="text-slate-500">₹50 off first order →</div></div>
+          </div>
+          <div class="rounded-xl bg-emerald-50 p-3 flex items-center gap-3 ring-bundle">
+            <div class="w-9 h-9 rounded-lg bg-[#0a2885] text-white text-xs font-bold flex items-center justify-center">AF</div>
+            <div class="text-[11px]"><div class="font-bold">Get JioAirFiber at home</div><div class="text-slate-500">Book free installation →</div></div>
+          </div>
+        </div>
+      </div></div>
+    </div>
+
+    <!-- Annotations -->
+    <div class="w-[230px] space-y-4 pt-8">
+      <div class="flex gap-3"><div class="pin bg-slate-800 shrink-0">1</div><p class="text-sm text-slate-600"><b class="text-slate-900">The visit is scheduled.</b> Prepaid plans expire, so users come back on the plan's schedule, not only when they happen to want something. Not every recharge happens in MyJio; many go through UPI apps and retailers.</p></div>
+      <div class="flex gap-3"><div class="pin bg-amber-500 shrink-0">2</div><p class="text-sm text-slate-600"><b class="text-slate-900">The best slots go to bought products.</b> JioHotstar (IPL rights, Disney merger) and Gemini (Google) take the hero banner and the "Most chosen" plan.</p></div>
+      <div class="flex gap-3"><div class="pin bg-blue-600 shrink-0">3</div><p class="text-sm text-slate-600"><b class="text-slate-900">The bundle removes a decision.</b> Content arrives as part of the plan, which reduces the friction of a separate purchase decision.</p></div>
+      <div class="flex gap-3"><div class="pin bg-violet-500 shrink-0">4</div><p class="text-sm text-slate-600"><b class="text-slate-900">Built products get the leftover space.</b> JioSaavn and JioMart sit in the app grid, where they still have to win daily habit against Spotify and Blinkit.</p></div>
+    </div>
+  </div>
+  <p class="text-[11px] text-slate-400 mt-8">Illustrative recreation for analysis, not a screenshot. Observed: plans bundling JioHotstar and the Google AI Pro offer appear on Jio's public plan pages (2025–26). Illustrative: the exact layout, slot order and "Most chosen" placement. Prices are simplified and change often. The Gemini offer was initially for users aged 18–25 on eligible ₹349+ 5G plans.</p>
+</div>
+</body>
+</html>

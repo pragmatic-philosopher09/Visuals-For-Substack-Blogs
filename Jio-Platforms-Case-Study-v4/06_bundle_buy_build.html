@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Fig 6 - Bundle, Buy, Build</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>body{font-family:'Outfit',sans-serif;background:#f1f5f9}#frame{width:1200px}</style>
+</head>
+<body class="p-8 flex justify-center">
+<div id="frame" class="bg-white rounded-[2rem] border border-slate-200 shadow-sm p-12 text-slate-800">
+  <span class="text-xs font-bold tracking-[0.2em] text-slate-400 uppercase">Fig 6 · The framework</span>
+  <h2 class="text-4xl font-extrabold tracking-tight text-slate-900 mt-2">Bundle, Buy, or Build</h2>
+  <p class="text-slate-500 mt-2 text-lg">Jio has three ways to move beyond telecom. Each has a different cost profile and a different way to fail.</p>
+
+  <div class="grid grid-cols-3 gap-5 mt-8">
+    <div class="rounded-3xl border-2 border-blue-500 overflow-hidden">
+      <div class="bg-blue-600 text-white p-6">
+        <div class="text-xs uppercase tracking-[0.2em] font-bold opacity-80">Mode 1</div>
+        <div class="text-3xl font-extrabold">Bundle</div>
+        <div class="text-sm opacity-90 mt-1">Put the product inside something the user already pays for</div>
+      </div>
+      <div class="p-6 space-y-4 text-sm">
+        <div><div class="text-xs uppercase tracking-widest text-slate-400 font-bold">Core question</div><p class="mt-1">Can it ride the recharge or the router?</p></div>
+        <div><div class="text-xs uppercase tracking-widest text-slate-400 font-bold">Cost profile</div><p class="mt-1">Low marginal cost. Mostly hardware subsidy or network capex.</p></div>
+        <div><div class="text-xs uppercase tracking-widest text-slate-400 font-bold">Metric that matters</div><p class="mt-1">Attach rate, ARPU uplift, churn reduction</p></div>
+        <div><div class="text-xs uppercase tracking-widest text-slate-400 font-bold">How it fails</div><p class="mt-1">Users take it as a free extra but never value it</p></div>
+        <div><div class="text-xs uppercase tracking-widest text-slate-400 font-bold">Jio examples</div>
+          <div class="flex flex-wrap gap-1.5 mt-2"><span class="px-2 py-1 rounded-full bg-blue-50 text-blue-700 text-xs font-semibold">JioPhone</span><span class="px-2 py-1 rounded-full bg-blue-50 text-blue-700 text-xs font-semibold">JioBharat</span><span class="px-2 py-1 rounded-full bg-blue-50 text-blue-700 text-xs font-semibold">AirFiber</span><span class="px-2 py-1 rounded-full bg-blue-50 text-blue-700 text-xs font-semibold">JioFiber</span><span class="px-2 py-1 rounded-full bg-blue-50 text-blue-700 text-xs font-semibold">JioTV</span></div></div>
+      </div>
+    </div>
+    <div class="rounded-3xl border-2 border-amber-500 overflow-hidden">
+      <div class="bg-amber-500 text-white p-6">
+        <div class="text-xs uppercase tracking-[0.2em] font-bold opacity-80">Mode 2</div>
+        <div class="text-3xl font-extrabold">Buy</div>
+        <div class="text-sm opacity-90 mt-1">Acquire or rent the preference that Jio can't create itself</div>
+      </div>
+      <div class="p-6 space-y-4 text-sm">
+        <div><div class="text-xs uppercase tracking-widest text-slate-400 font-bold">Core question</div><p class="mt-1">Who already owns what users want?</p></div>
+        <div><div class="text-xs uppercase tracking-widest text-slate-400 font-bold">Cost profile</div><p class="mt-1">Large, upfront, often recurring (rights renew; partners renegotiate)</p></div>
+        <div><div class="text-xs uppercase tracking-widest text-slate-400 font-bold">Metric that matters</div><p class="mt-1">Paid conversion, cost per subscriber, renewal economics</p></div>
+        <div><div class="text-xs uppercase tracking-widest text-slate-400 font-bold">How it fails</div><p class="mt-1">The seller captures the value; Jio overpays to rent</p></div>
+        <div><div class="text-xs uppercase tracking-widest text-slate-400 font-bold">Jio examples</div>
+          <div class="flex flex-wrap gap-1.5 mt-2"><span class="px-2 py-1 rounded-full bg-amber-50 text-amber-700 text-xs font-semibold">IPL rights</span><span class="px-2 py-1 rounded-full bg-amber-50 text-amber-700 text-xs font-semibold">JioStar (Disney)</span><span class="px-2 py-1 rounded-full bg-amber-50 text-amber-700 text-xs font-semibold">Saavn</span><span class="px-2 py-1 rounded-full bg-amber-50 text-amber-700 text-xs font-semibold">Gemini offer</span></div></div>
+      </div>
+    </div>
+    <div class="rounded-3xl border-2 border-violet-500 overflow-hidden">
+      <div class="bg-violet-600 text-white p-6">
+        <div class="text-xs uppercase tracking-[0.2em] font-bold opacity-80">Mode 3</div>
+        <div class="text-3xl font-extrabold">Build</div>
+        <div class="text-sm opacity-90 mt-1">Create a standalone product that users choose on its merits</div>
+      </div>
+      <div class="p-6 space-y-4 text-sm">
+        <div><div class="text-xs uppercase tracking-widest text-slate-400 font-bold">Core question</div><p class="mt-1">Would users pick it if it weren't from Jio?</p></div>
+        <div><div class="text-xs uppercase tracking-widest text-slate-400 font-bold">Cost profile</div><p class="mt-1">Ongoing R&amp;D plus customer acquisition; slow J-curve</p></div>
+        <div><div class="text-xs uppercase tracking-widest text-slate-400 font-bold">Metric that matters</div><p class="mt-1">Unprompted retention: DAU/MAU, D30</p></div>
+        <div><div class="text-xs uppercase tracking-widest text-slate-400 font-bold">How it fails</div><p class="mt-1">Installed but never opened, losing to a specialist</p></div>
+        <div><div class="text-xs uppercase tracking-widest text-slate-400 font-bold">Jio examples</div>
+          <div class="flex flex-wrap gap-1.5 mt-2"><span class="px-2 py-1 rounded-full bg-violet-50 text-violet-700 text-xs font-semibold">JioChat</span><span class="px-2 py-1 rounded-full bg-violet-50 text-violet-700 text-xs font-semibold">JioMeet</span><span class="px-2 py-1 rounded-full bg-violet-50 text-violet-700 text-xs font-semibold">JioPages</span><span class="px-2 py-1 rounded-full bg-violet-50 text-violet-700 text-xs font-semibold">JioMart (app)</span></div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="mt-6 rounded-2xl bg-slate-900 text-white p-6 flex items-center gap-6">
+    <div class="text-5xl">⚖️</div>
+    <div>
+      <div class="font-bold text-lg">How I classify each case: follow the money</div>
+      <p class="text-slate-300 text-sm mt-1">Most products mix modes. JioHotstar is bundled into plans, but the bulk of the spending was on buying rights and merging with Disney, so it counts as <b class="text-amber-400">Buy</b>. JioMart is built, but it runs on Reliance Retail's stores. A case's primary mode is <b>where most of the money went</b>.</p>
+    </div>
+  </div>
+  <p class="text-[12px] text-slate-400 mt-6">Framework: the author's. Each case is classified by its dominant strategic investment mode (author's assessment), usually where most of the money went.</p>
+</div>
+</body>
+</html>

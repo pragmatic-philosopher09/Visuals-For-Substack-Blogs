@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Fig 15 - Telco or Platform?</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>body{font-family:'Outfit',sans-serif;background:#f1f5f9}#frame{width:1200px}</style>
+</head>
+<body class="p-8 flex justify-center">
+<div id="frame" class="bg-white rounded-[2rem] border border-slate-200 shadow-sm p-12 text-slate-800">
+  <span class="text-xs font-bold tracking-[0.2em] text-slate-400 uppercase">Fig 15 · What the market is actually paying for</span>
+  <h2 class="text-4xl font-extrabold tracking-tight text-slate-900 mt-2">The pitch says platform. The price says telco.</h2>
+  <p class="text-slate-500 mt-2 text-lg">Two lenses: what each connection is valued at relative to what it pays, and the multiple on Jio's current EBITDA.</p>
+
+  <div class="grid grid-cols-2 gap-10 mt-8">
+    <div>
+      <h3 class="font-bold text-slate-900 text-lg">Value per connection, in months of ARPU</h3>
+      <p class="text-sm text-slate-500">Value ÷ subscribers ÷ monthly ARPU. An illustrative ratio, not a payback period.</p>
+      <div class="h-[280px] mt-3"><canvas id="mult"></canvas></div>
+      <div class="grid grid-cols-2 gap-3 mt-4 text-sm">
+        <div class="rounded-xl bg-slate-50 p-3"><div class="text-xs text-slate-500">2020 (Meta/Google round)</div><div class="font-extrabold text-lg">~₹11,900 / connection</div><div class="text-xs text-slate-500">₹4.62L cr pre-money EV (Meta deal) ÷ 388M · ARPU ~₹131. Later rounds (₹4.91L cr equity / ₹5.16L cr EV): ~96–102 mo</div></div>
+        <div class="rounded-xl bg-blue-50 p-3"><div class="text-xs text-blue-600">2026 (IPO, upper band)</div><div class="font-extrabold text-lg">~₹19,300 / connection</div><div class="text-xs text-slate-500">₹10.3L cr equity value (upper band) ÷ 533M · ARPU ₹215.6</div></div>
+      </div>
+    </div>
+    <div>
+      <h3 class="font-bold text-slate-900 text-lg">Value ÷ EBITDA</h3>
+      <p class="text-sm text-slate-500">Jio vs indicative EV/EBITDA ranges for each type of business</p>
+      <div class="mt-5 space-y-5" id="bands"></div>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-5 gap-3 mt-8 text-sm">
+    <div class="rounded-xl bg-slate-50 p-4"><div class="text-xs text-slate-500">Bankers' early range (Nov 2025)</div><div class="font-extrabold text-xl">$130–170B</div></div>
+    <div class="rounded-xl bg-blue-50 p-4"><div class="text-xs text-blue-600">IPO, upper band</div><div class="font-extrabold text-xl">~$107B</div></div>
+    <div class="rounded-xl bg-slate-50 p-4"><div class="text-xs text-slate-500">Bharti Airtel, 23 Oct 2026</div><div class="font-extrabold text-xl">~$123B</div><div class="text-xs text-slate-500">₹11.81L cr, incl. Africa</div></div>
+    <div class="rounded-xl bg-slate-50 p-4"><div class="text-xs text-slate-500">Price / FY26 earnings</div><div class="font-extrabold text-xl">~34× <span class="text-sm font-semibold text-slate-500">vs Airtel ~37–41×</span></div></div>
+    <div class="rounded-xl bg-amber-50 p-4"><div class="text-xs text-amber-700">Telecom share of Jio (FY26)</div><div class="font-extrabold text-xl">88% / 95%</div><div class="text-xs text-slate-500">RJIL share of revenue / EBITDA</div></div>
+  </div>
+  <div class="rounded-2xl bg-slate-900 text-white p-5 mt-5 text-[15px]">
+    <b>Read it this way:</b> per rupee of user revenue, IPO investors are paying about what Meta and Google paid in 2020, or slightly less, depending on basis. Rich against global telcos, cheaper than Airtel on P/E and market cap, and below platform multiples (it reaches only their low edge under the spectrum sensitivity). With 95% of EBITDA still from the telecom subsidiary, the valuation is consistent with investors pricing Jio mainly on its telecom economics. Whether the newer businesses ever earn a platform premium is an open question.
+  </div>
+  <p class="text-[12px] text-slate-400 mt-5">As of 23 Oct 2026. Jio value: ₹1,119 × ~920.9 cr post-issue shares ≈ ₹10.3L cr. Multiples: ÷ Q1 FY27 EBITDA × 4 (₹83,460 cr) = 12.3×; ÷ FY26 EBITDA (₹76,255 cr) = 13.5×. Market cap ≈ EV here: RHP net debt at 30 Jun 2026 was ₹9,539 cr (₹61,372 cr borrowings less ₹51,833 cr cash), smaller than the ₹30,213 cr fresh issue, so pro-forma net financial debt is roughly nil or slightly net cash (excluding leases and spectrum dues). But treating ~₹1.05L cr of deferred spectrum dues as debt (a sensitivity, not a definitive multiple) would lift EV/EBITDA to ~14–15×. P/E is less comparable across telcos because spectrum amortisation and interest vary widely, so EBITDA is used as the main lens. Airtel P/E: 40.71× in the RHP peer table; ~37–37.5× per ET/INDmoney in Oct 2026. Airtel market cap at 23 Oct close. RJIL shares per RHP (87.74% of revenue, 94.88% of EBITDA). Peer ranges are indicative: Airtel India EV/EBITDA 10–13× per broker estimates reported Oct 2026 (Moneycontrol, INDmoney); global incumbents and internet platforms are the author's indicative ranges. 2020 bar uses the Meta deal's ₹4.62L cr pre-money EV; later-round equity/EV bases give ~96–102 months. 2026 is equity value, so the bases differ: read the comparison as 'about the same', not exact. Strategy lens, not a valuation opinion. Not investment advice.</p>
+</div>
+<script>
+Chart.defaults.font.family='Outfit';Chart.defaults.color='#64748b';Chart.defaults.animation=false;
+const lbl={id:'l',afterDatasetsDraw(c){const {ctx}=c;c.getDatasetMeta(0).data.forEach((el,i)=>{ctx.save();ctx.font='800 20px Outfit';ctx.fillStyle='#0f172a';ctx.textAlign='center';ctx.fillText(['~91–102 months','~90 months'][i],el.x,el.y-10);ctx.restore();});}};
+new Chart(document.getElementById('mult'),{type:'bar',plugins:[lbl],data:{labels:['2020 round','2026 IPO'],datasets:[{data:[91,90],backgroundColor:['#94a3b8','#2563eb'],borderRadius:12,barThickness:110}]},options:{maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{min:0,max:110,grid:{color:'#f1f5f9'},ticks:{font:{size:13}}},x:{grid:{display:false},ticks:{font:{size:14,weight:'600'},color:'#0f172a'}}}}});
+const bands=[['Global incumbent telcos',6,8,'#cbd5e1'],['Indian telco peer (Airtel India)',10,13,'#fca5a5'],['Consumer internet platforms',15,25,'#c4b5fd']];
+const sc=v=>v/30*100;
+let h='';bands.forEach(([n,a,b,c])=>{h+=`<div><div class="flex justify-between text-[15px]"><span class="font-semibold">${n}</span><span class="text-slate-500">${a}–${b}×</span></div><div class="relative h-7 mt-1 rounded-full bg-slate-100"><div class="absolute h-7 rounded-full" style="left:${sc(a)}%;width:${sc(b)-sc(a)}%;background:${c}"></div><div class="absolute top-[-4px] h-9 bg-blue-700/25" style="left:${sc(12.3)}%;width:${sc(15)-sc(12.3)}%"></div><div class="absolute top-[-4px] h-9 w-[3px] bg-blue-700" style="left:${sc(12.3)}%"></div><div class="absolute top-[-4px] h-9 w-[3px] bg-blue-700" style="left:${sc(13.5)}%"></div></div></div>`;});
+h+=`<div class="relative h-6 text-sm text-slate-400"><span class="absolute" style="left:0">0×</span><span class="absolute" style="left:${sc(10)}%">10×</span><span class="absolute" style="left:${sc(20)}%">20×</span><span class="absolute right-0">30×</span></div>`;
+h+=`<div class="text-[15px] space-y-1"><div class="flex items-center gap-2"><span class="w-[3px] h-5 bg-blue-700 inline-block"></span><b class="text-blue-700">Jio ≈ 12.3× / 13.5×</b><span class="text-slate-500">market cap ÷ annualised Q1 / FY26 EBITDA</span></div><div class="flex items-center gap-2"><span class="w-4 h-5 bg-blue-700/25 inline-block"></span><span class="text-slate-500">up to ~15× if deferred spectrum dues are counted as debt</span></div></div>`;
+document.getElementById('bands').innerHTML=h;
+</script>
+<script>document.fonts.ready.then(()=>Object.values(Chart.instances).forEach(c=>c.update()));</script>
+</body>
+</html>

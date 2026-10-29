@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The First Charge vs. The Complexity Explosion</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=JetBrains+Mono:wght@400;700&display=swap');
+
+        :root {
+            --stripe-blurple: #635bff;
+            --neon-cyan: #00f0ff;
+            --neon-purple: #b026ff;
+            --bg-dark: #0a0e17;
+            --surface-dark: #111827;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            height: 100vh;
+            font-family: 'Inter', sans-serif;
+            overflow: hidden;
+            background: #ffffff;
+            color: #1a1f36;
+        }
+
+        .split {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            transition: all 0.5s ease;
+        }
+
+        /* Left Side: The First Charge */
+        .left-side {
+            background-color: #ffffff;
+            z-index: 2;
+            box-shadow: 10px 0 30px rgba(0, 0, 0, 0.05);
+        }
+
+        .minimal-button {
+            background-color: var(--stripe-blurple);
+            color: white;
+            font-size: 1.25rem;
+            font-weight: 600;
+            padding: 1rem 2.5rem;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(99, 91, 255, 0.2), 0 1px 3px rgba(0, 0, 0, 0.08);
+            transition: all 0.2s ease;
+            position: relative;
+            animation: pulse 3s infinite;
+        }
+
+        .minimal-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 7px 14px rgba(99, 91, 255, 0.3), 0 3px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(99, 91, 255, 0.4); }
+            70% { box-shadow: 0 0 0 20px rgba(99, 91, 255, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(99, 91, 255, 0); }
+        }
+
+        /* Right Side: The Complexity Explosion */
+        .right-side {
+            background-color: var(--bg-dark);
+            color: white;
+            overflow: hidden;
+        }
+
+        .grid-bg {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-image: 
+                linear-gradient(rgba(0, 240, 255, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 240, 255, 0.1) 1px, transparent 1px);
+            background-size: 40px 40px;
+            opacity: 0.3;
+            z-index: 0;
+        }
+
+        .complexity-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+
+        .center-hub {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 160px;
+            height: 160px;
+            border-radius: 50%;
+            background: radial-gradient(circle, var(--surface-dark) 0%, var(--bg-dark) 100%);
+            border: 2px solid var(--neon-cyan);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            box-shadow: 0 0 30px rgba(0, 240, 255, 0.3), inset 0 0 20px rgba(0, 240, 255, 0.2);
+            z-index: 10;
+        }
+
+        .center-hub h2 {
+            margin: 0;
+            font-size: 1.2rem;
+            color: var(--neon-cyan);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .center-hub h1 {
+            margin: 0;
+            font-size: 3rem;
+            font-weight: 800;
+            color: white;
+            text-shadow: 0 0 10px rgba(255,255,255,0.5);
+        }
+
+        /* Orbiting Elements */
+        .node {
+            position: absolute;
+            background: var(--surface-dark);
+            border: 1px solid var(--neon-purple);
+            border-radius: 8px;
+            padding: 15px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            box-shadow: 0 0 15px rgba(176, 38, 255, 0.2);
+            backdrop-filter: blur(5px);
+        }
+
+        .node.code {
+            top: 15%;
+            left: 15%;
+            color: #a5d6ff;
+            border-color: #79c0ff;
+            box-shadow: 0 0 15px rgba(121, 192, 255, 0.2);
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .node.invoice {
+            bottom: 20%;
+            left: 10%;
+            width: 200px;
+            border-color: var(--neon-cyan);
+            box-shadow: 0 0 15px rgba(0, 240, 255, 0.2);
+            animation: float 7s ease-in-out infinite alternate;
+        }
+        
+        .node.invoice::before {
+            content: '';
+            position: absolute;
+            top: -10px; left: 0; width: 100%; height: 10px;
+            background-image: radial-gradient(circle at 10px 0, transparent 10px, var(--surface-dark) 11px);
+            background-size: 20px 10px;
+            background-repeat: repeat-x;
+        }
+
+        .node.calendar {
+            top: 25%;
+            right: 15%;
+            border-color: #ff7b72;
+            box-shadow: 0 0 15px rgba(255, 123, 114, 0.2);
+            text-align: center;
+            animation: float 5s ease-in-out infinite;
+        }
+
+        .calendar-top {
+            background: #ff7b72;
+            color: #0d1117;
+            padding: 5px;
+            margin: -15px -15px 15px -15px;
+            border-top-left-radius: 7px;
+            border-top-right-radius: 7px;
+            font-weight: bold;
+        }
+
+        .calendar-date {
+            font-size: 2rem;
+            font-weight: 800;
+        }
+
+        /* Gears */
+        .gear {
+            position: absolute;
+            border: 4px solid var(--neon-purple);
+            border-radius: 50%;
+            box-shadow: 0 0 10px rgba(176, 38, 255, 0.3), inset 0 0 10px rgba(176, 38, 255, 0.3);
+        }
+
+        .gear::before, .gear::after {
+            content: '';
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            background: var(--neon-purple);
+        }
+        
+        .gear::before { width: 100%; height: 8px; }
+        .gear::after { height: 100%; width: 8px; }
+
+        .gear-1 {
+            width: 100px; height: 100px;
+            bottom: 15%; right: 20%;
+            animation: spin 10s linear infinite;
+        }
+        .gear-2 {
+            width: 60px; height: 60px;
+            bottom: 28%; right: 10%;
+            border-color: var(--neon-cyan);
+            box-shadow: 0 0 10px rgba(0, 240, 255, 0.3), inset 0 0 10px rgba(0, 240, 255, 0.3);
+            animation: spin 6s linear infinite reverse;
+        }
+        .gear-2::before, .gear-2::after { background: var(--neon-cyan); }
+
+        /* Lines/Connections */
+        svg {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: 0;
+        }
+        
+        path {
+            fill: none;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-dasharray: 10, 10;
+            animation: dash 30s linear infinite;
+        }
+
+        .line-cyan { stroke: var(--neon-cyan); }
+        .line-purple { stroke: var(--neon-purple); }
+
+        @keyframes spin {
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+            100% { transform: translateY(0px); }
+        }
+
+        @keyframes dash {
+            to { stroke-dashoffset: -1000; }
+        }
+
+        /* Syntax Highlighting */
+        .kw { color: #ff7b72; }
+        .str { color: #a5d6ff; }
+        .func { color: #d2a8ff; }
+
+        .invoice-row { display: flex; justify-content: space-between; margin-bottom: 8px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 4px; }
+        .invoice-total { display: flex; justify-content: space-between; font-weight: bold; margin-top: 15px; color: var(--neon-cyan); }
+        
+        .label-first {
+            position: absolute;
+            top: 40px;
+            left: 40px;
+            font-size: 0.9rem;
+            color: #8792a2;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+        }
+
+        .label-complex {
+            position: absolute;
+            top: 40px;
+            right: 40px;
+            font-size: 0.9rem;
+            color: rgba(255,255,255,0.5);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+            z-index: 20;
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- Left Side: The First Charge -->
+    <div class="split left-side">
+        <div class="label-first">Day 1: The Promise</div>
+        <button class="minimal-button">Pay $29</button>
+    </div>
+
+    <!-- Right Side: The Complexity Explosion -->
+    <div class="split right-side">
+        <div class="grid-bg"></div>
+        <div class="label-complex">Month 6: The Reality</div>
+        
+        <div class="complexity-container">
+            
+            <svg>
+                <!-- Connections -->
+                <path class="line-purple" d="M 150 150 Q 300 150 500 500" />
+                <path class="line-cyan" d="M 800 250 Q 600 300 500 500" />
+                <path class="line-cyan" d="M 200 800 Q 350 650 500 500" />
+                <path class="line-purple" d="M 800 800 Q 650 650 500 500" />
+            </svg>
+
+            <!-- Center Hub -->
+            <div class="center-hub">
+                <h2>Month</h2>
+                <h1>6</h1>
+            </div>
+
+            <!-- Code Node -->
+            <div class="node code">
+                <div><span class="kw">import</span> { <span class="func">createInvoice</span> } <span class="kw">from</span> <span class="str">'@stripe/api'</span>;</div>
+                <br>
+                <div><span class="kw">try</span> {</div>
+                <div style="padding-left: 15px;"><span class="kw">const</span> sub = <span class="kw">await</span> stripe.subscriptions.<span class="func">update</span>('sub_123', {</div>
+                <div style="padding-left: 30px;">proration_behavior: <span class="str">'always_invoice'</span>,</div>
+                <div style="padding-left: 30px;">items: [{ id: <span class="str">'si_456'</span>, price: <span class="str">'price_789'</span> }]</div>
+                <div style="padding-left: 15px;">});</div>
+                <div style="padding-left: 15px;"><span class="func">handleWebhooks</span>(sub);</div>
+                <div>} <span class="kw">catch</span> (err) {</div>
+                <div style="padding-left: 15px;">logger.<span class="func">error</span>(<span class="str">'Proration failed'</span>);</div>
+                <div>}</div>
+            </div>
+
+            <!-- Invoice Node -->
+            <div class="node invoice">
+                <div style="font-weight:bold; margin-bottom:10px; color:#fff;">INV-2023-089</div>
+                <div class="invoice-row"><span>Base Plan</span><span>$29.00</span></div>
+                <div class="invoice-row"><span>Proration (Up)</span><span>$14.50</span></div>
+                <div class="invoice-row"><span>Usage Overage</span><span>$8.20</span></div>
+                <div class="invoice-row"><span>Tax (VAT)</span><span>$4.13</span></div>
+                <div class="invoice-total"><span>TOTAL</span><span>$55.83</span></div>
+            </div>
+
+            <!-- Calendar Node -->
+            <div class="node calendar">
+                <div class="calendar-top">Billing Cycle</div>
+                <div class="calendar-date">14</div>
+                <div style="font-size: 0.7rem; margin-top: 5px; color: #8b949e;">Retry Attempt 2</div>
+            </div>
+
+            <!-- Gears -->
+            <div class="gear gear-1"></div>
+            <div class="gear gear-2"></div>
+
+        </div>
+    </div>
+
+    <script>
+        // Dynamically adjust SVG paths based on window size
+        function updateConnections() {
+            const container = document.querySelector('.right-side');
+            const svg = document.querySelector('svg');
+            const hub = document.querySelector('.center-hub');
+            const nodes = document.querySelectorAll('.node, .gear');
+            const paths = document.querySelectorAll('path');
+            
+            const hubRect = hub.getBoundingClientRect();
+            const containerRect = container.getBoundingClientRect();
+            
+            const hx = hubRect.left - containerRect.left + hubRect.width / 2;
+            const hy = hubRect.top - containerRect.top + hubRect.height / 2;
+
+            nodes.forEach((node, index) => {
+                if(index < paths.length) {
+                    const rect = node.getBoundingClientRect();
+                    const nx = rect.left - containerRect.left + rect.width / 2;
+                    const ny = rect.top - containerRect.top + rect.height / 2;
+                    
+                    const qx = (hx + nx) / 2 + (Math.random() * 100 - 50);
+                    const qy = (hy + ny) / 2 + (Math.random() * 100 - 50);
+                    
+                    paths[index].setAttribute('d', `M ${nx} ${ny} Q ${qx} ${qy} ${hx} ${hy}`);
+                }
+            });
+        }
+
+        window.addEventListener('resize', updateConnections);
+        // Initial setup with a slight delay to ensure elements are rendered
+        setTimeout(updateConnections, 100);
+        setInterval(updateConnections, 2000); // Slight shift over time
+    </script>
+</body>
+</html>

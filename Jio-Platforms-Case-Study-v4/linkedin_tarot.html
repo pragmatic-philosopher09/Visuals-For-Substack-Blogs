@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>LinkedIn Post - Tarot</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;900&family=Cormorant+Garamond:ital,wght@0,500;1,500;1,600&display=swap');
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#222;display:flex;justify-content:center;align-items:center;min-height:100vh}
+#frame{width:1080px;height:1350px;position:relative;overflow:hidden;
+  background:radial-gradient(ellipse at 70% 50%,#1f3b37 0%,#0e1c1a 60%,#081110 100%)}
+#frame::before{content:"";position:absolute;inset:0;opacity:.12;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+.stars{position:absolute;inset:0;background-image:radial-gradient(#e9c46a 1px,transparent 1.5px);background-size:46px 46px;opacity:.10}
+.left{position:absolute;left:70px;top:0;bottom:0;width:390px;display:flex;flex-direction:column;justify-content:center;z-index:3;color:#f3e3b5}
+.eyebrow{font-family:'Cinzel',serif;font-size:15px;letter-spacing:5px;color:#e9c46a;font-weight:700}
+h1{font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:500;font-size:64px;line-height:1.02;margin-top:22px;color:#fbf0d2}
+.sub{font-family:'Cinzel',serif;font-size:17px;letter-spacing:2.5px;margin-top:26px;color:#cbb784;line-height:1.6}
+.cards{position:absolute;right:56px;top:0;bottom:0;width:690px;z-index:2}
+.card{position:absolute;top:95px;width:212px;height:440px;border-radius:16px;background:#f6ecd2;padding:12px;
+  box-shadow:0 30px 50px rgba(0,0,0,.55),0 0 0 1px rgba(0,0,0,.2)}
+.inner{height:100%;border:2px solid #8a6a2a;border-radius:10px;position:relative;display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:16px 10px 18px;
+  background:linear-gradient(180deg,#f6ecd2 0%,#efe0b8 100%)}
+.inner::before{content:"";position:absolute;inset:6px;border:1px solid #b8955099;border-radius:6px}
+.num{font-family:'Cinzel',serif;font-weight:700;font-size:22px;color:#6b4f1d;letter-spacing:3px}
+.name{font-family:'Cinzel',serif;font-weight:900;font-size:21px;color:#2b1d07;letter-spacing:2.5px;text-align:center;line-height:1.15}
+.art{width:150px;height:200px}
+.c1{left:0;transform:rotate(-8deg) translateY(14px)}
+.c2{left:235px;transform:translateY(-6px)}
+.c3{left:470px;transform:rotate(8deg) translateY(14px)}
+.c3 .inner{transform:rotate(180deg)}
+.c3{filter:saturate(.85)}
+.tag{position:absolute;font-family:'Cormorant Garamond',serif;font-style:italic;font-size:22px;color:#e9c46a;white-space:nowrap}
+.t1{left:52px;top:560px}.t2{left:300px;top:552px}.t3{left:510px;top:560px}
+
+.left{left:80px;right:80px;top:110px;bottom:auto;width:auto;align-items:center;text-align:center}
+h1{font-size:88px;max-width:none}
+.sub{font-size:22px}
+.cards{right:auto;left:74px;top:440px;bottom:auto;height:630px;transform:scale(1.35);transform-origin:0 0}
+</style>
+</head>
+<body>
+<div id="frame">
+  <div class="stars"></div>
+  <div class="left">
+    <div class="eyebrow">DECONSTRUCTED · JIO IPO</div>
+    <h1>Jio's fortune,<br>read in three cards.</h1>
+    <div class="sub">BUNDLE · BUY · BUILD</div>
+  </div>
+
+  <div class="cards">
+    <div class="card c1"><div class="inner">
+      <div class="num">I</div>
+      <svg class="art" viewBox="0 0 150 200" fill="none" stroke="#2b1d07" stroke-width="3" stroke-linejoin="round" stroke-linecap="round">
+        <circle cx="75" cy="100" r="62" stroke="#b8955066" stroke-width="2"/>
+        <rect x="35" y="95" width="80" height="60" rx="3"/>
+        <rect x="45" y="60" width="60" height="35" rx="3"/>
+        <path d="M75 60v95M35 125h80M45 78h60"/>
+        <path d="M75 60c-14-22-34-16-26-4 6 8 26 4 26 4zM75 60c14-22 34-16 26-4-6 8-26 4-26 4z"/>
+      </svg>
+      <div class="name">THE<br>BUNDLE</div>
+    </div></div>
+
+    <div class="card c2"><div class="inner">
+      <div class="num">II</div>
+      <svg class="art" viewBox="0 0 150 200" fill="none" stroke="#2b1d07" stroke-width="3" stroke-linejoin="round" stroke-linecap="round">
+        <circle cx="75" cy="100" r="62" stroke="#b8955066" stroke-width="2"/>
+        <path d="M32 120l8-50 22 26 13-36 13 36 22-26 8 50z"/>
+        <path d="M32 132h86v12H32z"/>
+        <circle cx="40" cy="68" r="4" fill="#2b1d07"/><circle cx="75" cy="58" r="4" fill="#2b1d07"/><circle cx="110" cy="68" r="4" fill="#2b1d07"/>
+        <path d="M60 165h30M66 175h18" stroke-width="2"/>
+      </svg>
+      <div class="name">THE<br>BUY</div>
+    </div></div>
+
+    <div class="card c3"><div class="inner">
+      <div class="num">III</div>
+      <svg class="art" viewBox="0 0 150 200" fill="none" stroke="#2b1d07" stroke-width="3" stroke-linejoin="round" stroke-linecap="round">
+        <circle cx="75" cy="100" r="62" stroke="#b8955066" stroke-width="2"/>
+        <path d="M50 170V70h50v100"/>
+        <path d="M44 70V55h10v8h10v-8h10v8h10v-8h10v8h10v-8h0v15z"/>
+        <path d="M68 170v-26a7 7 0 0 1 14 0v26M62 95h10v14H62zM80 115h10v14H80z"/>
+        <path d="M96 36l-14 22 10 0-12 20" stroke="#8a2d0c" stroke-width="3.5"/>
+        <path d="M40 170h70"/>
+      </svg>
+      <div class="name">THE<br>BUILD</div>
+    </div></div>
+
+    <div class="tag t1">upright</div>
+    <div class="tag t2">upright</div>
+    <div class="tag t3">reversed</div>
+  </div>
+</div>
+</body>
+</html>

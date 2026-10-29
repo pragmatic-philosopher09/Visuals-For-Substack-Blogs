@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Fig 2 - How Jio Built Distribution</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>body{font-family:'Outfit',sans-serif;background:#f1f5f9}#frame{width:1200px}</style>
+</head>
+<body class="p-8 flex justify-center">
+<div id="frame" class="bg-white rounded-[2rem] border border-slate-200 shadow-sm p-12 text-slate-800">
+  <span class="text-xs font-bold tracking-[0.2em] text-slate-400 uppercase">Fig 2 · Act I: Building the distribution</span>
+  <h2 class="text-4xl font-extrabold tracking-tight text-slate-900 mt-2">Make data almost free, then fill the empty SIM slot</h2>
+  <p class="text-slate-500 mt-2 text-lg">Jio didn't ask anyone to switch. It asked for the second SIM slot most Indian phones already had.</p>
+
+  <div class="grid grid-cols-2 gap-10 mt-8">
+    <div>
+      <h3 class="font-bold text-slate-900">The price of 1 GB of mobile data (₹)</h3>
+      <p class="text-xs text-slate-400">Log scale. Grey: TRAI's industry-average cost per GB (calendar years). Blue: Jio's realised revenue per GB (ARPU ÷ GB used per user).</p>
+      <div class="h-[330px] mt-3"><canvas id="price"></canvas></div>
+    </div>
+    <div>
+      <h3 class="font-bold text-slate-900">Jio subscribers (millions)</h3>
+      <p class="text-xs text-slate-400">Company-reported, period end.</p>
+      <div class="h-[330px] mt-3"><canvas id="subs"></canvas></div>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-3 gap-4 mt-8">
+    <div class="rounded-2xl bg-blue-50 border border-blue-100 p-5">
+      <div class="text-xs uppercase tracking-widest text-blue-600 font-bold">The dual-SIM wedge</div>
+      <p class="text-sm text-slate-700 mt-2">Users kept their old SIM for calls and added Jio for free data. <b>Switching cost: zero.</b> Jio took the second slot without asking anyone to give up their first SIM.</p>
+    </div>
+    <div class="rounded-2xl bg-slate-50 border border-slate-200 p-5">
+      <div class="text-xs uppercase tracking-widest text-slate-500 font-bold">Speed</div>
+      <p class="text-sm text-slate-700 mt-2"><b>~100 million users in about 170 days</b> after the Sept 2016 launch, on free "Welcome" and "Happy New Year" offers that ran until March 2017.</p>
+    </div>
+    <div class="rounded-2xl bg-slate-50 border border-slate-200 p-5">
+      <div class="text-xs uppercase tracking-widest text-slate-500 font-bold">What it bought</div>
+      <p class="text-sm text-slate-700 mt-2">A billing relationship with <b>533M connections</b> (not unique people, given dual-SIM), 285M of them on 5G. Prepaid connections come back to recharge every 28–84 days.</p>
+    </div>
+  </div>
+  <p class="text-[11px] text-slate-400 mt-6">Sources: TRAI; Reliance/Jio quarterly reports (Q2 FY26: ARPU ₹211.4, 38.7 GB/user; Q1 FY27: ARPU ₹215.6, 43.7 GB/user, 533.3M subs). Grey bars: TRAI average cost per GB as cited in its Aug 2019 release (₹269 in 2014 → ₹11.78 in 2018). Blue bars use a different measure (Jio's realised revenue per GB) and are not strictly comparable with TRAI's series.</p>
+</div>
+<script>
+Chart.defaults.font.family='Outfit';Chart.defaults.color='#64748b';Chart.defaults.animation=false;
+const labelPlugin={id:'lbl',afterDatasetsDraw(c){const {ctx}=c;c.data.datasets.forEach((d,i)=>{if(d.noLabels)return;c.getDatasetMeta(i).data.forEach((el,j)=>{const v=d.data[j];if(v==null)return;ctx.save();ctx.font='600 12px Outfit';ctx.fillStyle='#0f172a';ctx.textAlign='center';ctx.fillText(d.fmt?d.fmt(v):v,el.x,el.y-8);ctx.restore();});});}};
+new Chart(document.getElementById('price'),{type:'bar',plugins:[labelPlugin],data:{labels:['2014','2015','2016','2017','2018',['Q2 FY26','(Jio)'],['Q1 FY27','(Jio)']],datasets:[{data:[269,226,75.6,19.4,11.8,5.5,4.9],fmt:v=>'₹'+v,backgroundColor:['#94a3b8','#94a3b8','#94a3b8','#94a3b8','#94a3b8','#2563eb','#1d4ed8'],borderRadius:8}]},options:{maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{type:'logarithmic',min:1,max:600,grid:{color:'#f1f5f9'},ticks:{callback:v=>[1,5,10,50,100,500].includes(v)?'₹'+v:''}},x:{grid:{display:false}}}}});
+new Chart(document.getElementById('subs'),{type:'line',plugins:[labelPlugin],data:{labels:['Dec 16','Mar 17','Mar 18','Mar 19','Mar 20','Mar 21','Mar 22','Mar 23','Mar 24','Mar 25','Jun 26'],datasets:[{data:[72,109,187,307,388,426,410,439,482,488,533],borderColor:'#2563eb',backgroundColor:'rgba(37,99,235,.08)',fill:true,tension:.3,pointRadius:4,pointBackgroundColor:'#2563eb'}]},options:{maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{min:0,max:600,grid:{color:'#f1f5f9'}},x:{grid:{display:false}}}}});
+</script>
+<script>document.fonts.ready.then(()=>Object.values(Chart.instances).forEach(c=>c.update()));</script>
+</body>
+</html>

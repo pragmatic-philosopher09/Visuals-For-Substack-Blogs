@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Fig 4 - ARPU and Pricing Power</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>body{font-family:'Outfit',sans-serif;background:#f1f5f9}#frame{width:1200px}</style>
+</head>
+<body class="p-8 flex justify-center">
+<div id="frame" class="bg-white rounded-[2rem] border border-slate-200 shadow-sm p-12 text-slate-800">
+  <span class="text-xs font-bold tracking-[0.2em] text-slate-400 uppercase">Fig 4 · Act II: The consolidation dividend</span>
+  <h2 class="text-4xl font-extrabold tracking-tight text-slate-900 mt-2">Revenue per user rose in three hikes. Airtel still earns more per customer.</h2>
+  <p class="text-slate-500 mt-2 text-lg">Monthly ARPU (average revenue per user, ₹). Dashed lines mark industry tariff hikes.</p>
+
+  <div class="grid grid-cols-[1.7fr_1fr] gap-10 mt-6">
+    <div class="h-[400px]"><canvas id="arpu"></canvas></div>
+    <div class="space-y-4">
+      <div class="rounded-2xl border border-blue-100 bg-blue-50 p-5">
+        <div class="text-xs uppercase tracking-widest text-blue-600 font-bold">Test: the July 2024 hike</div>
+        <div class="grid grid-cols-2 gap-3 mt-3">
+          <div><div class="text-xs text-slate-500">Subscribers</div><div class="text-2xl font-extrabold text-rose-600">−10.9M</div><div class="text-xs text-slate-500">489.7M → 478.8M (−2.2%)</div></div>
+          <div><div class="text-xs text-slate-500">ARPU</div><div class="text-2xl font-extrabold text-emerald-600">+7.4%</div><div class="text-xs text-slate-500">₹181.7 → ₹195.1</div></div>
+        </div>
+        <div class="mt-3 pt-3 border-t border-blue-100 text-sm"><b>Implied mobile revenue (subscribers × ARPU): ≈ +5%.</b> Jio lost users and still earned more. That is pricing power.</div>
+      </div>
+      <div class="rounded-2xl border border-slate-200 bg-slate-50 p-5">
+        <div class="text-xs uppercase tracking-widest text-slate-500 font-bold">Two strategies, one market</div>
+        <div class="flex items-end gap-4 mt-3">
+          <div class="flex-1"><div class="text-xs text-slate-500">Airtel ARPU</div><div class="text-2xl font-extrabold text-red-500">₹264</div></div>
+          <div class="flex-1"><div class="text-xs text-slate-500">Jio ARPU</div><div class="text-2xl font-extrabold text-blue-600">₹215.6</div></div>
+          <div class="flex-1"><div class="text-xs text-slate-500">Gap</div><div class="text-2xl font-extrabold">22%</div></div>
+        </div>
+        <p class="text-sm text-slate-600 mt-3">Airtel maximises <b>revenue per user</b>. Jio maximises <b>the number of users</b>. Jio accepts lower ARPU because the user base is what it sells to its other businesses.</p>
+      </div>
+    </div>
+  </div>
+  <p class="text-[11px] text-slate-400 mt-6">Sources: Jio and Bharti Airtel quarterly reports (Q1 FY27 = June 2026). Airtel figures are India mobile ARPU. Earlier quarters are rounded and approximate. Revenue effect = subscribers × ARPU, Q1 vs Q2 FY25, before other revenue lines.</p>
+</div>
+<script>
+Chart.defaults.font.family='Outfit';Chart.defaults.color='#64748b';Chart.defaults.animation=false;
+const L=['Mar 18','Sep 18','Mar 19','Sep 19','Mar 20','Sep 20','Mar 21','Sep 21','Mar 22','Sep 22','Mar 23','Sep 23','Mar 24','Sep 24','Mar 25','Sep 25','Mar 26','Jun 26'];
+const jio=[137.1,131.7,126.2,120.0,130.6,145.0,138.2,143.6,167.6,177.2,178.8,181.7,181.7,195.1,206.2,211.4,214.0,215.6];
+const air=[116,100,123,128,154,162,145,153,178,190,193,203,209,233,245,256,260,264];
+const hikes=[{i:3.5,t:'Dec 2019 hike'},{i:7.5,t:'Dec 2021 hike'},{i:12.5,t:'Jul 2024 hike'}];
+const vlines={id:'v',afterDraw(c){const {ctx,chartArea:a,scales:{x}}=c;hikes.forEach(h=>{const px=x.getPixelForValue(Math.floor(h.i))+(x.getPixelForValue(Math.ceil(h.i))-x.getPixelForValue(Math.floor(h.i)))/2;ctx.save();ctx.setLineDash([5,5]);ctx.strokeStyle='#94a3b8';ctx.beginPath();ctx.moveTo(px,a.top);ctx.lineTo(px,a.bottom);ctx.stroke();ctx.setLineDash([]);ctx.font='600 11px Outfit';ctx.fillStyle='#475569';ctx.textAlign='center';ctx.fillText(h.t,px,a.top+12);ctx.restore();});
+ const m=c.getDatasetMeta(0).data;const last=m[m.length-1];const m2=c.getDatasetMeta(1).data;const l2=m2[m2.length-1];ctx.save();ctx.font='700 12px Outfit';ctx.fillStyle='#2563eb';ctx.fillText('₹215.6',last.x-46,last.y+18);ctx.fillStyle='#ef4444';ctx.fillText('₹264',l2.x-34,l2.y-10);ctx.restore();}};
+new Chart(document.getElementById('arpu'),{type:'line',plugins:[vlines],data:{labels:L,datasets:[
+ {label:'Jio',data:jio,borderColor:'#2563eb',backgroundColor:'#2563eb',tension:.25,pointRadius:3,borderWidth:3},
+ {label:'Airtel (India mobile)',data:air,borderColor:'#ef4444',backgroundColor:'#ef4444',tension:.25,pointRadius:3,borderWidth:2,borderDash:[2,0]}]},
+ options:{maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{usePointStyle:true,boxWidth:10}}},scales:{y:{min:80,max:290,grid:{color:'#f1f5f9'},ticks:{callback:v=>'₹'+v}},x:{grid:{display:false},ticks:{maxRotation:0,autoSkip:true,maxTicksLimit:9}}}}});
+</script>
+<script>document.fonts.ready.then(()=>Object.values(Chart.instances).forEach(c=>c.update()));</script>
+</body>
+</html>

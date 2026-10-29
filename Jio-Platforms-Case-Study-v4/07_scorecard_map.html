@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Fig 7 - The Scorecard Map</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>body{font-family:'Outfit',sans-serif;background:#f1f5f9}#frame{width:1200px}</style>
+</head>
+<body class="p-8 flex justify-center">
+<div id="frame" class="bg-white rounded-[2rem] border border-slate-200 shadow-sm p-12 text-slate-800">
+  <span class="text-xs font-bold tracking-[0.2em] text-slate-400 uppercase">Fig 7 · The scorecard</span>
+  <h2 class="text-4xl font-extrabold tracking-tight text-slate-900 mt-2">Twelve consumer bets beyond the core SIM, on one map</h2>
+  <p class="text-slate-500 mt-2 text-lg">Jio's wins cluster where the product reuses the existing relationship and needs little preference. Where preference was needed, Jio won only when it bought it.</p>
+  <div class="flex gap-6 mt-4 text-sm items-center">
+    <span class="flex items-center gap-2"><span class="w-3 h-3 rounded-full bg-blue-600"></span>Bundle</span>
+    <span class="flex items-center gap-2"><span class="w-3 h-3 rounded-full bg-amber-500"></span>Buy</span>
+    <span class="flex items-center gap-2"><span class="w-3 h-3 rounded-full bg-violet-500"></span>Build</span>
+    <span class="text-slate-300">|</span>
+    <span class="flex items-center gap-2"><b class="text-emerald-600">✓</b> Won</span>
+    <span class="flex items-center gap-2"><b class="text-slate-500">◐</b> Mixed</span>
+    <span class="flex items-center gap-2"><b class="text-rose-600">✕</b> Flopped</span>
+  </div>
+  <svg id="map" width="1100" height="640" class="mt-4"></svg>
+  <div class="grid grid-cols-3 gap-4 mt-4 text-[13px] leading-snug">
+    <div class="rounded-xl bg-slate-50 p-4"><div class="font-extrabold text-slate-900">x · Reuse of the Jio relationship</div><p class="text-slate-600 mt-1"><b>0–3</b> separate app, separate decision. <b>4–6</b> uses Jio login, billing or app grid, but users still opt in. <b>7–10</b> arrives inside the plan, SIM, handset or router.</p></div>
+    <div class="rounded-xl bg-slate-50 p-4"><div class="font-extrabold text-slate-900">y · Preference needed</div><p class="text-slate-600 mt-1"><b>0–3</b> utility with no strong incumbent. <b>4–6</b> alternatives exist but users aren't attached. <b>7–10</b> competes with a product users actively choose (habit, taste or network effects).</p></div>
+    <div class="rounded-xl bg-slate-50 p-4"><div class="font-extrabold text-slate-900">Outcome (as of Oct 2026)</div><p class="text-slate-600 mt-1"><b class="text-emerald-700">Won</b>: reached its stated ambition at scale and is still core. <b>Mixed</b>: survived at scale but trails the leader or missed its ambition. <b class="text-rose-700">Flopped</b>: shut down, marginal usage, or publicly missed targets.</p></div>
+  </div>
+  <p class="text-[12px] text-slate-500 mt-3"><b>Connectivity extensions</b> (devices, broadband, in-plan TV): JioPhone, JioBharat, AirFiber, JioFiber, JioPhone Next, JioTV. <b>Beyond connectivity</b>: JioHotstar, JioSaavn, JioMart, JioMeet, JioChat, JioPages. Consumer products only; infrastructure (e.g. Jio's in-house 5G stack) is out of scope. Placements are the author's judgement, made with hindsight. Read the map as a lens, not a measurement.</p>
+</div>
+<script>
+const W=1100,H=640,m={l:80,r:30,t:20,b:60};const iw=W-m.l-m.r,ih=H-m.t-m.b;
+const X=v=>m.l+v/10*iw, Y=v=>m.t+ih-v/10*ih;
+const col={bundle:'#2563eb',buy:'#f59e0b',build:'#8b5cf6'};
+const out={win:['✓','#059669'],mixed:['◐','#64748b'],flop:['✕','#e11d48']};
+const pts=[
+ {n:'JioPhone',y0:2017,x:8.8,y:2.0,m:'bundle',o:'win',dx:0,dy:-34},
+ {n:'JioTV',y0:2016,x:9.6,y:3.6,m:'bundle',o:'win',dx:0,dy:-34},
+ {n:'AirFiber',y0:2023,x:8.4,y:3.4,m:'bundle',o:'win',dx:-70,dy:6},
+ {n:'JioBharat',y0:2023,x:7.6,y:1.4,m:'bundle',o:'win',dx:-74,dy:6},
+ {n:'JioFiber',y0:2019,x:6.6,y:4.4,m:'bundle',o:'mixed',dx:-66,dy:6},
+ {n:'JioPhone Next',y0:2021,x:6.4,y:6.2,m:'bundle',o:'flop',dx:0,dy:36},
+ {n:'JioHotstar',y0:'2023–25',x:7.8,y:8.6,m:'buy',o:'win',dx:50,dy:6},
+ {n:'JioSaavn',y0:2018,x:5.7,y:7.0,m:'buy',o:'mixed',dx:50,dy:6},
+ {n:'JioMart',y0:2020,x:3.4,y:6.4,m:'build',o:'mixed',dx:0,dy:38},
+ {n:'JioMeet',y0:2020,x:2.4,y:8.2,m:'build',o:'flop',dx:-66,dy:6},
+ {n:'JioChat',y0:2015,x:3.6,y:9.2,m:'build',o:'flop',dx:0,dy:-34},
+ {n:'JioPages',y0:2020,x:3.4,y:7.8,m:'build',o:'flop',dx:70,dy:6}
+];
+let s='';
+// quadrant backgrounds
+s+=`<rect x="${X(5)}" y="${Y(5)}" width="${iw/2}" height="${ih/2}" fill="#eff6ff"/>`;
+s+=`<rect x="${X(5)}" y="${Y(10)}" width="${iw/2}" height="${ih/2}" fill="#fffbeb"/>`;
+s+=`<rect x="${X(0)}" y="${Y(10)}" width="${iw/2}" height="${ih/2}" fill="#faf5ff"/>`;
+s+=`<rect x="${X(0)}" y="${Y(5)}" width="${iw/2}" height="${ih/2}" fill="#f8fafc"/>`;
+s+=`<line x1="${X(5)}" y1="${Y(0)}" x2="${X(5)}" y2="${Y(10)}" stroke="#cbd5e1" stroke-dasharray="6 6"/>`;
+s+=`<line x1="${X(0)}" y1="${Y(5)}" x2="${X(10)}" y2="${Y(5)}" stroke="#cbd5e1" stroke-dasharray="6 6"/>`;
+const q=(x,y,t,sub,c)=>`<text x="${x}" y="${y}" font-size="15" font-weight="800" fill="${c}">${t}</text><text x="${x}" y="${y+18}" font-size="12" fill="#64748b">${sub}</text>`;
+s+=q(X(5)+18,Y(5)+ih/2-46,'THE BUNDLE ZONE','Rides the recharge. Needs no new habit.','#1d4ed8');
+s+=q(X(5)+18,Y(10)+28,'PAY FOR PREFERENCE','Users must want it, so Jio buys what they want.','#b45309');
+s+=q(X(0)+18,Y(10)+28,'THE SPECIALIST TRAP','Needs a new habit and a reason to switch.','#6d28d9');
+s+=q(X(0)+18,Y(5)+ih/2-46,'(EMPTY)','Low reuse, low preference: no reason to exist.','#94a3b8');
+// axes
+s+=`<line x1="${X(0)}" y1="${Y(0)}" x2="${X(10)}" y2="${Y(0)}" stroke="#334155" stroke-width="1.5"/>`;
+s+=`<line x1="${X(0)}" y1="${Y(0)}" x2="${X(0)}" y2="${Y(10)}" stroke="#334155" stroke-width="1.5"/>`;
+s+=`<text x="${X(5)}" y="${H-14}" text-anchor="middle" font-size="14" font-weight="700" fill="#0f172a">How much it reuses the Jio relationship (SIM, recharge, router, bill) →</text>`;
+s+=`<text x="${X(0)}" y="${H-34}" font-size="11" fill="#94a3b8">Standalone app</text><text x="${X(10)}" y="${H-34}" text-anchor="end" font-size="11" fill="#94a3b8">Inside the plan</text>`;
+s+=`<text transform="translate(26 ${Y(5)}) rotate(-90)" text-anchor="middle" font-size="14" font-weight="700" fill="#0f172a">How much user preference it needs →</text>`;
+s+=`<text transform="translate(50 ${Y(0)}) rotate(-90)" font-size="11" fill="#94a3b8">Utility</text><text transform="translate(50 ${Y(10)}) rotate(-90)" text-anchor="end" font-size="11" fill="#94a3b8">Taste / habit</text>`;
+pts.forEach(p=>{const cx=X(p.x),cy=Y(p.y);const [g,gc]=out[p.o];
+ s+=`<circle cx="${cx}" cy="${cy}" r="20" fill="${col[p.m]}" fill-opacity=".9" stroke="#fff" stroke-width="3"/>`;
+ s+=`<text x="${cx}" y="${cy+6}" text-anchor="middle" font-size="18" font-weight="800" fill="#fff">${g}</text>`;
+ const tx=cx+p.dx,ty=cy+p.dy;const anchor=p.dx>20?'start':p.dx<-20?'end':'middle';const ax=p.dx>20?tx-22:p.dx<-20?tx+22:tx;
+ s+=`<text x="${ax}" y="${ty}" text-anchor="${anchor}" font-size="14" font-weight="700" fill="#0f172a">${p.n}</text>`;
+ s+=`<text x="${ax}" y="${ty+15}" text-anchor="${anchor}" font-size="11" fill="${gc}" font-weight="600">${p.y0}</text>`;
+});
+// AI marker
+s+=`<circle cx="${X(6.2)}" cy="${Y(8.2)}" r="22" fill="none" stroke="#0f172a" stroke-width="2.5" stroke-dasharray="5 4"/>`;
+s+=`<text x="${X(6.2)}" y="${Y(8.2)+7}" text-anchor="middle" font-size="20" font-weight="800" fill="#0f172a">?</text>`;
+s+=`<text x="${X(6.2)+30}" y="${Y(8.2)-4}" font-size="14" font-weight="800" fill="#0f172a">Jio AI</text><text x="${X(6.2)+30}" y="${Y(8.2)+12}" font-size="11" fill="#475569">2025 → the next test</text>`;
+document.getElementById('map').innerHTML=s;
+</script>
+</body>
+</html>

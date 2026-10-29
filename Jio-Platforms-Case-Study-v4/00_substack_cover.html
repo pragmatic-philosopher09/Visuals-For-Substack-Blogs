@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Substack Cover - Jio Scorecard</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;1,400&display=swap');
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#0b0c10;display:flex;justify-content:center;align-items:center;min-height:100vh;font-family:'Outfit',sans-serif}
+#frame{width:1200px;height:630px;background:linear-gradient(135deg,#0a1a4f 0%,#050816 100%);position:relative;overflow:hidden;padding:70px 90px;display:flex;flex-direction:column;justify-content:center}
+.glow{position:absolute;border-radius:50%;filter:blur(120px);mix-blend-mode:screen}
+.g1{width:560px;height:560px;background:#2563eb;top:-220px;right:-80px;opacity:.55}
+.g2{width:420px;height:420px;background:#d97706;bottom:-200px;right:260px;opacity:.35}
+.g3{width:420px;height:420px;background:#7c3aed;bottom:-180px;left:-120px;opacity:.35}
+.content{position:relative;z-index:5;max-width:640px}
+.eyebrow{display:inline-flex;align-items:center;gap:12px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);padding:8px 20px;border-radius:30px;margin-bottom:28px}
+.eyebrow span{color:#e2e8f0;font-size:.9rem;font-weight:600;letter-spacing:2.5px;text-transform:uppercase}
+.dot{width:8px;height:8px;border-radius:50%;background:#60a5fa;box-shadow:0 0 10px #60a5fa}
+h1{font-size:3.9rem;font-weight:800;line-height:1.05;letter-spacing:-2px;background:linear-gradient(180deg,#fff 0%,#a5b4fc 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:22px}
+h2{font-family:'Playfair Display',serif;font-style:italic;font-weight:400;font-size:1.9rem;color:#94a3b8;line-height:1.25}
+.meta{display:flex;gap:36px;border-top:1px solid rgba(255,255,255,.1);padding-top:24px;margin-top:34px}
+.meta div{display:flex;flex-direction:column;gap:4px}
+.ml{font-size:.72rem;letter-spacing:1.5px;text-transform:uppercase;color:#64748b;font-weight:600}
+.mv{font-size:1.05rem;color:#e2e8f0;font-weight:500}
+.grid{position:absolute;right:70px;top:115px;z-index:4;display:grid;grid-template-columns:repeat(3,118px);gap:14px}
+.tile{height:118px;border-radius:22px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);display:flex;flex-direction:column;justify-content:flex-end;padding:12px 14px;color:#e2e8f0;font-size:.85rem;font-weight:600;position:relative}
+.tile .m{font-size:1.5rem;position:absolute;top:10px;right:14px}
+.b{border-left:4px solid #3b82f6}.y{border-left:4px solid #f59e0b}.p{border-left:4px solid #8b5cf6}
+.ok{color:#34d399}.no{color:#fb7185}.mx{color:#cbd5e1}
+.bar{position:absolute;bottom:0;left:0;right:0;height:6px;display:flex}
+.bar div{flex:1}
+</style>
+</head>
+<body>
+<div id="frame">
+  <div class="glow g1"></div><div class="glow g2"></div><div class="glow g3"></div>
+  <div class="grid">
+    <div class="tile b"><span class="m ok">✓</span>JioPhone</div>
+    <div class="tile b"><span class="m ok">✓</span>AirFiber</div>
+    <div class="tile y"><span class="m ok">✓</span>JioHotstar</div>
+    <div class="tile y"><span class="m mx">◐</span>JioSaavn</div>
+    <div class="tile p"><span class="m no">✕</span>JioMeet</div>
+    <div class="tile p"><span class="m no">✕</span>JioChat</div>
+    <div class="tile p"><span class="m mx">◐</span>JioMart</div>
+    <div class="tile b"><span class="m no">✕</span>Phone Next</div>
+    <div class="tile" style="border-left:4px dashed #94a3b8"><span class="m mx">?</span>Jio AI</div>
+  </div>
+  <div class="content">
+    <div class="eyebrow"><div class="dot"></div><span>Product &amp; Business Strategy</span></div>
+    <h1>Jio Has Placed a Dozen Bets Beyond the SIM.</h1>
+    <h2>Here's the scorecard, and what it predicts about AI.</h2>
+    <div class="meta">
+      <div><span class="ml">Framework</span><span class="mv">Bundle · Buy · Build</span></div>
+      <div><span class="ml">Hook</span><span class="mv">India's largest IPO</span></div>
+      <div><span class="ml">As of</span><span class="mv">23 Oct 2026</span></div>
+    </div>
+  </div>
+  <div class="bar"><div style="background:#3b82f6"></div><div style="background:#f59e0b"></div><div style="background:#8b5cf6"></div></div>
+</div>
+</body>
+</html>

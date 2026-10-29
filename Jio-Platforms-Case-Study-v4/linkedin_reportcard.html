@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>LinkedIn Post - Report Card</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Courier+Prime:wght@400;700&family=Playfair+Display:wght@700;900&display=swap');
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#222;display:flex;justify-content:center;align-items:center;min-height:100vh}
+#frame{width:1080px;height:1350px;position:relative;overflow:hidden;background:#3d5a80}
+#frame::before{content:"";position:absolute;inset:0;opacity:.2;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+.paper{position:absolute;left:150px;top:38px;width:900px;height:560px;background:#fbf7ea;transform:rotate(-1.6deg);
+  box-shadow:0 26px 50px rgba(0,0,0,.4);padding:36px 56px 30px 96px;
+  background-image:linear-gradient(90deg,transparent 74px,#e8a0a0 74px,#e8a0a0 76px,transparent 76px),repeating-linear-gradient(180deg,transparent 0 37px,#cfdcec 37px 38px)}
+.holes{position:absolute;left:26px;top:70px;bottom:70px;display:flex;flex-direction:column;justify-content:space-between}
+.holes i{width:22px;height:22px;border-radius:50%;background:#3d5a80;box-shadow:inset 0 2px 4px rgba(0,0,0,.4)}
+.school{font-family:'Courier Prime',monospace;font-size:16px;letter-spacing:4px;color:#555;text-transform:uppercase}
+h1{font-family:'Playfair Display',serif;font-weight:900;font-size:46px;color:#1b263b;margin-top:4px;letter-spacing:-.5px}
+.meta{font-family:'Courier Prime',monospace;font-size:19px;color:#333;margin-top:8px}
+.meta b{font-family:'Caveat',cursive;font-size:30px;color:#1d3fa6;font-weight:700;margin:0 26px 0 6px}
+table{width:100%;border-collapse:collapse;margin-top:16px;font-family:'Courier Prime',monospace}
+th{text-align:left;font-size:15px;letter-spacing:3px;color:#777;font-weight:700;padding-bottom:4px;border-bottom:2px solid #1b263b}
+td{font-size:24px;color:#1b263b;padding:7px 0;border-bottom:1px dashed #b9c3d0;vertical-align:middle}
+td.g{font-family:'Caveat',cursive;font-size:46px;color:#c1121f;font-weight:700;width:140px;text-align:center;line-height:1}
+td.n{font-family:'Caveat',cursive;font-size:28px;color:#1d3fa6;font-weight:600}
+.circle{display:inline-block;border:3px solid #c1121f;border-radius:50%;padding:0 14px;transform:rotate(-6deg)}
+.remark{margin-top:16px;font-family:'Courier Prime',monospace;font-size:16px;letter-spacing:3px;color:#777}
+.hand{font-family:'Caveat',cursive;font-size:34px;color:#1d3fa6;line-height:1.1;margin-top:2px;font-weight:600}
+.sign{position:absolute;right:56px;bottom:30px;font-family:'Caveat',cursive;font-size:28px;color:#1d3fa6;text-align:center}
+.sign span{display:block;border-top:1px solid #777;font-family:'Courier Prime',monospace;font-size:12px;letter-spacing:2px;color:#777;padding-top:2px;margin-top:-4px}
+
+.paper{left:70px;top:110px;width:940px;height:1130px;padding:70px 60px 50px 110px;transform:rotate(-1.4deg);
+  background-image:linear-gradient(90deg,transparent 84px,#e8a0a0 84px,#e8a0a0 86px,transparent 86px),repeating-linear-gradient(180deg,transparent 0 47px,#cfdcec 47px 48px)}
+.holes{left:30px;top:120px;bottom:120px}.holes i{width:28px;height:28px}
+.school{font-size:20px}
+h1{font-size:76px;margin-top:10px}
+.meta{font-size:24px;margin-top:18px;display:flex;flex-direction:column;gap:4px}
+.meta b{font-size:40px}
+table{margin-top:40px}
+th{font-size:17px;padding-bottom:10px}
+td{font-size:30px;padding:26px 0}
+td.g{font-size:68px;width:160px}
+td.n{font-size:36px;line-height:1.05}
+.remark{margin-top:50px;font-size:19px}
+.hand{font-size:50px;margin-top:10px}
+.sign{right:70px;bottom:60px;font-size:36px}.sign span{font-size:14px}
+</style>
+</head>
+<body>
+<div id="frame">
+  <div class="paper">
+    <div class="holes"><i></i><i></i><i></i></div>
+    <div class="school">Deconstructed School of Strategy</div>
+    <h1>Progress Report</h1>
+    <div class="meta"><div>Student:<b>Jio Platforms</b></div><div>Term:<b>IPO, 2026</b></div></div>
+    <table>
+      <tr><th>SUBJECT</th><th style="text-align:center">GRADE</th><th>TEACHER'S NOTE</th></tr>
+      <tr><td>Bundling</td><td class="g">A+</td><td class="n">Puts itself in every pocket.</td></tr>
+      <tr><td>Buying</td><td class="g">A</td><td class="n">Knows what's scarce.</td></tr>
+      <tr><td>Building</td><td class="g"><span class="circle">C</span></td><td class="n">Must do its own homework.</td></tr>
+    </table>
+    <div class="remark">OVERALL REMARKS</div>
+    <div class="hand">Brilliant distributor. Still working on being a platform.</div>
+    <div class="sign">Deconstructed<span>CLASS TEACHER</span></div>
+  </div>
+</div>
+</body>
+</html>

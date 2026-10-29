@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stripe Core API Entity Graph</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap');
+
+        :root {
+            --bg-color: #0b0f19;
+            --node-bg: rgba(255, 255, 255, 0.03);
+            --node-border: rgba(255, 255, 255, 0.1);
+            --accent-cyan: #00d4ff;
+            --accent-purple: #b026ff;
+            --accent-blue: #3b82f6;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+        }
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--bg-color);
+            font-family: 'Inter', sans-serif;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Grid Background */
+        .grid-bg {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-image: 
+                linear-gradient(rgba(59, 130, 246, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(59, 130, 246, 0.05) 1px, transparent 1px);
+            background-size: 50px 50px;
+            z-index: 0;
+        }
+
+        /* Connection Lines Canvas */
+        #connection-lines {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .pipeline {
+            fill: none;
+            stroke: url(#gradient);
+            stroke-width: 4;
+            stroke-linecap: round;
+            opacity: 0.6;
+        }
+
+        .pipeline-glow {
+            fill: none;
+            stroke: var(--accent-purple);
+            stroke-width: 12;
+            stroke-linecap: round;
+            opacity: 0.15;
+            filter: blur(8px);
+        }
+
+        /* Moving particles on lines */
+        .particle {
+            fill: var(--accent-cyan);
+            filter: drop-shadow(0 0 8px var(--accent-cyan));
+        }
+
+        /* Container for nodes */
+        .diagram-container {
+            position: relative;
+            width: 1400px;
+            height: 700px;
+            z-index: 10;
+            transform: scale(0.9); /* Scale down slightly for smaller screens */
+        }
+
+        /* Node Styles */
+        .node {
+            position: absolute;
+            width: 240px;
+            box-sizing: border-box;
+            background: var(--node-bg);
+            border: 1px solid var(--node-border);
+            border-radius: 16px;
+            padding: 24px;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.1);
+            color: var(--text-main);
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s ease;
+        }
+
+        .node:hover {
+            box-shadow: 0 20px 40px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.2), 0 0 20px rgba(176, 38, 255, 0.2);
+            border-color: rgba(176, 38, 255, 0.5);
+            z-index: 20;
+        }
+
+        .node-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 16px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .node h2 {
+            margin: 0 0 8px 0;
+            font-size: 18px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            background: linear-gradient(90deg, #fff, #a5b4fc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .node p {
+            margin: 0;
+            font-size: 13px;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+
+        /* Uniform Zig-Zag Positioning */
+        #node-customer { top: 300px; left: 0px; }
+        #node-subscription { top: 100px; left: 290px; }
+        #node-invoice { top: 300px; left: 580px; }
+        #node-payment { top: 500px; left: 870px; }
+        #node-webhook { top: 300px; left: 1160px; }
+
+        /* SVG Icons scoped properly */
+        .icon-svg { 
+            width: 24px; height: 24px; 
+            stroke: var(--accent-cyan); fill: none; 
+            stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; 
+        }
+        #node-subscription .icon-svg { stroke: var(--accent-purple); }
+        #node-payment .icon-svg { stroke: #34d399; }
+        
+        /* Floating animation for nodes wrapper to not conflict with hover */
+        .float-wrapper-1 { animation: float-1 6s ease-in-out infinite; height: 100%; }
+        .float-wrapper-2 { animation: float-2 7s ease-in-out infinite; height: 100%; }
+        
+        @keyframes float-1 { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-12px); } }
+        @keyframes float-2 { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(12px); } }
+
+        .node:hover .float-wrapper-1, .node:hover .float-wrapper-2 {
+            animation-play-state: paused;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="grid-bg"></div>
+
+    <svg id="connection-lines">
+        <defs>
+            <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#00d4ff" />
+                <stop offset="50%" stop-color="#b026ff" />
+                <stop offset="100%" stop-color="#3b82f6" />
+            </linearGradient>
+        </defs>
+
+        <!-- Paths will be injected via JS based on node positions -->
+        <g id="paths-group"></g>
+        <g id="particles-group"></g>
+    </svg>
+
+    <div class="diagram-container">
+        
+        <div class="node" id="node-customer">
+            <div class="float-wrapper-1">
+                <div class="node-icon">
+                    <svg class="icon-svg" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                </div>
+                <h2>Customer</h2>
+                <p>Stores payment methods, tax IDs, and billing history. Tied to the Product and Price catalog.</p>
+            </div>
+        </div>
+
+        <div class="node" id="node-subscription">
+            <div class="float-wrapper-2">
+                <div class="node-icon">
+                    <svg class="icon-svg" viewBox="0 0 24 24"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+                </div>
+                <h2>Subscription</h2>
+                <p>The operational core state machine. Connects Customer to Prices, managing cycles, trials, and proration.</p>
+            </div>
+        </div>
+
+        <div class="node" id="node-invoice">
+            <div class="float-wrapper-1">
+                <div class="node-icon">
+                    <svg class="icon-svg" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+                </div>
+                <h2>Invoice</h2>
+                <p>Calculated financial statement at cycle end. Itemizes base fees, usage overages, taxes, and discounts.</p>
+            </div>
+        </div>
+
+        <div class="node" id="node-payment">
+            <div class="float-wrapper-2">
+                <div class="node-icon">
+                    <svg class="icon-svg" viewBox="0 0 24 24"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect><line x1="1" y1="10" x2="23" y2="10"></line></svg>
+                </div>
+                <h2>PaymentIntent</h2>
+                <p>Executes the actual transaction across global card rails, transitioning state upon success or failure.</p>
+            </div>
+        </div>
+
+        <div class="node" id="node-webhook">
+            <div class="float-wrapper-1">
+                <div class="node-icon">
+                    <svg class="icon-svg" viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"></path></svg>
+                </div>
+                <h2>Webhook</h2>
+                <p>Fires real-time events back to the merchant's server to grant or revoke app access.</p>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        const nodes = {
+            customer: document.getElementById('node-customer'),
+            subscription: document.getElementById('node-subscription'),
+            invoice: document.getElementById('node-invoice'),
+            payment: document.getElementById('node-payment'),
+            webhook: document.getElementById('node-webhook'),
+        };
+
+        const connections = [
+            { from: 'customer', to: 'subscription' },
+            { from: 'subscription', to: 'invoice' },
+            { from: 'invoice', to: 'payment' },
+            { from: 'payment', to: 'webhook' }
+        ];
+
+        const pathsGroup = document.getElementById('paths-group');
+        const particlesGroup = document.getElementById('particles-group');
+        
+        // Arrays to store references to DOM elements so we don't recreate them
+        const glowPaths = [];
+        const mainPaths = [];
+
+        // Initialize SVG elements once
+        function initConnections() {
+            connections.forEach((conn, index) => {
+                // Glow background path
+                const glowPath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+                glowPath.setAttribute('class', 'pipeline-glow');
+                pathsGroup.appendChild(glowPath);
+                glowPaths.push(glowPath);
+
+                // Main visible path
+                const mainPath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+                mainPath.setAttribute('class', 'pipeline');
+                mainPath.setAttribute('id', `path-${index}`);
+                pathsGroup.appendChild(mainPath);
+                mainPaths.push(mainPath);
+
+                // Animated Particle
+                const particle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+                particle.setAttribute('r', '4');
+                particle.setAttribute('class', 'particle');
+                
+                const animateMotion = document.createElementNS('http://www.w3.org/2000/svg', 'animateMotion');
+                animateMotion.setAttribute('dur', (2 + Math.random()) + 's');
+                animateMotion.setAttribute('repeatCount', 'indefinite');
+                
+                const mpath = document.createElementNS('http://www.w3.org/2000/svg', 'mpath');
+                mpath.setAttribute('href', `#path-${index}`);
+                
+                animateMotion.appendChild(mpath);
+                particle.appendChild(animateMotion);
+                particlesGroup.appendChild(particle);
+            });
+        }
+
+        function getCenter(el) {
+            const rect = el.getBoundingClientRect();
+            return {
+                x: rect.left + rect.width / 2,
+                y: rect.top + rect.height / 2
+            };
+        }
+
+        function generatePath(p1, p2) {
+            // Create a curved path for a more organic, pipeline feel
+            // Calculate a control point that creates a nice bezier curve
+            const midX = (p1.x + p2.x) / 2;
+            return `M ${p1.x} ${p1.y} C ${midX} ${p1.y}, ${midX} ${p2.y}, ${p2.x} ${p2.y}`;
+        }
+
+        // Only update the 'd' attributes on tick
+        function updateConnections() {
+            connections.forEach((conn, index) => {
+                const c1 = getCenter(nodes[conn.from]);
+                const c2 = getCenter(nodes[conn.to]);
+                const d = generatePath(c1, c2);
+
+                glowPaths[index].setAttribute('d', d);
+                mainPaths[index].setAttribute('d', d);
+            });
+        }
+
+        // Run setup once
+        initConnections();
+
+        // Re-draw connection coordinates on every animation frame
+        function animate() {
+            updateConnections();
+            requestAnimationFrame(animate);
+        }
+
+        // Start animation loop
+        animate();
+
+    </script>
+</body>
+</html>

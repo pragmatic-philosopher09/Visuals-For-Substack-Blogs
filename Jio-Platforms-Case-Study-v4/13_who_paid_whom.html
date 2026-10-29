@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Fig 13 - Who Paid Whom</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>body{font-family:'Outfit',sans-serif;background:#f1f5f9}#frame{width:1200px}</style>
+</head>
+<body class="p-8 flex justify-center">
+<div id="frame" class="bg-white rounded-[2rem] border border-slate-200 shadow-sm p-12 text-slate-800">
+  <span class="text-xs font-bold tracking-[0.2em] text-slate-400 uppercase">Fig 13 · Follow the money</span>
+  <h2 class="text-4xl font-extrabold tracking-tight text-slate-900 mt-2">Jio sells distribution and buys preference</h2>
+  <p class="text-slate-500 mt-2 text-lg">The money tells you what each side thinks Jio has, and what it lacks.</p>
+  <svg id="flow" width="1100" height="458" class="mt-6"></svg>
+  <div class="grid grid-cols-2 gap-6 mt-4">
+    <div class="rounded-2xl bg-blue-50 border border-blue-100 p-5 text-sm"><b class="text-blue-700">What the world pays Jio for:</b> access to 500M+ Indian connections and the screen many of them recharge on. Meta wanted WhatsApp commerce. Google wanted Android and AI distribution.</div>
+    <div class="rounded-2xl bg-amber-50 border border-amber-100 p-5 text-sm"><b class="text-amber-700">What Jio pays the world for:</b> things people choose on their own, like live cricket, Disney's catalogue and frontier AI models. Jio could not build any of these, so it rents or acquires them.</div>
+  </div>
+  <p class="text-[11px] text-slate-400 mt-4">Figures: Meta ₹43,574 cr (Apr 2020); Google ₹33,737 cr (Jul 2020); IPL digital rights ₹23,758 cr (2023–27); Reliance growth capital into JioStar ~₹11,500 cr; Google AI Pro offer ~₹35,100 retail value per eligible user (18 months), funded and shared between Google and Jio on undisclosed terms. Not all flows are comparable (equity vs. rights vs. retail value); arrows show direction, widths are indicative.</p>
+</div>
+<script>
+const s=[];const col={blue:'#2563eb',amber:'#f59e0b'};
+const box=(x,y,w,h,fill,t,sub,tc='#0f172a')=>{s.push(`<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="18" fill="${fill}"/>`);s.push(`<text x="${x+w/2}" y="${y+h/2-(sub?4:-6)}" text-anchor="middle" font-size="18" font-weight="800" fill="${tc}">${t}</text>`);if(sub)s.push(`<text x="${x+w/2}" y="${y+h/2+16}" text-anchor="middle" font-size="14" fill="${tc}" opacity=".8">${sub}</text>`);};
+const flow=(x1,y1,x2,y2,w,c,label,amt,lx,ly)=>{const mx=(x1+x2)/2;s.push(`<path d="M${x1} ${y1} C ${mx} ${y1}, ${mx} ${y2}, ${x2} ${y2}" stroke="${c}" stroke-width="${w}" fill="none" stroke-opacity=".35"/>`);s.push(`<polygon points="${x2},${y2} ${x2-14},${y2-9} ${x2-14},${y2+9}" fill="${c}"/>`);s.push(`<text x="${lx}" y="${ly}" text-anchor="middle" font-size="15" font-weight="700" fill="#0f172a">${label}</text><text x="${lx}" y="${ly+19}" text-anchor="middle" font-size="17" font-weight="800" fill="${c==col.blue?'#1d4ed8':'#b45309'}">${amt}</text>`);};
+// left: payers into Jio
+box(0,60,200,80,'#eff6ff','Meta','9.99% stake');
+box(0,190,200,80,'#eff6ff','Google','7.73% stake');
+box(0,320,200,80,'#eff6ff','PE / Sovereign funds','KKR, PIF, Silver Lake…');
+// center
+box(450,150,200,170,'#0a2885','JIO','500M+ connections','#fff');s.push(`<text x="550" y="269" text-anchor="middle" font-size="14" fill="#fff" opacity=".8">+ the recharge screen</text>`);
+// right: recipients
+box(900,60,200,80,'#fffbeb','BCCI','IPL digital rights');
+box(900,190,200,80,'#fffbeb','Disney','JioStar merger');
+box(900,320,200,80,'#fffbeb','Google (again)','Gemini / AI Pro');
+flow(200,100,450,190,36,col.blue,'pays for distribution','₹43,574 cr',320,98);
+flow(200,230,450,235,30,col.blue,'','₹33,737 cr',320,222);
+flow(200,360,450,280,40,col.blue,'','~₹75,000 cr',320,350);
+flow(650,190,900,100,24,col.amber,'pays for preference','₹23,758 cr',780,98);
+flow(650,235,900,230,14,col.amber,'','~₹11,500 cr',780,222);
+flow(650,280,900,360,10,col.amber,'','terms undisclosed',780,350);
+s.push(`<text x="100" y="35" text-anchor="middle" font-size="15" font-weight="800" fill="#1d4ed8" letter-spacing="2">SELLS DISTRIBUTION</text><text x="100" y="54" text-anchor="middle" font-size="12" fill="#64748b">equity sold, 2020</text>`);
+s.push(`<text x="1000" y="35" text-anchor="middle" font-size="15" font-weight="800" fill="#b45309" letter-spacing="2">BUYS PREFERENCE</text><text x="1000" y="54" text-anchor="middle" font-size="12" fill="#64748b">rights, assets, partnerships</text>`);
+s.push(`<text x="550" y="400" text-anchor="middle" font-size="16" font-weight="700" fill="#0f172a">Total raised 2020: ₹1.52 lakh cr for ~33%</text>`);
+s.push(`<text x="550" y="424" text-anchor="middle" font-size="14" fill="#64748b">Google sits on both sides: it bought into Jio's distribution in 2020.</text><text x="550" y="428" dy="18" text-anchor="middle" font-size="14" fill="#64748b">In 2025, Jio uses Gemini to sell plans, and Google, presumably, gets the users.</text>`);
+document.getElementById('flow').innerHTML=s.join('');
+</script>
+</body>
+</html>

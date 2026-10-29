@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stripe Dashboard - Pricing Configurator</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
+
+        :root {
+            --bg-page: #f6f9fc;
+            --surface: #ffffff;
+            --text-main: #1a1f36;
+            --text-secondary: #4f566b;
+            --text-tertiary: #697386;
+            --border: #e3e8ee;
+            --primary: #635bff;
+            --primary-hover: #0a2540;
+            --focus-ring: rgba(99, 91, 255, 0.4);
+            --annotation-color: #e53e3e;
+        }
+
+        body {
+            margin: 0;
+            padding: 40px;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--bg-page);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            color: var(--text-main);
+        }
+
+        .container {
+            position: relative;
+            width: 100%;
+            max-width: 900px;
+            padding-right: 250px; /* Space for annotations */
+        }
+
+        .modal {
+            background: var(--surface);
+            border-radius: 8px;
+            box-shadow: 0 15px 35px rgba(50, 50, 93, 0.1), 0 5px 15px rgba(0, 0, 0, 0.07);
+            border: 1px solid var(--border);
+            padding: 32px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .modal-header {
+            margin-bottom: 24px;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 16px;
+        }
+
+        .modal-header h1 {
+            font-size: 20px;
+            font-weight: 600;
+            margin: 0 0 8px 0;
+        }
+
+        .form-group {
+            position: relative;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 8px;
+            color: var(--text-main);
+        }
+
+        .form-desc {
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin-bottom: 12px;
+            line-height: 1.4;
+        }
+
+        /* Toggle Button Group */
+        .toggle-group {
+            display: flex;
+            background: #f7fafc;
+            border-radius: 6px;
+            padding: 4px;
+            border: 1px solid var(--border);
+            width: fit-content;
+        }
+
+        .toggle-btn {
+            padding: 8px 16px;
+            font-size: 13px;
+            font-weight: 500;
+            border: none;
+            background: transparent;
+            color: var(--text-secondary);
+            cursor: pointer;
+            border-radius: 4px;
+            transition: all 0.2s ease;
+        }
+
+        .toggle-btn.active {
+            background: white;
+            color: var(--text-main);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        /* Dropdown/Select */
+        .select-wrapper {
+            position: relative;
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .custom-select {
+            appearance: none;
+            width: 100%;
+            padding: 10px 12px;
+            font-size: 14px;
+            font-family: inherit;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            background-color: white;
+            color: var(--text-main);
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+            cursor: pointer;
+        }
+        
+        .custom-select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px var(--focus-ring);
+        }
+
+        .select-icon {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            pointer-events: none;
+            color: var(--text-tertiary);
+        }
+
+        /* Annotations */
+        .annotation {
+            position: absolute;
+            right: 0;
+            width: 220px;
+            font-size: 13px;
+            color: var(--annotation-color);
+            background: white;
+            padding: 12px;
+            border-radius: 6px;
+            border-left: 3px solid var(--annotation-color);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05), 0 1px 3px rgba(0,0,0,0.1);
+            z-index: 20;
+        }
+
+        .annotation-title {
+            font-weight: 600;
+            margin-bottom: 4px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .annotation-badge {
+            background: var(--annotation-color);
+            color: white;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            font-weight: bold;
+        }
+
+        /* Connecting Lines */
+        .connector {
+            position: absolute;
+            height: 2px;
+            background: var(--annotation-color);
+            z-index: 15;
+            border-radius: 2px;
+        }
+        
+        .connector::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: -4px;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--annotation-color);
+        }
+
+        /* Positioning Specific Elements */
+        #group-1 { margin-top: 10px; margin-bottom: 60px; }
+        #group-2 { margin-bottom: 60px; }
+        #group-3 { margin-bottom: 30px; }
+        
+        /* Modifiers for connection visualization based on layout */
+        .c1 { top: 120px; right: 230px; width: 140px; }
+        .c2 { top: 260px; right: 230px; width: 200px; }
+        .c3 { top: 410px; right: 230px; width: 230px; }
+
+        .a1 { top: 90px; }
+        .a2 { top: 230px; }
+        .a3 { top: 380px; }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        
+        <!-- Callouts & Connectors -->
+        <div class="connector c1"></div>
+        <div class="annotation a1">
+            <div class="annotation-title"><span class="annotation-badge">1</span> The Commitment</div>
+            Determines if this is a subscription or a one-time charge. Sets the foundation for the billing lifecycle.
+        </div>
+
+        <div class="connector c2"></div>
+        <div class="annotation a2">
+            <div class="annotation-title"><span class="annotation-badge">2</span> The Scale</div>
+            Controls how volume is handled. Per-unit is linear, Tiered offers bulk discounts, Volume applies discounts to all units.
+        </div>
+
+        <div class="connector c3"></div>
+        <div class="annotation a3">
+            <div class="annotation-title"><span class="annotation-badge">3</span> The Logic</div>
+            Crucial for metered billing. Determines if Stripe bills for max usage, sum of usage, or last recorded usage in the period.
+        </div>
+
+        <!-- The Modal -->
+        <div class="modal">
+            <div class="modal-header">
+                <h1>Create a price</h1>
+            </div>
+
+            <!-- Group 1: Recurring vs One-Time -->
+            <div class="form-group" id="group-1">
+                <label class="form-label">Price type</label>
+                <div class="form-desc">Choose whether you charge your customers a single time or on a recurring basis.</div>
+                <div class="toggle-group" id="price-type-toggle">
+                    <button class="toggle-btn active">Recurring</button>
+                    <button class="toggle-btn">One-time</button>
+                </div>
+            </div>
+
+            <!-- Group 2: Billing Scheme -->
+            <div class="form-group" id="group-2">
+                <label class="form-label">Billing model</label>
+                <div class="form-desc">How do you want to calculate the total price?</div>
+                <div class="select-wrapper">
+                    <select class="custom-select">
+                        <option>Standard pricing (Per unit)</option>
+                        <option>Package pricing</option>
+                        <option selected>Tiered pricing</option>
+                        <option>Volume pricing</option>
+                    </select>
+                    <svg class="select-icon" width="12" height="12" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M4 6L8 10L12 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </div>
+            </div>
+
+            <!-- Group 3: Usage Aggregation -->
+            <div class="form-group" id="group-3">
+                <label class="form-label">Usage type</label>
+                <div class="form-desc">Because this price is metered, how should usage be calculated across the billing period?</div>
+                <div class="select-wrapper" style="max-width: 300px;">
+                    <select class="custom-select">
+                        <option selected>Sum across period</option>
+                        <option>Most recent value during period</option>
+                        <option>Maximum value during period</option>
+                        <option>Count of usage records</option>
+                    </select>
+                    <svg class="select-icon" width="12" height="12" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M4 6L8 10L12 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </div>
+            </div>
+
+            <div style="margin-top: 40px; display: flex; justify-content: flex-end; gap: 12px; border-top: 1px solid var(--border); padding-top: 24px;">
+                <button style="padding: 8px 16px; border-radius: 4px; border: 1px solid var(--border); background: white; cursor: pointer; font-weight: 500;">Cancel</button>
+                <button style="padding: 8px 16px; border-radius: 4px; border: none; background: var(--primary); color: white; cursor: pointer; font-weight: 500; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">Save price</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Small script to adjust connections on window resize for responsiveness and toggle logic -->
+    <script>
+        // Toggle Logic
+        const toggleButtons = document.querySelectorAll('#price-type-toggle .toggle-btn');
+        toggleButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                toggleButtons.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+            });
+        });
+
+        // Callouts Positioning Logic
+        function positionCallouts() {
+            const container = document.querySelector('.container');
+            if(window.innerWidth < 800) {
+                // Hide connectors and make annotations stack if window is too small
+                document.querySelectorAll('.connector').forEach(c => c.style.display = 'none');
+                container.style.paddingRight = '20px';
+                document.querySelectorAll('.annotation').forEach(a => {
+                    a.style.position = 'relative';
+                    a.style.top = 'auto';
+                    a.style.right = 'auto';
+                    a.style.width = '100%';
+                    a.style.marginBottom = '20px';
+                    a.style.boxSizing = 'border-box';
+                });
+            } else {
+                // Reset for desktop view
+                document.querySelectorAll('.connector').forEach(c => c.style.display = 'block');
+                container.style.paddingRight = '250px';
+                document.querySelectorAll('.annotation').forEach(a => {
+                    a.style.position = 'absolute';
+                    a.style.right = '0';
+                    a.style.width = '220px';
+                    a.style.marginBottom = '0';
+                });
+                
+                // Fine-tune positioning based on actual elements
+                const g1 = document.getElementById('group-1').getBoundingClientRect();
+                const g2 = document.getElementById('group-2').getBoundingClientRect();
+                const g3 = document.getElementById('group-3').getBoundingClientRect();
+                const cBox = container.getBoundingClientRect();
+                
+                document.querySelector('.a1').style.top = (g1.top - cBox.top) + 'px';
+                document.querySelector('.c1').style.top = (g1.top - cBox.top + 20) + 'px';
+                
+                document.querySelector('.a2').style.top = (g2.top - cBox.top) + 'px';
+                document.querySelector('.c2').style.top = (g2.top - cBox.top + 20) + 'px';
+                
+                document.querySelector('.a3').style.top = (g3.top - cBox.top) + 'px';
+                document.querySelector('.c3').style.top = (g3.top - cBox.top + 20) + 'px';
+            }
+        }
+
+        window.addEventListener('resize', positionCallouts);
+        window.addEventListener('load', positionCallouts);
+        // Initial call
+        setTimeout(positionCallouts, 100);
+    </script>
+</body>
+</html>

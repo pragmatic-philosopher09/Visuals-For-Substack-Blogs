@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Social Preview - Jio Strategy Receipt</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;600;800&family=Outfit:wght@500;700&display=swap');
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#222;display:flex;justify-content:center;align-items:center;min-height:100vh}
+#frame{width:1200px;height:630px;background:#f2b134;position:relative;overflow:hidden;font-family:'Outfit',sans-serif}
+#frame::before{content:"";position:absolute;inset:0;opacity:.18;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+.left{position:absolute;left:72px;top:92px;width:560px;z-index:2;color:#111}
+.eyebrow{font-family:'JetBrains Mono',monospace;font-size:17px;font-weight:600;letter-spacing:3px;text-transform:uppercase}
+.eyebrow b{background:#111;color:#f2b134;padding:3px 9px;margin-right:10px}
+h1{font-family:'Instrument Serif',serif;font-weight:400;font-size:96px;line-height:.95;letter-spacing:-2px;margin-top:34px}
+h1 i{display:block}
+.sub{font-size:24px;font-weight:500;line-height:1.35;margin-top:30px;max-width:470px;color:#2a1d00}
+.sub b{font-weight:700}
+.receipt{position:absolute;right:86px;top:40px;width:450px;background:#fffdf7;transform:rotate(3deg);z-index:3;
+  box-shadow:0 30px 50px rgba(60,30,0,.35),0 4px 10px rgba(60,30,0,.2);
+  font-family:'JetBrains Mono',monospace;color:#1a1a1a;padding:30px 32px 26px;font-size:18px;line-height:1.6}
+.receipt::before,.receipt::after{content:"";position:absolute;left:0;right:0;height:14px;
+  background:linear-gradient(-45deg,transparent 7px,#fffdf7 0) 0 0/14px 14px repeat-x,linear-gradient(45deg,transparent 7px,#fffdf7 0) 0 0/14px 14px repeat-x}
+.receipt::before{top:-13px;transform:rotate(180deg)}
+.receipt::after{bottom:-13px}
+.c{text-align:center}
+.brand{font-weight:800;font-size:21px;letter-spacing:1px}
+.dim{color:#6b6357;font-size:15px}
+.hr{border-top:2px dashed #b9b1a3;margin:12px 0}
+.row{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+.row span:first-child{white-space:nowrap}
+.row .fill{flex:1;border-bottom:2px dotted #c9c1b3}
+.big{font-weight:800;font-size:25px;margin-top:4px}
+.na{color:#c2410c;font-weight:800}
+.bar{height:56px;margin:16px auto 8px;width:300px;background:repeating-linear-gradient(90deg,#1a1a1a 0 2px,transparent 2px 4px,#1a1a1a 4px 7px,transparent 7px 9px,#1a1a1a 9px 10px,transparent 10px 14px)}
+.stamp{position:absolute;left:50%;bottom:44px;transform:translateX(-50%) rotate(-9deg);white-space:nowrap;background:rgba(255,253,247,.55);border:4px solid #c2410c;color:#c2410c;font-weight:800;font-size:26px;letter-spacing:3px;padding:6px 16px;border-radius:6px;opacity:.85;font-family:'JetBrains Mono',monospace}
+.sec{font-size:13px;letter-spacing:1px;color:#6b6357;margin-top:6px}.sec b{color:#1a1a1a}
+.big{font-size:21px}
+.receipt{top:62px;padding:22px 30px 90px;font-size:16px;line-height:1.5}.brand{font-size:19px}.dim{font-size:13px}.hr{margin:9px 0}.bar{height:36px;width:260px;margin:10px auto 4px}.stamp{font-size:22px;bottom:20px;padding:5px 14px}
+</style>
+</head>
+<body>
+<div id="frame">
+  <div class="left">
+    <div class="eyebrow"><b>Deconstructed</b>Product strategy</div>
+    <h1>What is Jio <i>really selling?</i></h1>
+    <p class="sub">A decade of bets beyond the SIM, itemised. <b>It sells distribution. It buys preference.</b></p>
+  </div>
+
+  <div class="receipt">
+    <div class="c brand">JIO PLATFORMS LTD</div>
+    <div class="c dim">BETS BEYOND THE SIM · ITEMISED</div>
+    <div class="hr"></div>
+    <div class="sec"><b>BUNDLE</b> · ride the connection</div>
+    <div class="row"><span>Phones, fibre, data</span><span class="fill"></span><span>KEPT</span></div>
+    <div class="sec"><b>BUY</b> · rent what's scarce</div>
+    <div class="row"><span>Cricket, content</span><span class="fill"></span><span>KEPT</span></div>
+    <div class="sec"><b>BUILD</b> · make your own apps</div>
+    <div class="row"><span>Chat, meetings, browser</span><span class="fill"></span><span class="na">RETURNED</span></div>
+    <div class="hr"></div>
+    <div class="row big"><span>SOLD</span><span class="fill"></span><span>DISTRIBUTION</span></div>
+    <div class="row big"><span>BOUGHT</span><span class="fill"></span><span>PREFERENCE</span></div>
+    <div class="bar"></div>
+    <div class="c dim">** THANK YOU FOR BUNDLING **</div>
+    <div class="stamp">BUNDLED, NOT BUILT</div>
+  </div>
+</div>
+</body>
+</html>

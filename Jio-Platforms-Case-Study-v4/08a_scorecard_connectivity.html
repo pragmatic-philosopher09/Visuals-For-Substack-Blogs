@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Fig 8a - Scorecard: Connectivity extensions</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>body{font-family:'Outfit',sans-serif;background:#f1f5f9}#frame{width:1200px}</style>
+</head>
+<body class="p-8 flex justify-center">
+<div id="frame" class="bg-white rounded-[2rem] border border-slate-200 shadow-sm p-12 text-slate-800">
+  <span class="text-xs font-bold tracking-[0.2em] text-slate-400 uppercase">Fig 8a · The scorecard, part 1: connectivity extensions</span>
+  <h2 class="text-4xl font-extrabold tracking-tight text-slate-900 mt-2">Extending the connection: 4 won, 1 mixed, 1 flopped</h2>
+  <p class="text-slate-500 mt-2 text-lg">Six products that sell or deepen the connection itself: handsets, home broadband and in-plan TV. All six are Bundle plays.</p>
+  <div id="grid" class="grid grid-cols-3 gap-5 mt-8"></div>
+  <div class="mt-6 rounded-2xl bg-blue-50 border border-blue-100 p-5 text-[15px]"><b class="text-blue-700">The pattern:</b> Bundle wins when the alternative is nothing (a 2G phone, no home broadband). The one flop, JioPhone Next, was a smartphone. It needed buyers to prefer it, and Xiaomi already had that preference. These wins extend telecom. They don't leave it.</div>
+  <p class="text-[12px] text-slate-400 mt-5">As of 23 Oct 2026. Mode = the dominant strategic investment mode (author's assessment). "Win if" is the criterion each product is scored against; Evidence rates how well public data supports the score. Scores are the author's judgement, made with hindsight. Outcomes judge adoption and competitive position against the "win if" criterion; standalone financial returns are not public for most products.</p>
+</div>
+<script>
+const C={bundle:['Bundle','bg-blue-600','text-blue-700','bg-blue-50'],buy:['Buy','bg-amber-500','text-amber-700','bg-amber-50'],build:['Build','bg-violet-600','text-violet-700','bg-violet-50']};
+const O={win:['✓ Won','text-emerald-700 bg-emerald-50'],mixed:['◐ Mixed','text-slate-600 bg-slate-100'],flop:['✕ Flopped','text-rose-700 bg-rose-50']};
+const E={High:'text-emerald-700',Medium:'text-amber-700',Low:'text-rose-700'};
+const cards=[["JioPhone", "2017", "bundle", "win", "~₹1,500 refundable deposit", "A 4G phone sold as a recharge plan. It moved tens of millions of 2G users onto Jio's network.", "move 2G feature-phone users onto Jio 4G at scale.", ["Medium", "sales not officially disclosed"]], ["JioTV", "2016", "bundle", "win", "Free with every plan", "Live TV inside the SIM. Nobody had to choose it, so nobody had to be persuaded.", "stay a default, retained part of the plan.", ["Low", "usage not disclosed; scored on persistence"]], ["AirFiber", "2023", "bundle", "win", "14M+ connections (reported)", "Wireless home broadband with no cable to lay. It made fixed broadband a 5G add-on.", "add home connections faster than wired fibre did.", ["Medium", "company-reported connections"]], ["JioBharat", "2023", "bundle", "win", "₹999 handset", "JioPhone again, cheaper. A 4G feature phone with UPI built in, aimed at the remaining 2G users.", "keep upgrading 2G users at a ₹999 price point.", ["Low", "early; sales not disclosed"]], ["JioFiber", "2019", "bundle", "mixed", "Slow wired rollout", "The bundle was right but the cable was slow. AirFiber did more for home broadband in two years.", "reach the tens of millions of homes targeted at launch.", ["Medium", "TRAI wireline data"]], ["JioPhone Next", "2021", "bundle", "flop", "₹6,499 with Google", "A bundle that needed buyers to prefer it, in a market Xiaomi and Samsung already owned. Sales missed early ambitions.", "sell at the scale of its launch ambitions.", ["Medium", "press reports, not disclosed"]]];
+document.getElementById('grid').innerHTML=cards.map(([n,y,m,o,num,why,crit,ev])=>{const c=C[m],ou=O[o];return `
+<div class="rounded-2xl border border-slate-200 overflow-hidden flex flex-col">
+  <div class="${c[1]} h-2"></div>
+  <div class="p-5 flex flex-col gap-2 flex-1">
+    <div class="flex justify-between items-start"><div><div class="font-extrabold text-2xl leading-tight">${n}</div><div class="text-sm text-slate-400">${y}</div></div><span class="text-sm font-bold px-2.5 py-1 rounded-full ${ou[1]}">${ou[0]}</span></div>
+    <span class="self-start text-[11px] uppercase tracking-widest font-bold px-2 py-0.5 rounded ${c[3]} ${c[2]}">${c[0]}</span>
+    <div class="text-base font-bold text-slate-900">${num}</div>
+    <p class="text-[15px] text-slate-600 leading-snug">${why}</p>
+    <div class="mt-auto pt-3 border-t border-slate-100 text-[13px] leading-snug"><div><b class="text-slate-900">Win if:</b> <span class="text-slate-600">${crit}</span></div><div class="mt-1"><b class="text-slate-900">Evidence:</b> <b class="${E[ev[0]]}">${ev[0]}</b> <span class="text-slate-500">· ${ev[1]}</span></div></div>
+  </div>
+</div>`}).join('');
+</script>
+</body>
+</html>

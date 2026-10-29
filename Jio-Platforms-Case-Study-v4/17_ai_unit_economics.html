@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Fig 17 - AI Unit Economics</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>body{font-family:'Outfit',sans-serif;background:#f1f5f9}#frame{width:1200px}</style>
+</head>
+<body class="p-8 flex justify-center">
+<div id="frame" class="bg-white rounded-[2rem] border border-slate-200 shadow-sm p-12 text-slate-800">
+  <span class="text-xs font-bold tracking-[0.2em] text-slate-400 uppercase">Fig 17 · The AI math problem</span>
+  <h2 class="text-4xl font-extrabold tracking-tight text-slate-900 mt-2">A heavy AI user could cost more than they pay Jio</h2>
+  <p class="text-slate-500 mt-2 text-lg">Data costs fall with scale. AI inference costs grow with usage. That's why "bundle it free" doesn't carry over to AI automatically.</p>
+
+  <div class="grid grid-cols-[1.5fr_1fr] gap-10 mt-8">
+    <div>
+      <h3 class="font-bold text-slate-900">Per user, per month (₹)</h3>
+      <div class="h-[400px] mt-3"><canvas id="ue"></canvas></div>
+    </div>
+    <div class="space-y-4">
+      <div class="rounded-2xl bg-blue-50 border border-blue-100 p-5">
+        <div class="text-xs uppercase tracking-widest text-blue-600 font-bold">What a Jio user is worth</div>
+        <div class="flex gap-6 mt-2"><div><div class="text-3xl font-extrabold">₹215.6</div><div class="text-xs text-slate-500">ARPU</div></div><div><div class="text-3xl font-extrabold">~₹130</div><div class="text-xs text-slate-500">EBITDA per connection</div></div></div>
+      </div>
+      <div class="rounded-2xl bg-violet-50 border border-violet-100 p-5">
+        <div class="text-xs uppercase tracking-widest text-violet-700 font-bold">What the Gemini offer is "worth"</div>
+        <div class="text-3xl font-extrabold mt-2">~₹1,950<span class="text-base font-semibold text-slate-500"> /month</span></div>
+        <div class="text-sm text-slate-600">Retail price of Google AI Pro, about <b>9× Jio's ARPU</b>. That is a retail price, not Jio's cost; terms are undisclosed. Who bears the inference cost isn't public.</div>
+      </div>
+      <div class="rounded-2xl bg-slate-900 text-white p-5 text-sm"><b>The strategic consequence:</b> Jio should bundle AI only where a partner pays for inference, or where it controls the cost (its own compute running small Indic models). If Jio had to bear the full cost of heavy frontier-model usage, ~₹130 of EBITDA per connection would not go far. Whether the offer pays depends on the partnership terms, actual usage, and any retention or acquisition benefit.</div>
+    </div>
+  </div>
+  <p class="text-[11px] text-slate-400 mt-6">Q1 FY27: ARPU ₹215.6; EBITDA per connection = ₹20,865 cr ÷ 533.3M ÷ 3 months ≈ ₹130 (EBITDA covers all of Jio's businesses, not just mobile). ARPU, EBITDA and AI cost are different measures, shown together only for scale. AI inference costs are the author's illustrative assumptions, not Jio data: light ≈ a few short chats a week on a small model; medium ≈ daily use on a mid-tier model; heavy ≈ frequent long-context use of a frontier model, images and voice. Real costs vary widely by model and are falling, but usage is rising.</p>
+</div>
+<script>
+Chart.defaults.font.family='Outfit';Chart.defaults.color='#64748b';Chart.defaults.animation=false;
+const d=[215.6,130,5,40,250];
+const lbl={id:'l',afterDatasetsDraw(c){const {ctx}=c;c.getDatasetMeta(0).data.forEach((el,i)=>{ctx.save();ctx.font='800 14px Outfit';ctx.fillStyle='#0f172a';ctx.textAlign='left';ctx.textBaseline='middle';ctx.fillText('₹'+d[i]+(i>=2?' (illustrative)':''),el.x+8,el.y);ctx.restore();});}};
+new Chart(document.getElementById('ue'),{type:'bar',plugins:[lbl],data:{labels:['Jio ARPU','Jio EBITDA / connection','AI cost: light user','AI cost: medium user','AI cost: heavy user'],datasets:[{data:d,backgroundColor:['#2563eb','#1d4ed8','#c4b5fd','#a78bfa','#7c3aed'],borderRadius:8,barThickness:44}]},options:{indexAxis:'y',maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{max:340,grid:{color:'#f1f5f9'},ticks:{callback:v=>'₹'+v}},y:{grid:{display:false},ticks:{font:{size:13,weight:'600'},color:'#0f172a'}}}}});
+</script>
+<script>document.fonts.ready.then(()=>Object.values(Chart.instances).forEach(c=>c.update()));</script>
+</body>
+</html>

@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="light">
+  <meta name="description" content="A Roblox field guide: nine original game-inspired illustrations, a brief product teardown, and two click-to-load official videos.">
+  <title>Roblox / An evening, deconstructed</title>
+  <link rel="stylesheet" href="visuals.css">
+  <script src="visuals.js" defer></script>
+</head>
+<body>
+  <a class="skip" href="#content">Skip to the field guide</a>
+  <svg class="symbol-library" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <symbol id="block-person" viewBox="0 0 120 160">
+        <path d="M37 110h20v42H33zM64 110h20l5 42H64z" fill="currentColor"/>
+        <path d="M29 61h62l-6 55H35z" fill="currentColor"/>
+        <path d="M13 68l17-5 5 43-16 4zM91 64l17 4-6 42-16-4z" fill="currentColor"/>
+        <rect x="36" y="12" width="48" height="43" rx="8" fill="#f3cdb3"/>
+        <path d="M47 29h3m20 0h3" stroke="#1b2828" stroke-width="4" stroke-linecap="round"/>
+        <path d="M52 41q8 6 16 0" fill="none" stroke="#1b2828" stroke-width="2.5"/>
+        <path d="M42 70h36v28H42z" fill="#fffdf3" opacity=".22"/>
+      </symbol>
+      <pattern id="map-grid" width="32" height="32" patternUnits="userSpaceOnUse">
+        <path d="M32 0H0V32" fill="none" stroke="currentColor" stroke-opacity=".12"/>
+      </pattern>
+    </defs>
+  </svg>
+  <header class="toolbar">
+    <a class="wordmark" href="#content">Deconstructed <span>/ Roblox</span></a>
+    <div><a href="article.md">Read the article</a><button type="button" id="print">Print field guide</button></div>
+  </header>
+  <main id="content">
+    <header class="intro">
+      <p class="eyebrow">Field notes from an unexpectedly good evening</p>
+      <h1>“Isn't that<br>a kids' game?”</h1>
+      <p>A horror game, a group of friends, and a reason to rethink Roblox.</p>
+      <div class="intro-note"><span aria-hidden="true">↳</span> An evening, deconstructed.</div>
+    </header>
+    <nav class="index" aria-label="Jump to a visual">
+      <a href="#scale">01 / The crowd</a><a href="#personas">02 / The players</a>
+      <a href="#journey">03 / The evening</a><a href="#footage">Watch / Roblox</a>
+      <a href="#interface">04 / The maze</a><a href="#retention">05 / The return</a>
+      <a href="#economy">06 / The tradeoff</a><a href="#metrics">07 / The compass</a>
+      <a href="#opportunities">08 / The quests</a><a href="#concept">09 / The idea</a>
+    </nav>
+
+    <section class="panel crowd-panel" id="scale" aria-labelledby="scale-title">
+      <div class="panel-top"><p class="eyebrow">01 / Product overview</p><span class="stamp">Reported · Q2 2026</span></div>
+      <div class="crowd-layout">
+        <div>
+          <h2 id="scale-title">A much bigger<br>room than I thought.</h2>
+          <div class="big-number">123<span>M</span></div>
+          <p class="number-label">average daily active users</p>
+          <div class="margin-fact"><strong>29 billion</strong> hours engaged across the quarter.<br>Not one game. A whole world of choices.</div>
+        </div>
+        <figure class="crowd-figure">
+          <figcaption class="eyebrow">If the age-checked crowd were 100 people…</figcaption>
+          <div class="crowd-grid" id="crowd-grid" role="img" aria-label="Of age-checked DAUs: 35% under 13, 38% ages 13–17, 27% adults, labeled O18 by Roblox. Not all users."></div>
+          <div class="crowd-key"><span><i class="kid"></i>Under 13 · 35</span><span><i class="teen"></i>13–17 · 38</span><span><i class="adult"></i>Adults · 27</span></div>
+          <p class="hand-note">The denominator matters.</p>
+          <p class="small">Only the age-checked subset. Age-check penetration was 57% at quarter end; this is not the age split of every Roblox user.</p>
+        </figure>
+      </div>
+      <p class="caption">Source: <a href="https://s27.q4cdn.com/984876518/files/doc_financials/2026/q2/Roblox-Q2-2026-Earnings-Shareholder-Letter.pdf">Q2 2026 shareholder letter</a> · Age snapshot: seven days ended June 30. Checked users may not represent everyone.</p>
+    </section>
+
+    <section class="panel players-panel" id="personas" aria-labelledby="personas-title">
+      <div class="panel-top"><p class="eyebrow">02 / User personas + JTBD</p><span class="stamp">Working personas</span></div>
+      <h2 id="personas-title">Choose your reason to play.</h2>
+      <p class="lede">Different moments. Different needs. The same person can be all three.</p>
+      <div class="players">
+        <article class="player primary">
+          <p class="player-slot">P1 / Our main lens</p>
+          <div class="character-stage"><svg class="character coral" aria-hidden="true"><use href="#block-person"/></svg><span class="character-prop" aria-hidden="true">+</span></div>
+          <h3>The social newcomer</h3>
+          <p class="speech">“My friends are here.<br>Help me join in.”</p>
+          <dl class="persona-needs"><dt>Primary need</dt><dd>Join with little preparation</dd><dt>Product value</dt><dd>Feel part of the group</dd></dl>
+        </article>
+        <article class="player">
+          <p class="player-slot">P2 / Looking around</p>
+          <div class="character-stage"><svg class="character violet" aria-hidden="true"><use href="#block-person"/></svg><span class="character-prop compass-prop" aria-hidden="true">↗</span></div>
+          <h3>The explorer</h3>
+          <p class="speech">“What haven't<br>I tried yet?”</p>
+          <dl class="persona-needs"><dt>Primary need</dt><dd>Find a worthwhile experience</dd><dt>Product value</dt><dd>Make discovery feel rewarding</dd></dl>
+        </article>
+        <article class="player">
+          <p class="player-slot">P3 / Back again</p>
+          <div class="character-stage"><svg class="character mint" aria-hidden="true"><use href="#block-person"/></svg><span class="character-prop flag-prop" aria-hidden="true">↶</span></div>
+          <h3>The regular</h3>
+          <p class="speech">“Let's pick up<br>where we left off.”</p>
+          <dl class="persona-needs"><dt>Primary need</dt><dd>Resume familiar experiences</dd><dt>Product value</dt><dd>Keep a good thing going</dd></dl>
+        </article>
+      </div>
+      <div class="inventory"><span class="inventory-label">The newcomer’s JTBD inventory</span><span><b>Do</b> Join and understand</span><span><b>Share</b> Participate with friends</span><span><b>Feel</b> Included, not left behind</span></div>
+      <p class="caption">Working personas and illustrative quotes, not interview findings. Player lens; creators and parents remain connected stakeholders.</p>
+    </section>
+
+    <section class="panel corridor-panel" id="journey" aria-labelledby="journey-title">
+      <div class="panel-top"><p class="eyebrow">03 / User journey</p><span class="stamp">One personal experience</span></div>
+      <h2 id="journey-title">The shortest path<br>from “I'll try it” to laughter.</h2>
+      <p class="lede">Not a timed funnel. A sketch of what made this evening work.</p>
+      <ol class="corridor">
+        <li class="is-current" aria-current="step"><span class="room-number">01</span><div class="doorway" aria-hidden="true"></div><strong>A friend invites</strong><p>A familiar reason to try.</p></li>
+        <li><span class="room-number">02</span><div class="doorway" aria-hidden="true"></div><strong>Choose together</strong><p>We went for horror.</p></li>
+        <li><span class="room-number">03</span><div class="doorway" aria-hidden="true"></div><strong>Get inside</strong><p>From platform to game.</p></li>
+        <li><span class="room-number">04</span><div class="doorway" aria-hidden="true"></div><strong>Get the hang of it</strong><p>Learning felt easy.</p></li>
+        <li><span class="room-number">05</span><div class="doorway" aria-hidden="true"></div><strong>Laugh together</strong><p>The actual payoff.</p></li>
+        <li class="unobserved"><span class="room-number">06 / Maybe</span><div class="doorway" aria-hidden="true"></div><strong>Come back?</strong><p>A possibility, not a reported visit.</p></li>
+      </ol>
+      <div class="journey-controls"><button type="button" id="journey-next">Walk to the next room</button><p id="journey-status" role="status">Room 1 of 6: a friend invites.</p></div>
+      <p class="corridor-payoff">The “aha” wasn't “look at all these games.”<br>It was <em>“I can already join in.”</em></p>
+      <p class="caption">Based on one personal session. Roblox shapes entry; creators shape gameplay. Door 6 is a possible next step, not an observed return.</p>
+    </section>
+
+    <aside class="media-break" id="footage" aria-labelledby="footage-title">
+      <div class="media-label"><span>Press play / A look outside the diagrams</span><span>Official Roblox upload</span></div>
+      <h2 id="footage-title">Let the platform<br>speak for a moment.</h2>
+      <div class="media-layout">
+        <div class="video-shell" data-video="hunt">
+          <div class="video-stage">
+            <div class="reel-art" aria-hidden="true"><span>PLAY</span><i></i><i></i><i></i></div>
+            <button type="button" class="load-video" data-load-video="hunt">Load Roblox’s trailer <span aria-hidden="true">↗</span></button>
+          </div>
+          <p class="video-status small" role="status">YouTube connects only after you choose to load the player.</p>
+        </div>
+        <div class="media-copy"><p class="eyebrow">The Hunt: Mega Edition</p><h3>Different experiences.<br>One place to jump in.</h3><p>An official promotional trailer, shared by Roblox. A glimpse of the platform in motion—not a recording of my evening, a usability test, or a claim about today’s interface.</p><a href="https://www.youtube.com/watch?v=I7pmbho1DUQ" target="_blank" rel="noopener noreferrer">Watch on Roblox’s YouTube channel ↗</a></div>
+      </div>
+      <p class="media-rights">Publicly available, not public domain. Shown through YouTube’s official player; no footage has been downloaded, edited, or re-hosted. Promotional editing is not representative of a typical session. Original poster artwork, not a video frame.</p>
+    </aside>
+
+    <section class="panel maze-panel" id="interface" aria-labelledby="interface-title">
+      <div class="panel-top"><p class="eyebrow">04 / Discovery + core experience</p><span class="stamp">Explanatory map, not app UI</span></div>
+      <h2 id="interface-title">A friend can be<br>your first recommendation engine.</h2>
+      <p class="lede">A big catalog gives you options. Someone who knows you can give you a starting point.</p>
+      <div class="maze-wrap">
+        <svg class="maze" viewBox="0 0 940 350" role="img" aria-labelledby="maze-name maze-description">
+          <title id="maze-name">Two imagined paths through a catalog</title>
+          <desc id="maze-description">A meandering browsing path and a more direct friend-led path connect an entry point with shared play. The paths illustrate different starting contexts, not measured speed or superiority.</desc>
+          <rect x="0" y="0" width="940" height="350" fill="url(#map-grid)"/>
+          <g class="maze-walls" fill="none" stroke="#b6bcad" stroke-width="3">
+            <path d="M70 60h170v65h110V60h150v80h150V60h190M70 270h170v-70h110v90h150v-80h150v80h190M140 60v100m0 50v60m100-145v40m110-40v40m150-25v35m150-35v35M420 60v60m0 110v60m150-230v60m0 110v60m150-230v60m0 110v60"/>
+          </g>
+          <path class="browse-route" d="M30 175H105V95H205V175H290V250H385V175H465V95H545V175H620V250H700V175H900" fill="none" stroke="#8c75b7" stroke-width="7" stroke-dasharray="9 7" opacity=".65"/>
+          <path class="friend-route" d="M30 175H900" fill="none" stroke="#d04a2d" stroke-width="7" opacity=".18"/>
+          <g class="map-labels" font-family="inherit" font-size="16" fill="#24332d">
+            <text x="32" y="328">You arrive</text><text x="720" y="328">Something to play</text>
+            <text x="268" y="40">Horror?</text><text x="475" y="320">An obstacle course?</text><text x="720" y="40">Something new?</text>
+          </g>
+          <g fill="#203d35"><circle cx="30" cy="175" r="13"/><circle cx="900" cy="175" r="13"/></g>
+          <g class="friend-marker"><circle cx="465" cy="175" r="24" fill="#d04a2d"/><path d="M453 175h24m-12-12v24" stroke="#fff9ee" stroke-width="3"/></g>
+        </svg>
+        <div class="route-controls" role="group" aria-label="Highlight an illustrative discovery route"><button type="button" id="route-browse" aria-pressed="true">Browse for yourself</button><button type="button" id="route-friend" aria-pressed="false">Start with a friend</button></div>
+        <p id="route-status" class="small" role="status">Browsing: the platform helps you explore. This is a metaphor, not measured click distance.</p>
+      </div>
+      <div class="margin-notes"><p><b>Before the click</b>What will we actually do?</p><p><b>At the door</b>Can we get in together?</p><p><b>Inside the game</b>Do I know enough to have fun?</p></div>
+      <p class="caption">Original metaphor, not measured click distance or app UI. Context: <a href="https://create.roblox.com/docs/discovery">Roblox discovery documentation</a>.</p>
+    </section>
+
+    <section class="panel railway-panel" id="retention" aria-labelledby="retention-title">
+      <div class="panel-top"><p class="eyebrow">05 / Retention + defensibility</p><span class="stamp">Possible loops, not measured effects</span></div>
+      <h2 id="retention-title">What brings you<br>back to the station?</h2>
+      <div class="railway">
+        <svg viewBox="0 0 940 370" role="img" aria-labelledby="rail-title rail-desc">
+          <title id="rail-title">Three reasons for another session</title><desc id="rail-desc">A loop connects discovering, playing, enjoying, and returning. Social connection, new content, and progression are three possible motivations. Creators keep supplying experiences.</desc>
+          <path d="M180 110H760Q850 110 850 200T760 290H180Q90 290 90 200T180 110Z" fill="none" stroke="#42614f" stroke-width="16"/>
+          <path d="M180 110H760Q850 110 850 200T760 290H180Q90 290 90 200T180 110Z" fill="none" stroke="#eff0de" stroke-width="3" stroke-dasharray="3 12"/>
+          <g fill="#f4efde" stroke="#a9c2a0" stroke-width="4"><circle cx="240" cy="110" r="13"/><circle cx="700" cy="110" r="13"/><circle cx="700" cy="290" r="13"/><circle cx="240" cy="290" r="13"/></g>
+          <g fill="#f4efde" font-family="inherit" font-size="20" font-weight="650">
+            <text x="240" y="74" text-anchor="middle">Find something</text><text x="700" y="74" text-anchor="middle">Play</text>
+            <text x="700" y="340" text-anchor="middle">Enjoy it</text><text x="240" y="340" text-anchor="middle">Come back?</text>
+          </g>
+          <text x="470" y="194" text-anchor="middle" fill="#c4e3a9" font-size="32" font-weight="750">“Another round?”</text>
+          <text x="470" y="229" text-anchor="middle" fill="#c5d0be" font-size="15">A reason to return beats a reason to keep scrolling.</text>
+        </svg>
+        <div class="railway-tickets"><div><span class="ticket-punch" aria-hidden="true"></span><b>People</b>My friends are playing.</div><div><span class="ticket-punch" aria-hidden="true"></span><b>Novelty</b>There’s something new.</div><div><span class="ticket-punch" aria-hidden="true"></span><b>Progress</b>I want to finish that.</div></div>
+      </div>
+      <p class="small">Creators keep the timetable interesting: build → publish → learn → improve.</p>
+      <p class="caption">Possible return paths. Sources: <a href="https://create.roblox.com/docs/discovery">Discovery</a> · <a href="https://create.roblox.com/docs/production/analytics/retention">Retention guidance</a>.</p>
+    </section>
+
+    <aside class="media-break explainer-break" aria-labelledby="explainer-title">
+      <div class="media-label"><span>Behind the scenes / Why this gets recommended</span><span>Roblox Creators</span></div>
+      <div class="media-layout">
+        <div class="media-copy"><h2 id="explainer-title">The map has<br>a mapmaker.</h2><p>Roblox’s own explainer introduces its “Recommended for You” system. Useful context for the discovery discussion—not independent evidence that recommendations always work.</p><a href="https://www.youtube.com/watch?v=K7jsk3bzmvE" target="_blank" rel="noopener noreferrer">Watch the original explainer ↗</a><p class="small">For current signals, use the <a href="https://create.roblox.com/docs/discovery">living documentation</a>; this video may reflect an earlier version.</p></div>
+        <div class="video-shell" data-video="discovery">
+          <div class="video-stage"><div class="reel-art map-reel" aria-hidden="true"><span>WHY THIS?</span><i></i><i></i><i></i></div><button type="button" class="load-video" data-load-video="discovery">Load Roblox’s explainer <span aria-hidden="true">↗</span></button></div>
+          <p class="video-status small" role="status">YouTube connects only after you choose to load the player.</p>
+        </div>
+      </div>
+      <p class="media-rights">Official player embed. Not public-domain footage, not re-hosted, and not a recording of the author's session. If playback is unavailable, the original-source link remains usable.</p>
+    </aside>
+
+    <section class="panel economy-panel" id="economy" aria-labelledby="economy-title">
+      <div class="panel-top"><p class="eyebrow">06 / Monetization + value alignment</p><span class="stamp">Reported tradeoff · Q2 2026</span></div>
+      <h2 id="economy-title">A balancing act,<br>not a money printer.</h2>
+      <div class="balance-stage">
+        <svg class="balance" viewBox="0 0 900 310" role="img" aria-labelledby="balance-title balance-desc">
+          <title id="balance-title">Near-term spending and reasons to return</title><desc id="balance-desc">A conceptual balance contrasts monetization today with long-term retention. Its movement illustrates competing priorities, not a numerical model or measured effect.</desc>
+          <path d="M400 280l50-170 50 170Z" fill="#263e35"/><rect x="360" y="278" width="180" height="14" rx="7" fill="#263e35"/>
+          <g class="balance-beam">
+            <path d="M160 112H740" stroke="#263e35" stroke-width="12" stroke-linecap="round"/>
+            <path d="M200 112l-65 100h130ZM700 112l-65 100h130Z" fill="none" stroke="#263e35" stroke-width="3"/>
+            <path d="M130 212h140q-10 38-70 38t-70-38M630 212h140q-10 38-70 38t-70-38" fill="#d04a2d"/>
+            <g fill="#263e35" font-family="inherit" text-anchor="middle"><text x="200" y="67" font-size="28" font-weight="750">Spending now</text><text x="700" y="67" font-size="28" font-weight="750">Coming back</text><text x="200" y="91" font-size="13">Immediate revenue</text><text x="700" y="91" font-size="13">Longer-term value?</text></g>
+          </g>
+          <circle cx="450" cy="112" r="13" fill="#f6d37b" stroke="#263e35" stroke-width="4"/>
+        </svg>
+        <button type="button" id="balance-toggle" aria-pressed="false">See the long-term bet</button>
+        <p id="balance-status" class="small" role="status">Two priorities. The illustration has no financial scale.</p>
+      </div>
+      <p class="pull-line">Roblox says it gave highly retentive games more exposure—even when that meant less monetization in the short term.</p>
+      <p class="small">The company expects retention to pay off over time. That is a bet, not a proven result.</p>
+      <div class="receipt"><span>Player purchase</span><span aria-hidden="true">→</span><span>Transaction-specific rules</span><span aria-hidden="true">→</span><span>Qualifying creator earnings</span><small>A simplified Robux path. There is no single universal creator take rate.</small></div>
+      <p class="caption">Reported in the <a href="https://s27.q4cdn.com/984876518/files/doc_financials/2026/q2/Roblox-Q2-2026-Earnings-Shareholder-Letter.pdf">Q2 letter, p. 2</a>. Balance is a metaphor, not a financial model. <a href="https://create.roblox.com/docs/production/monetization/developer-exchange">DevEx rules apply.</a></p>
+    </section>
+
+    <section class="panel compass-panel" id="metrics" aria-labelledby="metrics-title">
+      <div class="panel-top"><p class="eyebrow">07 / North Star + L1/L2 metrics</p><span class="stamp">Proposed, not Roblox’s internal metrics</span></div>
+      <h2 id="metrics-title">A compass for<br>“Was it worth coming back?”</h2>
+      <div class="constellation">
+        <div class="north-star"><span class="star" aria-hidden="true">✦</span><p class="eyebrow">Our proposed North Star</p><h3>Weekly returning players</h3><p>Distinct players who play this week<br>and played the previous calendar week.</p></div>
+        <div class="constellation-branches">
+          <div class="metric"><span class="orbit-index">L1 / Discovery</span><h3>Find a good match</h3><ul class="metric-labels"><li>Impression-to-play conversion</li><li>Early-exit rate</li></ul></div>
+          <div class="metric"><span class="orbit-index">L1 / Activation</span><h3>Get to the fun</h3><ul class="metric-labels"><li>Launch success rate</li><li>Time to first meaningful action</li></ul></div>
+          <div class="metric"><span class="orbit-index">L1 / Repeat participation</span><h3>Want another visit</h3><ul class="metric-labels"><li>Platform D7 retention</li><li>Repeat co-play rate</li></ul></div>
+        </div>
+      </div>
+      <div class="safety-rope"><strong>Don’t lose these along the way</strong><span>Satisfaction · Crashes · Unwanted contact · Purchase regret · Creator exposure</span></div>
+      <p class="caption">L2 measures sit beneath each L1 driver. Proposed diagnostic map, not an additive formula. Return ≠ enjoyment. <a href="#metric-definitions">Definitions & scope</a>.</p>
+    </section>
+
+    <section class="panel quests-panel" id="opportunities" aria-labelledby="opportunities-title">
+      <div class="panel-top"><p class="eyebrow">08 / Product opportunities + RICE</p><span class="stamp">Questions to test</span></div>
+      <h2 id="opportunities-title">Where I’d<br>look next.</h2>
+      <div class="quest-board">
+        <article class="quest"><span class="quest-pin" aria-hidden="true"></span><span class="quest-number">01 / Selection confidence</span><h3>“Will we like this?”</h3><p>Help a group judge the next experience.</p><div class="quest-proof"><b>Look for</b>Uncertainty before joining.<br>Expectations that don’t match.</div><span class="quest-state">First research candidate</span></article>
+        <article class="quest"><span class="quest-pin" aria-hidden="true"></span><span class="quest-number">02 / First-time play</span><h3>“What do I do?”</h3><p>Make the first meaningful action easier.</p><div class="quest-proof"><b>Look for</b>Confusing first steps.<br>Players leaving before the fun.</div><span class="quest-state">Needs game-level evidence</span></article>
+        <article class="quest"><span class="quest-pin" aria-hidden="true"></span><span class="quest-number">03 / Group continuity</span><h3>“What next?”</h3><p>Keep a group’s evening moving.</p><div class="quest-proof"><b>Look for</b>Groups stalling between games.<br>Gaps in existing tools.</div><span class="quest-state">Needs group research</span></article>
+      </div>
+      <div class="rice-lock"><span class="lock-mark" aria-hidden="true">?</span><div><h3>RICE stays unscored.</h3><p>Reach: unknown. Impact: untested. Confidence: low. Effort: unestimated.</p><p class="small">Reach × Impact × Confidence ÷ Effort. Fill the evidence gaps before ranking implementation work.</p></div></div>
+      <p class="caption">Hypotheses, not proven failures. Audit existing recommendations, <a href="https://en.help.roblox.com/hc/en-us/articles/37725513985812-Unlocking-trusted-friends">Party</a>, and private servers first. Research priority ≠ RICE winner.</p>
+    </section>
+
+    <section class="panel concept-panel" id="concept" aria-labelledby="concept-title">
+      <div class="panel-top"><p class="eyebrow">09 / Proposed solution + evaluation</p><span class="stamp">Original concept · Not shipped UI</span></div>
+      <h2 id="concept-title">A little context.<br>Before everyone jumps in.</h2>
+      <div class="prototype-layout">
+        <div class="phone">
+          <div class="phone-status"><span>CONCEPT</span><span>NOT A LIVE APP</span></div>
+          <div class="phone-art" aria-hidden="true"><div class="hall-wall"></div><div class="hall-door"></div></div>
+          <p class="phone-label">Fictional experience / Example data</p><h3>The Last Corridor</h3>
+          <div class="fit-card"><h4>Before we join</h4><dl><dt>What you’ll do · Creator-provided</dt><dd>Explore together and solve clues.</dd><dt>Group setup · Creator-provided</dt><dd id="guidance">Not provided by the creator.</dd><dt>Access & private servers</dt><dd>Review current eligibility, availability, and price.</dd></dl><p>Capacity ≠ available seats.<br>Joining together isn’t guaranteed.</p></div>
+          <div class="phone-cta">Continue to existing join flow<span>Illustration only—not a working join button</span></div>
+        </div>
+        <div class="prototype-notes">
+          <p class="hand-note">Not more steps.<br>Fewer surprises.</p>
+          <p>A short summary inside experience details. Enough context to choose together, without another tutorial to read.</p>
+          <label class="switch"><input type="checkbox" id="guidance-toggle"><span>Show fictional creator guidance</span></label>
+          <p class="small" id="state-message" role="status">Missing information stays visibly missing.</p>
+          <div class="experiment">
+            <p class="eyebrow">How we’d find out</p><h3>Did the group get to play?</h3>
+            <dl><dt>Try</dt><dd>Existing details vs. a brief “Before we join” summary.</dd><dt>Watch</dt><dd>Shared-server arrival within 5 minutes; whether the experience matched expectations.</dd><dt>Protect</dt><dd>Safety, privacy, performance, and purchase clarity.</dd></dl>
+            <a class="small experiment-link" href="#experiment-notes">Full test design ↗</a>
+          </div>
+        </div>
+      </div>
+      <p class="caption">Original fictional UI; guidance is example content. Five minutes is a proposed test window. Existing <a href="https://about.roblox.com/safety">safety</a> and access rules still apply.</p>
+    </section>
+    <div class="reading-notes">
+      <p class="eyebrow">The detail behind the pictures</p>
+      <details id="metric-definitions"><summary>Metric definitions & scope</summary>
+        <p>All metrics here are author-proposed. Weekly returning players are distinct players with gameplay in both the current and previous calendar week, using one fixed reporting timezone. The L1/L2 map is diagnostic, not an arithmetic decomposition. Return behavior is not proof of enjoyment.</p>
+        <dl><dt>Impression-to-play</dt><dd>Exposed users who play ÷ exposed users. Fix the surface and attribution window.</dd><dt>Early exit</dt><dd>Early first-session exits ÷ first launches. Predefine the threshold.</dd><dt>Launch success</dt><dd>Successful launches ÷ launch attempts.</dd><dt>First meaningful action</dt><dd>Median and p90 time from entry to a creator-defined meaningful action. Report non-completion separately.</dd><dt>Platform D7 retention</dt><dd>Day-0 new players who play anywhere on the platform on day 7 ÷ day-0 new players.</dd><dt>Repeat co-play</dt><dd>Initial co-players who co-play again within 7 days ÷ eligible initial co-players, in a fixed cohort.</dd></dl>
+        <p><a href="https://create.roblox.com/docs/production/analytics/retention">Roblox's published creator retention metrics</a> are experience-level, unlike our platform-level North Star and D7. No baseline or target is claimed. More safety reports can reflect more harm or better reporting; interpret them with other evidence.</p>
+      </details>
+      <details id="experiment-notes"><summary>“Before we join” — full test design</summary>
+        <p>Audit the target device/account for equivalent existing UI first. Validate unmet need with observed group decisions and verify available metadata, creator-guidance accuracy, and eligibility restrictions.</p>
+        <p>For eligible adult groups, assign a stable group at its first eligible details view before exposure. Compare current details with the same details plus the summary. Define group identity and avoid cross-variant member exposure.</p>
+        <p>Primary outcome: groups reaching a shared server within five minutes of that first view ÷ all randomized groups. Count non-joins and failures; one observation per group. Pair with sampled “matched expectations” feedback and check nonresponse bias.</p>
+        <p>Set sample size, minimum meaningful effect, duration, and guardrail limits using baseline data before testing. Monitor crashes, unwanted contact, and purchase regret. Preserve all age, privacy, and parental restrictions. Five minutes is a proposed window, not a benchmark. No experiment has been run.</p>
+      </details>
+    </div>
+    <footer class="footer"><p>Original illustrations by Deconstructed. Video ownership stays with the original publishers. <a href="media-sources.json">Media provenance</a> · <a href="article.md">Article + sources</a></p><p>Print exports omit live players. Use the original video URLs in Substack; embeds depend on the platform’s support.</p></footer>
+    <noscript><p class="noscript-note">Interactive highlights need JavaScript. All explanations and original video links remain available. The age-check composition is 35% under 13, 38% ages 13–17, and 27% adults.</p></noscript>
+  </main>
+</body>
+</html>

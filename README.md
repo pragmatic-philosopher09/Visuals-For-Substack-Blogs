@@ -25,6 +25,16 @@ A deep-dive product management teardown of Google Photos.
 * **`user_journey.html` / `upgrade_funnel.html`**: Step-by-step visualizations of the user experience and monetization funnels.
 * **`camera_evolution_timeline.html`**: Interactive historical timelines.
 
+### 3. `Roblox-Teardown/`
+A concise, player-focused product teardown following the Google Photos section structure.
+* **`v1/`**: Reconstructed archive of the earlier card-based visual direction, with source HTML/CSS and its own PNG exports. Recreated from the conversation, not an exact backup of the overwritten files.
+* **`v2/article.md`**: Revised article with the author's group horror-game introduction, personas and JTBD, journey, retention, monetization, proposed North Star/L1/L2 metrics, guardrails, opportunities, and a concept evaluation.
+* **`v2/visuals.html` / `visuals.css` / `visuals.js`**: Nine bespoke, responsive visual essays: a 100-person crowd, original block characters, a walkable horror corridor, a discovery maze, a return railway, a monetization balance, a North Star constellation, an opportunity quest board, and a fictional mobile concept. Detailed definitions and experiment notes stay outside the artwork.
+* **`v2/assets/`**: Nine original PNG panel exports embedded in the article. With Python Playwright and its Chromium available, run `python3 Roblox-Teardown/v2/export_visuals.py` to check and re-export; use `--check-only` for checks without changing images, or `--pdf /absolute/path/to/panels.pdf` for a nine-page print export. The script does not install dependencies.
+* **`v2/media-sources.json`**: Verified original uploads from Roblox and Roblox Creators. Two click-to-load official YouTube players provide a promotional trailer and a recommendation-system explainer. No player contacts YouTube before the reader clicks; original-source links remain available. Public availability is **not** public-domain status: footage is not downloaded, clipped, or re-hosted.
+* Facts link to primary sources and use a dated Q2 2026 business snapshot. Interface drawings are explicitly labeled schematics or concepts, not actual screenshots. Opportunities are hypotheses, not validated findings; RICE scores remain uncomputed without evidence.
+* Open a version's `visuals.html` locally or serve the repository with `python3 -m http.server 8000` and visit `/Roblox-Teardown/v2/visuals.html`. Each panel has its own anchor; **Print field guide** exports the nine original panels, excluding live players. Use original video links in Substack and verify embed support rather than assuming iframe support.
+
 ---
 
 ## 🛠️ Technology Stack

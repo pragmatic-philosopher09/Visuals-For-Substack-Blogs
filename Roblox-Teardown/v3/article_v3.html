@@ -1,0 +1,203 @@
+<!doctype html><html><head><meta charset='utf-8'><title>Roblox Product Teardown (v3)</title><style>
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap');
+@page { size: A4; margin: 16mm 14mm 18mm 14mm; }
+body { font-family: 'Source Serif 4', Georgia, serif; color: #1e293b; font-size: 11.2pt; line-height: 1.6; max-width: 760px; margin: 0 auto; }
+h1, h2, h3 { font-family: 'Outfit', sans-serif; color: #0f172a; line-height: 1.2; page-break-after: avoid; }
+h1 { font-size: 28pt; font-weight: 800; margin: 0 0 8px; letter-spacing: -0.5px; }
+h1 + p em { font-family: 'Outfit', sans-serif; font-style: normal; color: #475569; font-size: 13pt; }
+h2 { font-size: 18pt; font-weight: 800; margin-top: 28px; }
+h3 { font-size: 13pt; font-weight: 700; margin-top: 20px; }
+p, li { orphans: 3; widows: 3; }
+strong { color: #0f172a; }
+blockquote { border-left: 4px solid #2563eb; background: #eff6ff; margin: 18px 0; padding: 10px 16px; font-family: 'Outfit', sans-serif; font-size: 12pt; page-break-inside: avoid; }
+blockquote p { margin: 0; }
+figure { margin: 18px 0; page-break-inside: avoid; break-inside: avoid; }
+img { width: 100%; display: block; border-radius: 6px; }
+table { border-collapse: collapse; width: 100%; font-size: 10pt; page-break-inside: avoid; }
+th, td { border: 1px solid #e2e8f0; padding: 6px 8px; text-align: left; vertical-align: top; }
+th { font-family: 'Outfit', sans-serif; background: #f8fafc; }
+hr { border: 0; border-top: 1px solid #e2e8f0; margin: 26px 0; }
+em { color: #475569; }
+a { color: #1d4ed8; }
+</style></head><body><h1>Roblox: I Expected a Kids' Game. I Found Good Company.</h1>
+<p><em>A product teardown of the hallway Roblox runs, the rooms creators build, and the friend who walked me between them.</em></p>
+<p>A friend introduced me to Roblox. Until then, I'd filed it under "games for children." Not for me.</p>
+<p>Then I joined my friend and a group for a horror game.</p>
+<p>There was a lot of laughter. What surprised me just as much was how little I had to learn. I wasn't spending the evening working out the controls. I was already part of the fun.</p>
+<p>Looking back, three parties made that happen. Roblox got us into the same game. The creator made it easy to pick up. And my friend did what no algorithm did: picked something, vouched for it, and pulled me in.</p>
+<p>That became the lens for this teardown: <strong>Roblox runs the hallway; creators build the rooms.</strong> And the question I kept returning to: <em>how does Roblox help a group get from "what should we play?" to having fun together—especially when nobody in the group already knows the way?</em></p>
+<h2>1. Product Overview &amp; Positioning</h2>
+<p>The first thing I had wrong: Roblox isn't one game. It's millions of experiences built by independent creators, behind one front door.</p>
+<p>Roblox owns the hallway: account and avatar, discovery, friends and chat, getting everyone into a server, safety, and Robux. Creators own the rooms: what you do, how you learn it, what's for sale. Roblox can't design every room, but it decides which doors get shown and what creators earn when people walk through.</p>
+<p>The scale is hard to picture. In Q3 2026, Roblox averaged <strong>138 million daily active users</strong>, who spent <strong>nearly 34 billion hours</strong> on the platform. By my arithmetic, that's about 2.6 hours per daily user, every day.[1]</p>
+<p>And I was the minority in that room. Among users who have completed an age check, 34% are under 13, 37% are 13–17, and <strong>29% are adults</strong>.[1] That share is climbing (27% a quarter earlier), and Roblox is chasing it on purpose: in the US, adults spend about 50% more than younger players. So "Roblox works for adults" isn't a settled fact. It's the company's growth plan.</p>
+<figure><img alt="A crowd of 100 block figures represents age-checked daily users in Q3 2026: 34 under 13, 37 aged 13–17 and 29 adults, beside 138 million DAUs and nearly 34 billion hours." src="assets/01-scale.png" /></figure>
+<p><em>If the age-checked crowd were 100 people. By quarter end, 64% of daily users had completed an age check.</em></p>
+<blockquote>
+<p><strong>A look at Roblox in motion:</strong> <a href="https://www.youtube.com/watch?v=I7pmbho1DUQ">Watch The Hunt: Mega Edition trailer, published by Roblox</a>. It's a promotional glimpse of a past event, not footage of my evening. The <a href="visuals_v3.html#footage">visual companion</a> includes the official player.</p>
+</blockquote>
+<h2>2. User Personas &amp; Jobs-to-Be-Done</h2>
+<p>The explorer wants something new; the regular wants a favourite. But one job sat under my evening, and probably under many first evenings:</p>
+<blockquote>
+<p><strong>When my friends are already playing, help us pick something and get into it together—without me having to become an expert first.</strong></p>
+</blockquote>
+<p>It breaks into three smaller jobs, each with a different owner:</p>
+<table>
+<thead>
+<tr>
+<th>Smaller job</th>
+<th>The question in my head</th>
+<th>Who mostly answers it</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Find something suitable</strong></td>
+<td>"Will this group enjoy this?"</td>
+<td>Roblox's discovery—or a friend</td>
+</tr>
+<tr>
+<td><strong>Join and understand</strong></td>
+<td>"Can we get in together, and what do I do?"</td>
+<td>Roblox gets you in; the creator teaches you</td>
+</tr>
+<tr>
+<td><strong>Feel included</strong></td>
+<td>"Am I part of this, or just watching?"</td>
+<td>The group, and the game's design</td>
+</tr>
+</tbody>
+</table>
+<p>Parents and creators matter too; they enter through safety and money.</p>
+<figure><img alt="One central job-to-be-done sits at the centre, with three smaller jobs around it: find something suitable, join and understand, and feel included, each tagged with who owns it." src="assets/02-personas.png" /></figure>
+<p><em>One central job, three smaller ones. Drawn from one evening, not from interviews.</em></p>
+<h2>3. User Journey &amp; Core Experience</h2>
+<p>My evening, as six doors:</p>
+<p><strong>A friend invites → we choose → we get in → I get the hang of it → we laugh → maybe we come back.</strong></p>
+<p>Each door has a different keyholder. The invitation came from a person. The choice happened on Roblox, but really on my friend's say-so. Getting in together was Roblox's plumbing. Getting the hang of it was the creator's craft; Roblox tells creators to get players to the fun before any tutorial, and this game listened.[2] The laughter was the group's. The aha wasn't how much Roblox offered. It was that I could join in straight away.</p>
+<figure><img alt="Six doors trace the evening from a friend's invitation to shared laughter, each tagged with its friction and its keyholder: friend, Roblox, creator or group. The sixth door, coming back, is drawn as unobserved." src="assets/03-journey.png" /></figure>
+<p><em>Who holds each door. The sixth is a possibility; I haven't counted return visits.</em></p>
+<p>The second door is where I'd have stalled on my own. I checked the public pages of four popular horror games: DOORS, The Mimic, Pressure and Break In.[3] They show genre, a maturity label ("Fear: mild"), the server's player limit, live players and a store. What a group wants to know—best group size, round length, whether you can learn as you go, whether friends start together—is missing or buried in the creator's description. A 50-player server limit isn't a group size. My friend answered all of it in one sentence.</p>
+<figure><img alt="Two routes into the same game: a winding solo route past unanswered questions on a game page, and a short social route where a friend answers them before the click." src="assets/04-interface.png" /></figure>
+<p><em>Two ways into the same room. A friend fills in what the game page leaves out.</em></p>
+<h2>4. Retention Loop &amp; Defensibility</h2>
+<p>Three things bring people back: <strong>people</strong> (my friends are on), <strong>novelty</strong> (there's something new), and <strong>progress</strong> (unfinished business). Each one rests on machinery that Roblox controls:</p>
+<ul>
+<li><strong>People → the social graph.</strong> Friends, Party and chat follow you from game to game. Roblox puts it plainly: people "come to Roblox to play with their friends."[1]</li>
+<li><strong>Novelty → creator supply plus discovery.</strong> About 40% of the top 100 games in "Recommended for You," ranked by weekly impressions, were made in the past three months.[1]</li>
+<li><strong>Progress → one identity everywhere.</strong> One avatar, one inventory and one Robux wallet across every room.</li>
+</ul>
+<p>That bundle is the moat. Fortnite has creator islands, but they sit beside Epic's own flagship game. Minecraft's community servers are scattered across separate hosts and rules. Steam sells games brilliantly, but the hanging out happens elsewhere. Roblox puts the friends list, instant join, economy and an endless supply of new rooms in one place. Any piece can be copied; the whole bundle, plus the friends already inside, is much harder.</p>
+<figure><img alt="A railway loop runs find, play, enjoy, come back. Three tickets—people, novelty and progress—are each stamped with the Roblox mechanism behind them: social graph, creator supply and discovery, and persistent identity." src="assets/05-retention.png" /></figure>
+<p><em>Three tickets back, and the machinery behind each one.</em></p>
+<blockquote>
+<p><strong>Behind the recommendations:</strong> <a href="https://www.youtube.com/watch?v=K7jsk3bzmvE">Roblox Creators explains "Recommended for You"</a>. It's the company's own explanation; current signals live in its <a href="https://create.roblox.com/docs/discovery">discovery documentation</a>.</p>
+</blockquote>
+<h2>5. Monetization &amp; Value Alignment</h2>
+<p>Players buy Robux and spend them on passes, items, subscriptions and private servers; creators earn a share and can cash out through the Developer Exchange (DevEx).[4][5] One quarter, from the Q3 2026 letter:[1]</p>
+<table>
+<thead>
+<tr>
+<th>Q3 2026</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Bookings</strong> (what players spent)</td>
+<td>$1.70B — down 12% year over year, above guidance</td>
+</tr>
+<tr>
+<td><strong>Paid to creators</strong> (DevEx)</td>
+<td>$403M — 24% of bookings</td>
+</tr>
+<tr>
+<td><strong>Infrastructure and trust &amp; safety</strong></td>
+<td>$258M — 15% of bookings</td>
+</tr>
+<tr>
+<td><strong>Net loss / adjusted EBITDA</strong></td>
+<td>−$230M / +$138M</td>
+</tr>
+<tr>
+<td><strong>Monthly unique payers</strong></td>
+<td>30M</td>
+</tr>
+</tbody>
+</table>
+<p>The most interesting decision in that quarter was made a quarter earlier. In Q2, Roblox retuned "Recommended for You" to give <strong>more exposure to games people keep coming back to, at the expense of near-term monetization</strong>.[6] It now weighs a 28-day window and how often first-time players leave within 30–90 seconds without really playing. It hurt: Q2 bookings landed at the low end of guidance.</p>
+<p>In Q3, Roblox says the bet started paying back. The retuned recommendations "drove meaningful improvements in overall platform retention and monetization," and bookings per hour grew again.[1] Bookings are still down year over year and Q4 guidance is lower again, so it's early. But the direction is clear: Roblox wants to earn from evenings people repeat, not one-off spending.</p>
+<p>That changes the brief for creators. The obvious worry is that retention-first discovery hands everything to a few hits, yet the top 10 games fell from about 30% of hours to 20% over three years.[6] The real pressure is on games that earn well but don't hold people: they lose exposure. The carrot is higher DevEx rates for US adult spending and novel games.[1][6]</p>
+<figure><img alt="A balance tips from spending now toward coming back, beside a Q3 2026 receipt: $1.70B bookings, $403M to creators, $258M on infrastructure and trust &amp; safety." src="assets/06-economy.png" /></figure>
+<p><em>The Q3 receipt, and the bet behind it.</em></p>
+<p><strong>Safety is part of the value, not a footnote.</strong> Most users are children and adults are the growth target, so it has to be. Chat now requires an age check: 64% of daily users had done one by Q3, including more than 80% of 13–17-year-olds. Chat is grouped by age, image sharing is restricted, and Kids and Select accounts give younger players a narrower catalogue.[1][6]</p>
+<p>The tension: Roblox says much of its co-play talk has happened on off-platform apps that "may not align with our safety standards."[6] Its answer is to bring the conversation home with Friends chat, voice and Quick Words; users chatting or on voice grew 24% in a quarter.[1] As an adult newcomer, I barely noticed. For a parent, it's the whole product.</p>
+<h2>6. North Star, L1/L2 Metrics &amp; Guardrails</h2>
+<p>Two levels, which my first draft blurred.</p>
+<p><strong>Platform North Star: weekly returning players</strong>—people who played this calendar week and last. It shows Roblox earned another visit, not that the visit was good, so it travels with quality and safety checks.</p>
+<p><strong>Feature outcome (for section 8): groups that get in together</strong>—the share of eligible groups opening a game page who land in the same server within five minutes, paired with a one-tap "Was it what you expected?" check.</p>
+<table>
+<thead>
+<tr>
+<th>L1: what has to work?</th>
+<th>L2: what I'd watch</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Find a good match</td>
+<td>Impression-to-play rate; first-play bounce rate</td>
+</tr>
+<tr>
+<td>Get in and get to the fun</td>
+<td>Group join success; time to first meaningful action</td>
+</tr>
+<tr>
+<td>Come back</td>
+<td>Week-2 return for new players; repeat co-play</td>
+</tr>
+</tbody>
+</table>
+<p>The last row feeds the North Star directly: a new player who returns in week two becomes a weekly returning player. That's why I swapped D7 retention for week-2 return.</p>
+<p><strong>Guardrails:</strong> unwanted contact and safety reports, crashes, purchase regret, and how widely exposure is spread across creators.</p>
+<figure><img alt="A hierarchy runs from the platform North Star, weekly returning players, down to the feature outcome of groups getting in together, then a quality check and a rope of guardrails." src="assets/07-metrics.png" /></figure>
+<p><em>Platform outcome → feature outcome → quality check → guardrails. My proposal, not Roblox's internal metrics.</em></p>
+<h2>7. Product Opportunities &amp; Prioritization</h2>
+<p>Three research hypotheses, each tied to something I saw:</p>
+<p><strong>01 — "Will we like this?"</strong> Groups without a guide struggle to judge an unfamiliar game before joining, and some bounce in the first minute because it wasn't what they expected.</p>
+<p><strong>02 — "What do I do?"</strong> Newcomers lose their way between arriving and actually playing. This is mostly creator territory; Roblox's levers are tools and guidance.</p>
+<p><strong>03 — "What next?"</strong> Groups lose momentum between games when a round ends.</p>
+<p>I'd start with 01. It's the door my friend held open, so people without that friend are most exposed. It sits in Roblox's hallway, not a creator's room. And Roblox already measures the symptom: first-play bounce is now a recommendation signal.[6] If some bounces mean "we picked the wrong room," better information before the click is cheaper than a better guess after it.</p>
+<p>RICE comes after evidence. Reach, impact and confidence need data I don't have, so it stays unscored.</p>
+<figure><img alt="Three pinned cards labelled Research hypothesis 01, 02 and 03, each with what it predicts and the evidence that would test it; RICE stays unscored." src="assets/08-opportunities.png" /></figure>
+<p><em>Hypotheses to test, not proven failures. Recommendations, Party and private servers already exist.[7][8]</em></p>
+<h2>8. Proposed Solution &amp; Evaluation</h2>
+<p>A short <strong>"Before we join"</strong> block on the game page, built from things creators already half-write: best group size, round length, "learn as you go" or "bring a guide," and whether friends start in the same server. From hunch to answer:</p>
+<ol>
+<li><strong>Observation.</strong> A friend answered my "will we like it?" questions in one sentence.</li>
+<li><strong>Hypothesis.</strong> Groups without that friend hesitate more, start less, or bounce early.</li>
+<li><strong>Current-state audit.</strong> Pages show genre, maturity, server limit and live players; group questions sit in free text, if anywhere. DOORS says it's best entered "without a guide," but only in its description.[3]</li>
+<li><strong>Research question.</strong> Do groups shown structured answers choose with more confidence, and does the game match what they expected?</li>
+<li><strong>Prototype.</strong> The "Before we join" block. Anything the creator hasn't filled in is shown as missing, never guessed.</li>
+<li><strong>Experiment.</strong> Randomly assign eligible adult groups to today's page or page plus block. Measure groups in a shared server within five minutes, counting those who never join, plus the expectation check.</li>
+<li><strong>Evaluate.</strong> Fix sample size, smallest worthwhile lift and guardrail limits before launch. Age, privacy and parental controls stay unchanged.</li>
+</ol>
+<figure><img alt="A fictional phone shows a Before we join block: fields already on today's page in grey, new group-focused fields in coral, and an empty field shown as missing. Beside it, the experiment plan." src="assets/09-concept.png" /></figure>
+<p><em>An original concept, not Roblox's UI. Grey is already on the page today; coral would be new.</em></p>
+<h2>Final Take</h2>
+<p>I expected a kids' game. I found a hallway that got a group of friends into the same room quickly, and a room built well enough that I could laugh instead of learn.</p>
+<p>Roblox's latest bet—show people the games they come back to, even when it costs money now—suggests it knows evenings like mine are the product. What's still open is the newcomer who turns up without a friend to hold the door. Making that second door easier is, to me, the most human problem left in the hallway.</p>
+<hr />
+<h3>Methods &amp; sources</h3>
+<p>Written 1 November 2026, from one personal session, Roblox's public filings and Creator Hub documentation, and a check of public game pages. No internal data, interviews or experiments. Figures are as reported; the 2.6-hours figure is my arithmetic (34B hours ÷ 138M DAUs ÷ 92 days). Age figures cover only users who completed an age check, and Roblox describes them as estimates. Personas, hypotheses and metrics are mine. All drawings, including the phone, are original illustrations, not Roblox screenshots.</p>
+<ol>
+<li><a href="https://s27.q4cdn.com/984876518/files/content_files/Q3-2026-Earnings-Shareholder-Letter.pdf">Roblox Q3 2026 shareholder letter</a>, 29 October 2026: revenue, bookings, DAUs and hours (p. 3); social distribution (p. 4); age-checked split, adult monetization and age-check penetration (pp. 5–6); communications growth (p. 6); recommendations and new games (p. 7); payers and bookings per hour (p. 11); cost components, DevEx, net loss and adjusted EBITDA (p. 12); Q4 guidance (p. 14); age-check note (p. 19); bookings reconciliation (p. 22).</li>
+<li><a href="https://create.roblox.com/docs/production/game-design/onboarding">Creator Hub: Onboarding</a>.</li>
+<li>Public game pages for DOORS, The Mimic, Pressure and Break In (Story), checked 1 November 2026 via Roblox's public game and age-recommendation endpoints. Details in <a href="references_v3.md">references_v3.md</a>.</li>
+<li><a href="https://create.roblox.com/docs/production/monetization">Creator Hub: Monetization</a>.</li>
+<li><a href="https://create.roblox.com/docs/production/monetization/developer-exchange">Creator Hub: Developer Exchange</a>.</li>
+<li><a href="https://s27.q4cdn.com/984876518/files/doc_financials/2026/q2/Roblox-Q2-2026-Earnings-Shareholder-Letter.pdf">Roblox Q2 2026 shareholder letter</a>, 30 July 2026: the retention-over-monetization trade-off (p. 2); DevEx increases (pp. 3–4); recommendation signals (pp. 5–6); Kids and Select accounts and first-play bounce definition (p. 6); off-platform communication (p. 7); top-10 share of hours (p. 9).</li>
+<li><a href="https://create.roblox.com/docs/discovery">Creator Hub: Discovery</a> and <a href="https://create.roblox.com/docs/production/monetization/private-servers">Private servers</a>.</li>
+<li><a href="https://en.help.roblox.com/hc/en-us/articles/37725513985812-Unlocking-trusted-friends">Roblox Help: Unlocking trusted friends</a> and <a href="https://about.roblox.com/safety">Roblox Safety</a>.</li>
+</ol>
+<p><strong>Media:</strong> both videos are official uploads from Roblox and Roblox Creators, linked or shown through YouTube's player; they aren't public domain, so nothing is downloaded or re-hosted. See <a href="media-sources.json">media-sources.json</a>. <strong>Visual companion:</strong> <a href="visuals_v3.html">the interactive field guide</a>, with <a href="visuals_v3.html#metric-definitions">metric definitions</a> and the <a href="visuals_v3.html#experiment-notes">full test design</a>.</p></body></html>
